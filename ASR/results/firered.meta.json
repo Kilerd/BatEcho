@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-15T08:21:43.947242+00:00",
+  "model": "firered",
+  "snapshot": {
+    "repo": "mlx-community/FireRedASR2-AED-mlx",
+    "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb"
+  },
+  "load_s": 8.005588833009824,
+  "warmup_s": 4.270089332945645,
+  "warmup_calls": 2,
+  "platform": "macOS-26.3-arm64-arm-64bit",
+  "python": "3.12.14",
+  "packages": {
+    "mlx": "0.32.2",
+    "mlx-audio": "0.5.4",
+    "qwen3-asr-mlx": "0.2.0",
+    "pypinyin": "0.55.0"
+  },
+  "lexicon_sha256": "3484a5ad702f0ce78e7550e7569b2342ea054baff28a559a706cdb93b0e1f927",
+  "audio_manifest_sha256": "c628579f43718ab8aa8de57ed37c12480912cdd1290dfa3514d5bc7c485ffcd9",
+  "hotwords": [],
+  "native_hotwords_supported": false,
+  "timing": "warm model; includes feature extraction and decoding; excludes audio file read, recording and endpoint detection",
+  "decode": {
+    "beam_size": 3,
+    "max_len": 128,
+    "softmax_smoothing": 1.25,
+    "length_penalty": 0.6,
+    "eos_penalty": 1.0
+  },
+  "code_sha256": {
+    "asr_lab/backends.py": "a1386f79ba2a7a3fc8cc33aefc1b9b4fd912f2d3e4ed038db6d7f3c3f851e9b7",
+    "asr_lab/benchmark.py": "0e6d0dd4eb6d19d5f99af5b4751a4006501ec5497be47ec7c4b28bad120361ea",
+    "asr_lab/firered.py": "39b2b4c01425dc48a8c1b3c515076514a353a50cac2d55cb3756ee0bef38f335"
+  }
+}

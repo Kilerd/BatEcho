@@ -1,0 +1,18 @@
+[project]
+name = "my-asr"
+version = "0.1.0"
+description = "Local experiments for Chinese voice input and pronunciation-constrained correction"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "mlx-audio[stt]==0.5.4",
+    "qwen3-asr-mlx==0.2.0",
+    "pypinyin>=0.55,<0.56",
+    "rapidfuzz>=3.14,<4",
+    "soundfile>=0.13,<0.14",
+    "numpy>=2,<3",
+    "onnxruntime>=1.23,<2",
+    "scipy>=1.10,<2",
+]
+
+[project.optional-dependencies]
+fun = ["mlx-audio[stt]==0.5.4"]

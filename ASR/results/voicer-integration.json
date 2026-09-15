@@ -1,0 +1,142 @@
+{
+  "date": "2026-09-15T10:29:36.069176+00:00",
+  "scope": "Packaged native client, copied outside checkout, real FireRed model; no physical microphone or focused-app injection",
+  "cases": [
+    {
+      "case": "default",
+      "audio": "tingting-term03.wav",
+      "expected": "这个项目由同事璟珩负责",
+      "audio_sha256": "f85521bf048e4850f0b4b95e9ccfb9a3919136ced08b006eb6a1f80d8071c9bd",
+      "result": {
+        "model": "firered",
+        "raw_text": "这个项目由同事景恒负责",
+        "model_load_count": 1,
+        "elapsed_s": 4.677236208110116,
+        "text": "这个项目由同事璟珩负责",
+        "id": "87C51502-5FDD-4BA0-90FE-BE8633072B4A"
+      },
+      "passed": true
+    },
+    {
+      "case": "default",
+      "audio": "qwen-official-zh.wav",
+      "expected": "甚至出现交易几乎停滞的情况",
+      "audio_sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "result": {
+        "elapsed_s": 0.8949047080241144,
+        "id": "D982DD99-D127-4F46-A390-C07F0201EDC7",
+        "text": "甚至出现交易几乎停滞的情况",
+        "model": "firered",
+        "raw_text": "甚至出现交易几乎停滞的情况",
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "default",
+      "audio": "silence.wav",
+      "expected": "",
+      "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+      "result": {
+        "elapsed_s": 0.009569833055138588,
+        "id": "6DF2BF91-E8E7-40FC-8865-4BED107CE7FB",
+        "text": "",
+        "model": "firered",
+        "raw_text": "",
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "tingting-term01.wav",
+      "expected": "我想把青简接入这个语音输入法",
+      "audio_sha256": "47a4aa2d9ede51023c835cb1e0ed5e9a3d8dff77add0f1d83a1b34aa7399636a",
+      "result": {
+        "model": "firered",
+        "text": "我想把青简接入这个语音输入法",
+        "raw_text": "我想把青简接入这个语音输入法",
+        "elapsed_s": 3.9795011249370873,
+        "model_load_count": 1,
+        "id": "CDCBCBC3-8B39-420A-A791-CC14D1FC3C40"
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "tingting-mixed02.wav",
+      "expected": "这个服务使用 kubernetes和 postgresql",
+      "audio_sha256": "c5a05feba32e9402d1e050ddfd676251affb28886fa14fea2740d8e314269b24",
+      "result": {
+        "model": "firered",
+        "raw_text": "这个服务使用 kubernetes和 postgresql",
+        "model_load_count": 1,
+        "elapsed_s": 1.3032964579761028,
+        "id": "6E9ACB1E-0B2C-4E7C-9D57-2F546ECED20B",
+        "text": "这个服务使用 kubernetes和 postgresql"
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "silence.wav",
+      "expected": "",
+      "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+      "result": {
+        "id": "C56CF720-FDB2-4CBD-A889-145C51E4B072",
+        "raw_text": "",
+        "elapsed_s": 0.008883625036105514,
+        "model": "firered",
+        "text": "",
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "native-caf",
+      "audio": "native-stereo-48k.caf",
+      "expected": "这个项目由同事璟珩负责",
+      "audio_sha256": "6533af32bdef8bc972e418ff98cd0cb5b70a7cb4805893e7ce0906f46d05361a",
+      "result": {
+        "id": "79D056D3-B44D-4597-92AE-530F86B1B443",
+        "model": "firered",
+        "raw_text": "这个项目由同事景恒负责",
+        "model_load_count": 1,
+        "elapsed_s": 4.3710216250037774,
+        "text": "这个项目由同事璟珩负责"
+      },
+      "passed": true
+    }
+  ],
+  "swift_version": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0",
+  "source_sha256": {
+    "Sources/voicer/AppDelegate.swift": "2cd863be4a761216073ea7d50a69cb56b8bf0052cbe2e6a7c92ac74ce70c5742",
+    "Sources/voicer/FileTranscriptionCommand.swift": "186f2fc74798fa6603791809efd817d520baa38acf1c3905948a6d5efa37e906",
+    "Sources/voicer/FloatingPanel.swift": "36b7717274dadad9009d430f434bbc09ebdbd6007e76c45229749b557e8d7af5",
+    "Sources/voicer/FnKeyMonitor.swift": "c15e945f8ed2d755371035e28220803b6b8bf09766d7a8487ac52459c38b88f3",
+    "Sources/voicer/InputSourceManager.swift": "72a84b76c0eb5d57df921d152bd72da3402ae648a31f9f2081863eefafc667cc",
+    "Sources/voicer/LLMRefiner.swift": "c75693f737da27e1ae7325cb940297ed912ddf4f387ddfe8ad4c71a4ca93adb0",
+    "Sources/voicer/LLMSettingsWindowController.swift": "dea365e72a0982f8d2f91ea117b8697dff71ec39170449a7ff1601fe7f1970fb",
+    "Sources/voicer/LocalASRClient.swift": "43f8e124acbe1fb5639db5737137dcceafbb38cf0c2c65b2279dbe29959645c5",
+    "Sources/voicer/LocalASRRuntime.swift": "ae280008f422740cc1b69072f7a569e3683619355ae82d76e7d6ca53da4f73b2",
+    "Sources/voicer/LocalSpeechTranscriber.swift": "7437ab9c020637c677c9b939d9fa82d5bfeec5d67185209fd5b21bd923193758",
+    "Sources/voicer/Settings.swift": "fe7abcd54bef2f86404d7914043f54428c1763cd4634e85879c25d70fb7725bb",
+    "Sources/voicer/SpeechSettingsWindowController.swift": "12987879efc8da26bf4a87fcc099f9f6e888be2dcb8f9ffee3a32a9a9dba3d03",
+    "Sources/voicer/SpeechTranscriber.swift": "e4e11d0ee7238e111b7eeaa13a7e6d08a00b6986b89b7a111801357e195be24a",
+    "Sources/voicer/SpeechTranscribing.swift": "47d386c32717d24f78c0314880b120bc3beb6dae21bdfbf1d26d9fe5dd6cb68c",
+    "Sources/voicer/TextInjector.swift": "901b8c7116f1bc9d35a87d2615718fae170c991b01f18525dca8f781e286f51a",
+    "Sources/voicer/WaveformView.swift": "aac4379162a317c5b9a3347f264a6dff5da4726629f88b9f2481383c371aa11f",
+    "Sources/voicer/main.swift": "49140ac535cca97360108e15a5151c843c0a6aa0f163339f76f39f8f2a3f50a0",
+    "ASR/asr_lab/__init__.py": "28f11b549bdf5222fd13d3cea5dd12ef572f972a646cd3ff0c20a21188dcdae9",
+    "ASR/asr_lab/backends.py": "da500a23fb0deaa570931e81e8dd090ac401dfcdb7f1107d2b54f930ff35d150",
+    "ASR/asr_lab/benchmark.py": "08c554fd5fe0c2d45da9b2d151ecb8d6f73ba304e0b8821f6b4254ee26d6ea8d",
+    "ASR/asr_lab/correction.py": "56f42e29a136cc95a4760c93da31a5471e47e01e63db711d644f26b131179bbe",
+    "ASR/asr_lab/evaluate.py": "671b31b31e571b661a3650494e18e0779d92580df4c75cb6449253d83c698e35",
+    "ASR/asr_lab/firered.py": "39b2b4c01425dc48a8c1b3c515076514a353a50cac2d55cb3756ee0bef38f335",
+    "ASR/asr_lab/firered_bias.py": "386aa3fbf30ce632f30dbb82950cb1919242ee8e250fe86be94ab37f941d7571",
+    "ASR/asr_lab/hotwords.py": "1535553ed624099522bbb4c8d59ecda64c2c6f638ad47168ee4655ab16c015e0",
+    "ASR/asr_lab/transcribe.py": "2fe73d8e953d0192c14202eb9f4e07a8d851d53a6f323a511851111bce2a8805",
+    "ASR/asr_lab/vad.py": "ed6f8590ddd7da0f8a711b5502308c244824ec7f3fe967b964d03e76d28c7805",
+    "ASR/asr_lab/worker.py": "c2adfcc8d82812609e2bc82136ad7f375635e9168cd402120e06491d7bd8f9ff"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "qwen": {
+    "repo": "mlx-community/Qwen3-ASR-0.6B-bf16",
+    "revision": "eae2b51f96265328f1e7beced788adb0e4536f92"
+  },
+  "fun_legacy_fp16": {
+    "repo": "mlx-community/Fun-ASR-Nano-2512-fp16",
+    "revision": "a84bea14544ce42e1d369403b72386b7bb927145"
+  },
+  "fun": {
+    "repo": "mlx-community/Fun-ASR-Nano-2512",
+    "revision": "a7bc96fceaafce39ed6748e0c0fa9a9508b67f86"
+  },
+  "firered": {
+    "repo": "mlx-community/FireRedASR2-AED-mlx",
+    "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb"
+  }
+}

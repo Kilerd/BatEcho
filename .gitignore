@@ -1,10 +1,12 @@
 # Build output and local Swift/Xcode state
 .build/
 build/
+dist/
 .swiftpm/
 DerivedData/
 xcuserdata/
 *.xcuserstate
+*.profraw
 
 # macOS metadata
 .DS_Store
@@ -20,3 +22,11 @@ credentials/
 *.pfx
 *.keychain
 *.keychain-db
+
+# Local ASR environments, downloaded weights and audio
+.venv/
+.cache/
+__pycache__/
+*.pyc
+ASR/data/audio/
+ASR/experiments/*/target/

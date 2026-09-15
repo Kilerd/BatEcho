@@ -1,0 +1,32 @@
+[
+  {
+    "id": "tingting-term08",
+    "score": 8,
+    "text": "编译器首先进行词法分析",
+    "confidence": 0.975
+  },
+  {
+    "id": "silence",
+    "score": 8,
+    "text": "",
+    "confidence": 0.681
+  },
+  {
+    "id": "tingting-term02",
+    "score": 8,
+    "text": "请把这份文档发给同事祁砚",
+    "confidence": 0.836
+  },
+  {
+    "id": "tingting-mixed02",
+    "score": 0,
+    "text": "这个服务使用 qbonets和 postgresql",
+    "matches_unbiased_decoder": true
+  },
+  {
+    "id": "qwen-official-zh",
+    "score": 0,
+    "text": "甚至出现交易几乎停滞的情况",
+    "matches_unbiased_decoder": true
+  }
+]

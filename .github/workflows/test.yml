@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  swift:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Prepare Metal toolchain
+        run: xcodebuild -downloadComponent MetalToolchain
+      - name: Build native Swift app and Metal kernels
+        run: make build
+      - name: Test native pipeline and frozen Python feature parity
+        run: make test
+      - name: Archive the PR build
+        run: ditto -c -k --keepParent build/BatEcho.app build/BatEcho-macos-arm64.zip
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: BatEcho-macos-arm64-development
+          path: build/BatEcho-macos-arm64.zip
+          if-no-files-found: error
+          retention-days: 7
+  python-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install CPU-only worker test dependencies
+        run: >-
+          python -m pip install 'numpy>=2,<3' 'soundfile>=0.13,<0.14'
+          'pypinyin>=0.55,<0.56' 'rapidfuzz>=3.14,<4' 'scipy>=1.10,<2'
+          'onnxruntime>=1.23,<2'
+      - name: Validate protocol, vocabulary and correction without model weights
+        working-directory: ASR
+        run: python -m unittest discover -s tests -p 'test_worker.py' -v
+      - name: Validate backend options and correction rules
+        working-directory: ASR
+        run: |
+          python -m unittest discover -s tests -p 'test_backends.py' -v
+          python -m unittest discover -s tests -p 'test_correction.py' -v

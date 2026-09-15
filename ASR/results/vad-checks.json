@@ -1,0 +1,432 @@
+[
+  {
+    "id": "tingting-term01",
+    "has_speech": true,
+    "max_probability": 0.9999991655349731,
+    "longest_speech_ms": 3008,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.023357541009318084
+  },
+  {
+    "id": "tingting-term02",
+    "has_speech": true,
+    "max_probability": 0.999998927116394,
+    "longest_speech_ms": 2784,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.01110674999654293
+  },
+  {
+    "id": "tingting-term03",
+    "has_speech": true,
+    "max_probability": 0.9999990463256836,
+    "longest_speech_ms": 2496,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.018026874982751906
+  },
+  {
+    "id": "tingting-term04",
+    "has_speech": true,
+    "max_probability": 0.9999995827674866,
+    "longest_speech_ms": 2432,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.028528291964903474
+  },
+  {
+    "id": "tingting-term05",
+    "has_speech": true,
+    "max_probability": 0.999998927116394,
+    "longest_speech_ms": 2048,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.016449833987280726
+  },
+  {
+    "id": "tingting-term06",
+    "has_speech": true,
+    "max_probability": 0.9999992847442627,
+    "longest_speech_ms": 1600,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.02171766699757427
+  },
+  {
+    "id": "tingting-term07",
+    "has_speech": true,
+    "max_probability": 0.999999463558197,
+    "longest_speech_ms": 3136,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.011653791996650398
+  },
+  {
+    "id": "tingting-term08",
+    "has_speech": true,
+    "max_probability": 0.9999990463256836,
+    "longest_speech_ms": 2400,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.02553570899181068
+  },
+  {
+    "id": "tingting-term09",
+    "has_speech": true,
+    "max_probability": 0.9999966621398926,
+    "longest_speech_ms": 2816,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.04068445798475295
+  },
+  {
+    "id": "tingting-negative01",
+    "has_speech": true,
+    "max_probability": 0.9999985098838806,
+    "longest_speech_ms": 2592,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.025578833010513335
+  },
+  {
+    "id": "tingting-negative02",
+    "has_speech": true,
+    "max_probability": 0.9999979734420776,
+    "longest_speech_ms": 2368,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.02261641703080386
+  },
+  {
+    "id": "tingting-negative03",
+    "has_speech": true,
+    "max_probability": 0.9999992847442627,
+    "longest_speech_ms": 2848,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.04501541703939438
+  },
+  {
+    "id": "tingting-negative04",
+    "has_speech": true,
+    "max_probability": 0.9999994039535522,
+    "longest_speech_ms": 2048,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.016617582994513214
+  },
+  {
+    "id": "tingting-negative05",
+    "has_speech": true,
+    "max_probability": 0.9999989867210388,
+    "longest_speech_ms": 2144,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.07016812497749925
+  },
+  {
+    "id": "tingting-negative06",
+    "has_speech": true,
+    "max_probability": 0.9999976754188538,
+    "longest_speech_ms": 1728,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.032650417007971555
+  },
+  {
+    "id": "tingting-mixed01",
+    "has_speech": true,
+    "max_probability": 0.9999994039535522,
+    "longest_speech_ms": 2528,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.02016791596543044
+  },
+  {
+    "id": "tingting-mixed02",
+    "has_speech": true,
+    "max_probability": 0.999998927116394,
+    "longest_speech_ms": 2656,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.0467468750430271
+  },
+  {
+    "id": "tingting-number01",
+    "has_speech": true,
+    "max_probability": 0.9999986290931702,
+    "longest_speech_ms": 3264,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.09874695801408961
+  },
+  {
+    "id": "tingting-selfcorrect01",
+    "has_speech": true,
+    "max_probability": 0.9999978542327881,
+    "longest_speech_ms": 2208,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.032977124967146665
+  },
+  {
+    "id": "tingting-plain01",
+    "has_speech": true,
+    "max_probability": 0.9999995231628418,
+    "longest_speech_ms": 3200,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.04138016700744629
+  },
+  {
+    "id": "eddy-term01",
+    "has_speech": true,
+    "max_probability": 0.9999971389770508,
+    "longest_speech_ms": 2272,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.014902124996297061
+  },
+  {
+    "id": "eddy-term02",
+    "has_speech": true,
+    "max_probability": 0.9999963045120239,
+    "longest_speech_ms": 2336,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.026325458951760083
+  },
+  {
+    "id": "eddy-term03",
+    "has_speech": true,
+    "max_probability": 0.9999967813491821,
+    "longest_speech_ms": 2048,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.02718895795987919
+  },
+  {
+    "id": "eddy-term04",
+    "has_speech": true,
+    "max_probability": 0.9999975562095642,
+    "longest_speech_ms": 1760,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.13630849996116012
+  },
+  {
+    "id": "eddy-term05",
+    "has_speech": true,
+    "max_probability": 0.9999977350234985,
+    "longest_speech_ms": 1536,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.0648829999845475
+  },
+  {
+    "id": "eddy-term06",
+    "has_speech": true,
+    "max_probability": 0.9999967813491821,
+    "longest_speech_ms": 1344,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.0879263750393875
+  },
+  {
+    "id": "eddy-term07",
+    "has_speech": true,
+    "max_probability": 0.9999984502792358,
+    "longest_speech_ms": 2272,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.21783574996516109
+  },
+  {
+    "id": "eddy-term08",
+    "has_speech": true,
+    "max_probability": 0.9999885559082031,
+    "longest_speech_ms": 2240,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.20425316697219387
+  },
+  {
+    "id": "eddy-term09",
+    "has_speech": true,
+    "max_probability": 0.9999946355819702,
+    "longest_speech_ms": 2496,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.20160979201318696
+  },
+  {
+    "id": "eddy-negative01",
+    "has_speech": true,
+    "max_probability": 0.9999979734420776,
+    "longest_speech_ms": 2272,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.01793895900482312
+  },
+  {
+    "id": "eddy-negative02",
+    "has_speech": true,
+    "max_probability": 0.9999966025352478,
+    "longest_speech_ms": 2016,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.015987542050424963
+  },
+  {
+    "id": "eddy-negative03",
+    "has_speech": true,
+    "max_probability": 0.9999980330467224,
+    "longest_speech_ms": 2400,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.03060345904668793
+  },
+  {
+    "id": "eddy-negative04",
+    "has_speech": true,
+    "max_probability": 0.9999971985816956,
+    "longest_speech_ms": 1888,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.09180566598661244
+  },
+  {
+    "id": "eddy-negative05",
+    "has_speech": true,
+    "max_probability": 0.9999955296516418,
+    "longest_speech_ms": 1824,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.020429583033546805
+  },
+  {
+    "id": "eddy-negative06",
+    "has_speech": true,
+    "max_probability": 0.9999916553497314,
+    "longest_speech_ms": 1120,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.24522799998521805
+  },
+  {
+    "id": "eddy-mixed01",
+    "has_speech": true,
+    "max_probability": 0.9999898076057434,
+    "longest_speech_ms": 2400,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.020242416998371482
+  },
+  {
+    "id": "eddy-mixed02",
+    "has_speech": true,
+    "max_probability": 0.9999262094497681,
+    "longest_speech_ms": 2016,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.07666150003205985
+  },
+  {
+    "id": "eddy-number01",
+    "has_speech": true,
+    "max_probability": 0.9999959468841553,
+    "longest_speech_ms": 2112,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.06316783302463591
+  },
+  {
+    "id": "eddy-selfcorrect01",
+    "has_speech": true,
+    "max_probability": 0.9999964237213135,
+    "longest_speech_ms": 1792,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.1282807919778861
+  },
+  {
+    "id": "eddy-plain01",
+    "has_speech": true,
+    "max_probability": 0.9999973773956299,
+    "longest_speech_ms": 2720,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.03710320795653388
+  },
+  {
+    "id": "silence",
+    "has_speech": false,
+    "max_probability": 0.00891074538230896,
+    "longest_speech_ms": 0,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": false,
+    "elapsed_s": 0.03400520799914375
+  },
+  {
+    "id": "qwen-official-zh",
+    "has_speech": true,
+    "max_probability": 0.9999706745147705,
+    "longest_speech_ms": 3232,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": true,
+    "elapsed_s": 0.028430042031686753
+  },
+  {
+    "id": "seeded-white-noise",
+    "has_speech": false,
+    "max_probability": 0.05128967761993408,
+    "longest_speech_ms": 0,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160,
+    "expected_speech": false,
+    "elapsed_s": 0.11724158399738371
+  }
+]

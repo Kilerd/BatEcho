@@ -1,0 +1,214 @@
+{
+  "verified_at": "2026-09-15T08:49:58.524482+00:00",
+  "audio_hashes_verified": 42,
+  "asr_records_verified": 84,
+  "evaluation_rows_verified": 420,
+  "candidate_audits_verified": 84,
+  "final_hotword_code_and_input_hashes_match": true,
+  "baseline_note": "Baseline captured before the local hotword hook; original no-hotword MLX decoder retained. Two real-model zero-score parity cases passed.",
+  "negative_clips_unchanged": 12,
+  "silence_empty_in_both_asr_modes": true,
+  "real_model_regression_cases": [
+    {
+      "id": "tingting-term08",
+      "score": 8,
+      "text": "编译器首先进行词法分析",
+      "confidence": 0.975
+    },
+    {
+      "id": "silence",
+      "score": 8,
+      "text": "",
+      "confidence": 0.681
+    },
+    {
+      "id": "tingting-term02",
+      "score": 8,
+      "text": "请把这份文档发给同事祁砚",
+      "confidence": 0.836
+    },
+    {
+      "id": "tingting-mixed02",
+      "score": 0,
+      "text": "这个服务使用 qbonets和 postgresql",
+      "matches_unbiased_decoder": true
+    },
+    {
+      "id": "qwen-official-zh",
+      "score": 0,
+      "text": "甚至出现交易几乎停滞的情况",
+      "matches_unbiased_decoder": true
+    }
+  ],
+  "cli_cases_passed": [
+    "results/cli-firered-name.json",
+    "results/cli-firered-hotwords.json",
+    "results/cli-firered-hotwords-silence.json"
+  ],
+  "local_document_links_checked": 37,
+  "english_term_audit": {
+    "baseline": [
+      {
+        "id": "tingting-mixed01",
+        "term": "Cloudflare",
+        "text": "我们把这个服务部署到 cloudflare",
+        "hit": true
+      },
+      {
+        "id": "tingting-mixed02",
+        "term": "Kubernetes",
+        "text": "这个服务使用 qbonets和 postgresql",
+        "hit": false
+      },
+      {
+        "id": "tingting-mixed02",
+        "term": "PostgreSQL",
+        "text": "这个服务使用 qbonets和 postgresql",
+        "hit": true
+      },
+      {
+        "id": "eddy-mixed01",
+        "term": "Cloudflare",
+        "text": "我们把这个服务部署到俄罗斯那边",
+        "hit": false
+      },
+      {
+        "id": "eddy-mixed02",
+        "term": "Kubernetes",
+        "text": "这个服务是用 kubernetes和 postgresql",
+        "hit": true
+      },
+      {
+        "id": "eddy-mixed02",
+        "term": "PostgreSQL",
+        "text": "这个服务是用 kubernetes和 postgresql",
+        "hit": true
+      }
+    ],
+    "hotwords": [
+      {
+        "id": "tingting-mixed01",
+        "term": "Cloudflare",
+        "text": "我们把这个服务部署到 cloudflare",
+        "hit": true
+      },
+      {
+        "id": "tingting-mixed02",
+        "term": "Kubernetes",
+        "text": "这个服务使用 kubernetes和 postgresql",
+        "hit": true
+      },
+      {
+        "id": "tingting-mixed02",
+        "term": "PostgreSQL",
+        "text": "这个服务使用 kubernetes和 postgresql",
+        "hit": true
+      },
+      {
+        "id": "eddy-mixed01",
+        "term": "Cloudflare",
+        "text": "我们把这个服务部署到俄罗斯那边",
+        "hit": false
+      },
+      {
+        "id": "eddy-mixed02",
+        "term": "Kubernetes",
+        "text": "这个服务是用 kubernetes和 postgresql",
+        "hit": true
+      },
+      {
+        "id": "eddy-mixed02",
+        "term": "PostgreSQL",
+        "text": "这个服务是用 kubernetes和 postgresql",
+        "hit": true
+      }
+    ]
+  },
+  "summary": {
+    "firered/baseline/none": {
+      "clips": 42,
+      "primary_clips": 34,
+      "reference_chars": 436,
+      "errors": 17,
+      "cer": 0.0389908256880734,
+      "term_hits": 10,
+      "term_total": 18,
+      "negative_errors": 0,
+      "negative_changed": 0,
+      "improved_clips": 0,
+      "harmed_clips": 0,
+      "asr_p50_s": 1.0514489790657535,
+      "asr_p95_s": 1.6870658350992014,
+      "post_p50_s": 0.0,
+      "post_p95_s": 0.0,
+      "total_p95_s": 1.6870658350992014,
+      "mlx_peak_gib": 4.612899802625179
+    },
+    "firered/baseline/pinyin_context": {
+      "clips": 42,
+      "primary_clips": 34,
+      "reference_chars": 436,
+      "errors": 9,
+      "cer": 0.020642201834862386,
+      "term_hits": 15,
+      "term_total": 18,
+      "negative_errors": 0,
+      "negative_changed": 0,
+      "improved_clips": 5,
+      "harmed_clips": 0,
+      "asr_p50_s": 1.0514489790657535,
+      "asr_p95_s": 1.6870658350992014,
+      "post_p50_s": 0.0007168124429881573,
+      "post_p95_s": 0.0013800393382553007,
+      "total_p95_s": 1.6874172850220925,
+      "mlx_peak_gib": 4.612899802625179
+    },
+    "firered/hotwords/none": {
+      "clips": 42,
+      "primary_clips": 34,
+      "reference_chars": 436,
+      "errors": 13,
+      "cer": 0.02981651376146789,
+      "term_hits": 13,
+      "term_total": 18,
+      "negative_errors": 0,
+      "negative_changed": 0,
+      "improved_clips": 0,
+      "harmed_clips": 0,
+      "asr_p50_s": 1.042299708002247,
+      "asr_p95_s": 1.821529097954044,
+      "post_p50_s": 0.0,
+      "post_p95_s": 0.0,
+      "total_p95_s": 1.821529097954044,
+      "mlx_peak_gib": 4.614425592124462
+    },
+    "firered/hotwords/pinyin_context": {
+      "clips": 42,
+      "primary_clips": 34,
+      "reference_chars": 436,
+      "errors": 9,
+      "cer": 0.020642201834862386,
+      "term_hits": 15,
+      "term_total": 18,
+      "negative_errors": 0,
+      "negative_changed": 0,
+      "improved_clips": 2,
+      "harmed_clips": 0,
+      "asr_p50_s": 1.042299708002247,
+      "asr_p95_s": 1.821529097954044,
+      "post_p50_s": 0.000795061991084367,
+      "post_p95_s": 0.001259720890084281,
+      "total_p95_s": 1.8221871042158453,
+      "mlx_peak_gib": 4.614425592124462
+    }
+  },
+  "evidence_sha256": {
+    "results/firered.jsonl": "250416461c4a09f587e8da7fc6d00571ebcbe0d9260b07352b269fdb7f51679b",
+    "results/firered-hotwords-once-4.jsonl": "a7aed071bc3d53092296b5100f7afad803dd7953bc23fcb8bcc7ac9179e8f2f0",
+    "results/evaluation-firered-current.json": "b34d2c2d51051c22f92392064b61791474bfb5a08da928aa3a15a0970d72684e",
+    "results/firered-hotword-regressions.json": "d2e61bb84af643bbb97920441edd3950cef056606a54d89b19618c7fd660db08",
+    "results/cli-firered-name.json": "4fb04210a06359289315f71d51510232fe33dcaeef1770ac5e3dd61117d42348",
+    "results/cli-firered-hotwords.json": "38739a6472d337f501c39baf448764abf1000d2aa0c9cdb571a925a0b92363b9",
+    "results/cli-firered-hotwords-silence.json": "83ba73ac79857e4b4e6d347469ab767815a6f65a2b25cc56634816533dfd08f1"
+  }
+}

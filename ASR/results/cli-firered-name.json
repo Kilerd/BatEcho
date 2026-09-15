@@ -1,0 +1,40 @@
+{
+  "audio": "data/audio/tingting-term03.wav",
+  "model": "firered",
+  "duration_s": 2.5180625,
+  "vad": {
+    "has_speech": true,
+    "max_probability": 0.9999990463256836,
+    "longest_speech_ms": 2496,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160
+  },
+  "raw_text": "这个项目由同事景恒负责",
+  "text": "这个项目由同事璟珩负责",
+  "correction": "context",
+  "hotwords_enabled": false,
+  "model_load_s": 6.222900666994974,
+  "asr_s": 1.428281250060536,
+  "asr_confidence": 0.975,
+  "asr_confidence_scope": "utterance",
+  "candidates": [
+    {
+      "text": "这个项目由同事景恒负责",
+      "edits": []
+    },
+    {
+      "text": "这个项目由同事璟珩负责",
+      "edits": [
+        {
+          "start": 7,
+          "end": 9,
+          "before": "景恒",
+          "after": "璟珩",
+          "cost": 0.0,
+          "context_supported": true
+        }
+      ]
+    }
+  ],
+  "elapsed_s": 7.711942332913168
+}

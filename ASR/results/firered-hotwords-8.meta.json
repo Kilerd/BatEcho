@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-15T08:34:51.480163+00:00",
+  "model": "firered",
+  "snapshot": {
+    "repo": "mlx-community/FireRedASR2-AED-mlx",
+    "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb"
+  },
+  "load_s": 6.258485540980473,
+  "warmup_s": 2.893796249991283,
+  "warmup_calls": 2,
+  "platform": "macOS-26.3-arm64-arm-64bit",
+  "python": "3.12.14",
+  "packages": {
+    "mlx": "0.32.2",
+    "mlx-audio": "0.5.4",
+    "qwen3-asr-mlx": "0.2.0",
+    "pypinyin": "0.55.0"
+  },
+  "lexicon_sha256": "3484a5ad702f0ce78e7550e7569b2342ea054baff28a559a706cdb93b0e1f927",
+  "audio_manifest_sha256": "c628579f43718ab8aa8de57ed37c12480912cdd1290dfa3514d5bc7c485ffcd9",
+  "hotwords": [
+    "青简",
+    "祁砚",
+    "璟珩",
+    "幂等性",
+    "灰度发布",
+    "金丝雀",
+    "向量数据库",
+    "词法分析",
+    "韵母",
+    "Cloudflare",
+    "Kubernetes",
+    "PostgreSQL"
+  ],
+  "native_hotwords_supported": true,
+  "hotword_method": "contextual_beam_search",
+  "hotword_score": 8.0,
+  "timing": "warm model; includes feature extraction and decoding; excludes audio file read, recording and endpoint detection",
+  "decode": {
+    "beam_size": 3,
+    "max_len": 128,
+    "softmax_smoothing": 1.25,
+    "length_penalty": 0.6,
+    "eos_penalty": 1.0
+  },
+  "code_sha256": {
+    "asr_lab/backends.py": "08348198fd3c9c0d6d1b6d1a78465ab344953edb83cba80e70f3525caa03bcbc",
+    "asr_lab/benchmark.py": "08c554fd5fe0c2d45da9b2d151ecb8d6f73ba304e0b8821f6b4254ee26d6ea8d",
+    "asr_lab/firered.py": "39b2b4c01425dc48a8c1b3c515076514a353a50cac2d55cb3756ee0bef38f335",
+    "asr_lab/hotwords.py": "220396f5098b1ce418b0050681208a269fa2846df71b65f94a359b613f06fd66",
+    "asr_lab/firered_bias.py": "3d57ede1e84741679c02a35ed43c86fdd90440f1fa6cffe88708726c1cbb0873"
+  }
+}

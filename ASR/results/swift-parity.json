@@ -1,0 +1,3002 @@
+{
+  "date": "2026-09-15T11:20:07.884076+00:00",
+  "scope": "Native Swift raw transcription vs frozen Python FP32 reference; TTS/public clips only",
+  "timing_scope": "Native whole pipeline including VAD/audio read; not directly comparable to historical ASR-only timing",
+  "binary_sha256": "ccd36fcc20e9d2c0d1e77617a21d26cc2cbfe1c1c7232b9b48f4feffe4b2bce7",
+  "source_sha256": {
+    "Sources/voicer/ASRResources/FireRed-LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "Sources/voicer/ASRResources/Silero-LICENSE": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+    "Sources/voicer/ASRResources/ThirdPartyNotices.txt": "fa0e7d086c91638ef6ed9e92b9920af4616d3ed91d8034623e5fb926a2ef5c1e",
+    "Sources/voicer/ASRResources/lexicon.json": "f5bbc2ea983f7d75b2bec41ad8e30ee4b15d4450a70a726c61b9c5ed3b8d2ee4",
+    "Sources/voicer/ASRResources/pinyin-characters.json": "e89416deba28fc74bced6fd6bc096e5530aa4341062d1f2f70eafcfd6ef2bec1",
+    "Sources/voicer/ASRResources/pinyin-phrases.json": "f36c570a1ca6d20043c616224a49e757d096f6db1159de8317faeb42105f330e",
+    "Sources/voicer/AppDelegate.swift": "cce40cbb43be8c7480648d8355f4625f9b0257f0ebfc10989324d5871f6af7cb",
+    "Sources/voicer/FileTranscriptionCommand.swift": "401b426b1a496d5bf16b1424ada8caed93654b46697ccd8077314e5b58df3b5a",
+    "Sources/voicer/FloatingPanel.swift": "36b7717274dadad9009d430f434bbc09ebdbd6007e76c45229749b557e8d7af5",
+    "Sources/voicer/FnKeyMonitor.swift": "c15e945f8ed2d755371035e28220803b6b8bf09766d7a8487ac52459c38b88f3",
+    "Sources/voicer/InputSourceManager.swift": "72a84b76c0eb5d57df921d152bd72da3402ae648a31f9f2081863eefafc667cc",
+    "Sources/voicer/LLMRefiner.swift": "c75693f737da27e1ae7325cb940297ed912ddf4f387ddfe8ad4c71a4ca93adb0",
+    "Sources/voicer/LLMSettingsWindowController.swift": "dea365e72a0982f8d2f91ea117b8697dff71ec39170449a7ff1601fe7f1970fb",
+    "Sources/voicer/LocalASRClient.swift": "b718de913ef7e7d6aa655f2f84954229807feabf420036bb6fcf79ab75d0af8f",
+    "Sources/voicer/LocalASRRuntime.swift": "96944468ae7f3e1f4bd8cd9ef699daaaa9157ca2d904644611a632bf3d2cb7df",
+    "Sources/voicer/LocalSpeechTranscriber.swift": "09a5b1937f4daafcefdd9a4fc06896ffa985330f3035b82034f3dad53d044917",
+    "Sources/voicer/NativeASR/ContextualBeamSearch.swift": "3b3b9544238e9d30c5ea5d80e80e33761f9cc95f2e2a5f1c1ed83bac715a23fc",
+    "Sources/voicer/NativeASR/FireRedAudio.swift": "0667bf7ba1911dfb124019c62cd8379506f7e892751d38d4b34ba68ebdfe9ed5",
+    "Sources/voicer/NativeASR/HotwordGraph.swift": "80e9854a1dd3c8ca1ef0ddd8c960599361f44af06e562fbebcead8ff7328a678",
+    "Sources/voicer/NativeASR/ModelValidation.swift": "fb732b142b796da30cac8b5f70bb3159fef10e8a8bf72b2120871cea82c37252",
+    "Sources/voicer/NativeASR/Models/FireRedASR2Config.swift": "60a87aee56ee4ebfa452fa825538b3d93ae9419ae2fcd2b09fe4b6ac35c72fde",
+    "Sources/voicer/NativeASR/Models/FireRedASR2Model.swift": "25fe4d23f019fba96f408722f97b751e8bd76da2aff8b8408a3f70d55c1bcfd4",
+    "Sources/voicer/NativeASR/Models/FireRedASR2Tokenizer.swift": "1085689e1e0f3869a002c4152016d3ad56f44c5b19dbd54a3b38961cca949c0d",
+    "Sources/voicer/NativeASR/Models/SentencePieceTokenizer.swift": "8bbfed7a6841c72ccf68c2c96fff3d7a95d26ce56b98f8a72de023f487df7280",
+    "Sources/voicer/NativeASR/Models/SileroVAD.swift": "ab57250690f289461526caefedb2bc0f5f3624815166e6d55dad50b239e57093",
+    "Sources/voicer/NativeASR/Models/SileroVADConfig.swift": "566208699f9f59126e6c5c0783fa17cc8ec9ac89d6dd529ee29678ae989c769d",
+    "Sources/voicer/NativeASR/NativeASRPipeline.swift": "6d10c7bb40669975c9dd8e94d595645a2b4c283212d680ee439a2feaa79fae23",
+    "Sources/voicer/NativeASR/NativeAudio.swift": "70cd9d442d87e555401c83d9d53c68a2dff0cc1e4402d1e0e6659c954607b9d0",
+    "Sources/voicer/NativeASR/Vocabulary.swift": "e463eb062bc971e9a79d24e38a4bcd153bdb5f7910b21b6a0f9a3d9b0161de82",
+    "Sources/voicer/Settings.swift": "fe7abcd54bef2f86404d7914043f54428c1763cd4634e85879c25d70fb7725bb",
+    "Sources/voicer/SpeechSettingsWindowController.swift": "f52b7bdc7660c0f5cdb06d07b7cbd909674d677466c1c959ffc8aaeb8b8c965c",
+    "Sources/voicer/SpeechTranscriber.swift": "e4e11d0ee7238e111b7eeaa13a7e6d08a00b6986b89b7a111801357e195be24a",
+    "Sources/voicer/SpeechTranscribing.swift": "47d386c32717d24f78c0314880b120bc3beb6dae21bdfbf1d26d9fe5dd6cb68c",
+    "Sources/voicer/TextInjector.swift": "901b8c7116f1bc9d35a87d2615718fae170c991b01f18525dca8f781e286f51a",
+    "Sources/voicer/WaveformView.swift": "aac4379162a317c5b9a3347f264a6dff5da4726629f88b9f2481383c371aa11f",
+    "Sources/voicer/main.swift": "49140ac535cca97360108e15a5151c843c0a6aa0f163339f76f39f8f2a3f50a0"
+  },
+  "groups": [
+    {
+      "name": "baseline",
+      "total": 42,
+      "equal": 42,
+      "warm_pipeline_p50_s": 0.7468304791254923,
+      "warm_pipeline_p95_s": 1.19199654168915,
+      "cases": [
+        {
+          "id": "tingting-term01",
+          "reference": "我想把轻剪接入这个语音输入法",
+          "native": {
+            "id": "1C0B0B7E-2E24-465E-B411-CBF68DC17DFF",
+            "engine": "swift-mlx",
+            "asr_confidence": 0.928,
+            "raw_text": "我想把轻剪接入这个语音输入法",
+            "vad": {
+              "longest_speech_ms": 3008,
+              "has_speech": true,
+              "max_probability": 0.9999992
+            },
+            "tokens": [
+              3016,
+              2945,
+              3072,
+              6730,
+              1500,
+              3210,
+              1368,
+              6782,
+              1032,
+              6445,
+              7403,
+              6748,
+              1368,
+              4006
+            ],
+            "model": "firered",
+            "model_load_count": 1,
+            "text": "我想把轻剪接入这个语音输入法",
+            "elapsed_s": 2.2165624583140016
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term02",
+          "reference": "请把这份文档发给同事齐燕",
+          "native": {
+            "elapsed_s": 0.6996985416626558,
+            "asr_confidence": 0.887,
+            "engine": "swift-mlx",
+            "tokens": [
+              6455,
+              3072,
+              6782,
+              1146,
+              3349,
+              3669,
+              1644,
+              5407,
+              1686,
+              1075,
+              7813,
+              4425
+            ],
+            "text": "请把这份文档发给同事齐燕",
+            "raw_text": "请把这份文档发给同事齐燕",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2784,
+              "max_probability": 0.9999989,
+              "has_speech": true
+            },
+            "id": "9A564067-71A0-4797-AC3E-A979B8A598FC",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term03",
+          "reference": "这个项目由同事景恒负责",
+          "native": {
+            "elapsed_s": 0.605841499986127,
+            "asr_confidence": 0.975,
+            "engine": "swift-mlx",
+            "tokens": [
+              6782,
+              1032,
+              7412,
+              4863,
+              4697,
+              1686,
+              1075,
+              3454,
+              2868,
+              6543,
+              6546
+            ],
+            "text": "这个项目由同事景恒负责",
+            "raw_text": "这个项目由同事景恒负责",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99999905,
+              "longest_speech_ms": 2496,
+              "has_speech": true
+            },
+            "id": "46106F93-E645-4954-907B-B10751F52CDB",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term04",
+          "reference": "这个接口需要保证密等性重试不能重复扣款",
+          "native": {
+            "elapsed_s": 1.19199654168915,
+            "asr_confidence": 0.948,
+            "engine": "swift-mlx",
+            "tokens": [
+              6782,
+              1032,
+              3210,
+              1653,
+              7343,
+              6331,
+              1258,
+              6405,
+              2451,
+              5215,
+              2852,
+              6998,
+              6423,
+              1012,
+              5651,
+              6998,
+              2196,
+              3050,
+              3839
+            ],
+            "text": "这个接口需要保证密等性重试不能重复扣款",
+            "raw_text": "这个接口需要保证密等性重试不能重复扣款",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2432,
+              "max_probability": 0.9999995,
+              "has_speech": true
+            },
+            "id": "4A205B1E-3CF6-4664-AE51-859BB9254127",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term05",
+          "reference": "新版本先做灰度发布观察错误率",
+          "native": {
+            "elapsed_s": 0.817392791621387,
+            "asr_confidence": 0.994,
+            "engine": "swift-mlx",
+            "text": "新版本先做灰度发布观察错误率",
+            "tokens": [
+              3369,
+              4448,
+              3514,
+              1358,
+              1310,
+              4317,
+              2702,
+              1644,
+              2640,
+              6337,
+              2462,
+              7134,
+              6447,
+              4544
+            ],
+            "raw_text": "新版本先做灰度发布观察错误率",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999989,
+              "has_speech": true,
+              "longest_speech_ms": 2048
+            },
+            "id": "D1610563-ECD2-4B40-AE01-BB278BD5ED96",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term06",
+          "reference": "先部署金丝雀再验证这次修改",
+          "native": {
+            "elapsed_s": 0.7996935832779855,
+            "asr_confidence": 0.976,
+            "engine": "swift-mlx",
+            "tokens": [
+              1358,
+              6917,
+              5501,
+              7001,
+              1025,
+              7316,
+              1393,
+              7550,
+              6405,
+              6782,
+              3830,
+              1269,
+              3325
+            ],
+            "text": "先部署金丝雀再验证这次修改",
+            "raw_text": "先部署金丝雀再验证这次修改",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999993,
+              "has_speech": true,
+              "longest_speech_ms": 1600
+            },
+            "id": "CD6D5D00-A11D-4EDA-AC8A-A7110B06320F",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term07",
+          "reference": "检索结果存储在向量数据库里",
+          "native": {
+            "elapsed_s": 0.7203803750453517,
+            "asr_confidence": 0.994,
+            "engine": "swift-mlx",
+            "tokens": [
+              3701,
+              5334,
+              5403,
+              3566,
+              2386,
+              1328,
+              2034,
+              1691,
+              7000,
+              3345,
+              3187,
+              2691,
+              6997
+            ],
+            "text": "检索结果存储在向量数据库里",
+            "raw_text": "检索结果存储在向量数据库里",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 3136,
+              "max_probability": 0.99999946
+            },
+            "id": "86E79A4C-6051-4A2C-81A4-6771A10A7B3D",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term08",
+          "reference": "编译器首先进行词法分析",
+          "native": {
+            "elapsed_s": 0.604894999996759,
+            "asr_confidence": 0.975,
+            "engine": "swift-mlx",
+            "tokens": [
+              5453,
+              6419,
+              1978,
+              7507,
+              1358,
+              6783,
+              6245,
+              6416,
+              4006,
+              1452,
+              3562
+            ],
+            "text": "编译器首先进行词法分析",
+            "raw_text": "编译器首先进行词法分析",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2400,
+              "has_speech": true,
+              "max_probability": 0.99999905
+            },
+            "id": "606F3EFF-19A7-4C74-85DF-F822CE52F3F1",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term09",
+          "reference": "拼音纠错需要考虑声母和韵母",
+          "native": {
+            "elapsed_s": 0.6992474166909233,
+            "asr_confidence": 0.985,
+            "engine": "swift-mlx",
+            "text": "拼音纠错需要考虑声母和韵母",
+            "tokens": [
+              3137,
+              7403,
+              5355,
+              7134,
+              7343,
+              6331,
+              5548,
+              6094,
+              2184,
+              3884,
+              1760,
+              7404,
+              3884
+            ],
+            "raw_text": "拼音纠错需要考虑声母和韵母",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2816,
+              "max_probability": 0.9999966,
+              "has_speech": true
+            },
+            "id": "3AEDD7B0-D926-40CB-A9DF-59A3DE1FE61C",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative01",
+          "reference": "请把婚礼请柬放在桌子上",
+          "native": {
+            "elapsed_s": 0.6062024583807215,
+            "asr_confidence": 0.993,
+            "engine": "swift-mlx",
+            "text": "请把婚礼请柬放在桌子上",
+            "tokens": [
+              6455,
+              3072,
+              2332,
+              5042,
+              6455,
+              3607,
+              3327,
+              2034,
+              3657,
+              2379,
+              1010
+            ],
+            "raw_text": "请把婚礼请柬放在桌子上",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2592,
+              "has_speech": true,
+              "max_probability": 0.9999985
+            },
+            "id": "C4F47397-31F8-40E6-8A18-198D1D67FFDC",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative02",
+          "reference": "我们继续讨论起源和发展",
+          "native": {
+            "elapsed_s": 0.5932539582718164,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "text": "我们继续讨论起源和发展",
+            "tokens": [
+              3016,
+              1138,
+              5419,
+              5424,
+              6383,
+              6399,
+              6614,
+              4206,
+              1760,
+              1644,
+              2520
+            ],
+            "raw_text": "我们继续讨论起源和发展",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.999998,
+              "longest_speech_ms": 2368,
+              "has_speech": true
+            },
+            "id": "69DFA3AD-D750-4466-8E14-71DE6322C1B9",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative03",
+          "reference": "这些精美的饰品需要仔细包装",
+          "native": {
+            "elapsed_s": 0.7012528750346974,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "tokens": [
+              6782,
+              1087,
+              5314,
+              5507,
+              4824,
+              7478,
+              1794,
+              7343,
+              6331,
+              1123,
+              5390,
+              1547,
+              6286
+            ],
+            "text": "这些精美的饰品需要仔细包装",
+            "raw_text": "这些精美的饰品需要仔细包装",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2848,
+              "has_speech": true,
+              "max_probability": 0.9999993
+            },
+            "id": "355DC87C-7CA7-481F-8A24-47FBC21CD2A5",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative04",
+          "reference": "这个房间的灯还是亮着的",
+          "native": {
+            "elapsed_s": 0.5662410416407511,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "text": "这个房间的灯还是亮着的",
+            "tokens": [
+              6782,
+              1032,
+              3034,
+              7217,
+              4824,
+              4316,
+              6781,
+              3426,
+              1100,
+              4893,
+              4824
+            ],
+            "raw_text": "这个房间的灯还是亮着的",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999946,
+              "longest_speech_ms": 2048
+            },
+            "id": "1B64C2B4-21BF-4AD2-AE59-F0CC5CC0C207",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative05",
+          "reference": "请不要把密钥写进日志",
+          "native": {
+            "elapsed_s": 0.5473892500158399,
+            "asr_confidence": 0.974,
+            "engine": "swift-mlx",
+            "text": "请不要把密钥写进日志",
+            "tokens": [
+              6455,
+              1012,
+              6331,
+              3072,
+              2451,
+              7042,
+              1399,
+              6783,
+              3388,
+              2814
+            ],
+            "raw_text": "请不要把密钥写进日志",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2144,
+              "max_probability": 0.999999
+            },
+            "id": "BC5270BE-7B8E-42B4-8EEE-CCC952D80190",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative06",
+          "reference": "我明天下午有空可以一起讨论",
+          "native": {
+            "elapsed_s": 0.7359285416314378,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "text": "我明天下午有空可以一起讨论",
+            "tokens": [
+              3016,
+              3413,
+              2206,
+              1011,
+              1573,
+              3499,
+              5144,
+              1664,
+              1135,
+              1004,
+              6614,
+              6383,
+              6399
+            ],
+            "raw_text": "我明天下午有空可以一起讨论",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999977,
+              "longest_speech_ms": 1728
+            },
+            "id": "78420E0E-870D-46BD-AE38-FA8BBBD3B270",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-mixed01",
+          "reference": "我们把这个服务部署到 cloudflare",
+          "native": {
+            "elapsed_s": 0.7748716250061989,
+            "asr_confidence": 0.951,
+            "engine": "swift-mlx",
+            "text": "我们把这个服务部署到 cloudflare",
+            "tokens": [
+              3016,
+              1138,
+              3072,
+              6782,
+              1032,
+              3502,
+              1511,
+              6917,
+              5501,
+              1472,
+              185,
+              666,
+              288,
+              508,
+              82
+            ],
+            "raw_text": "我们把这个服务部署到 cloudflare",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2528,
+              "has_speech": true,
+              "max_probability": 0.99999934
+            },
+            "id": "E55E4CC5-52CE-4795-882B-99ED73C0015D",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-mixed02",
+          "reference": "这个服务使用 qbonets和 postgresql",
+          "native": {
+            "elapsed_s": 1.220237583387643,
+            "asr_confidence": 0.772,
+            "engine": "swift-mlx",
+            "text": "这个服务使用 qbonets和 postgresql",
+            "tokens": [
+              6782,
+              1032,
+              3502,
+              1511,
+              1217,
+              4690,
+              6,
+              726,
+              121,
+              628,
+              276,
+              773,
+              1760,
+              685,
+              658,
+              326,
+              751,
+              726,
+              508
+            ],
+            "raw_text": "这个服务使用 qbonets和 postgresql",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999989,
+              "has_speech": true,
+              "longest_speech_ms": 2656
+            },
+            "id": "BC4EA06A-0B11-4A79-9DFA-FA7BC127327F",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-number01",
+          "reference": "会议安排在九月十五日下午三点半",
+          "native": {
+            "elapsed_s": 0.8129208749160171,
+            "asr_confidence": 0.989,
+            "engine": "swift-mlx",
+            "text": "会议安排在九月十五日下午三点半",
+            "tokens": [
+              1161,
+              6388,
+              2412,
+              3203,
+              2034,
+              1061,
+              3498,
+              1569,
+              1083,
+              3388,
+              1011,
+              1573,
+              1009,
+              4349,
+              1575
+            ],
+            "raw_text": "会议安排在九月十五日下午三点半",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 3264,
+              "max_probability": 0.9999986,
+              "has_speech": true
+            },
+            "id": "85D3137D-1213-49C9-B59C-431B80E3EED0",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-selfcorrect01",
+          "reference": "周三不对周四下午三点再讨论",
+          "native": {
+            "elapsed_s": 0.7983724167570472,
+            "asr_confidence": 0.982,
+            "engine": "swift-mlx",
+            "text": "周三不对周四下午三点再讨论",
+            "tokens": [
+              1743,
+              1009,
+              1012,
+              2470,
+              1743,
+              2003,
+              1011,
+              1573,
+              1009,
+              4349,
+              1393,
+              6383,
+              6399
+            ],
+            "raw_text": "周三不对周四下午三点再讨论",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2208,
+              "has_speech": true,
+              "max_probability": 0.99999785
+            },
+            "id": "7D8B88EA-BBF6-4BA4-AA5C-6B762893024B",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-plain01",
+          "reference": "我希望语音输入能够保留原来的意思",
+          "native": {
+            "elapsed_s": 0.8825693750986829,
+            "asr_confidence": 0.994,
+            "engine": "swift-mlx",
+            "tokens": [
+              3016,
+              2644,
+              3507,
+              6445,
+              7403,
+              6748,
+              1368,
+              5651,
+              2204,
+              1258,
+              4714,
+              1624,
+              3542,
+              4824,
+              2958,
+              2847
+            ],
+            "text": "我希望语音输入能够保留原来的意思",
+            "raw_text": "我希望语音输入能够保留原来的意思",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 3200,
+              "max_probability": 0.99999946
+            },
+            "id": "F1C980AE-FB3E-419B-9335-0BEB4947F5CF",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term01",
+          "reference": "我将把清简接入这个语音输入法",
+          "native": {
+            "elapsed_s": 0.779809791711159,
+            "asr_confidence": 0.813,
+            "engine": "swift-mlx",
+            "tokens": [
+              3016,
+              2479,
+              3072,
+              4157,
+              5236,
+              3210,
+              1368,
+              6782,
+              1032,
+              6445,
+              7403,
+              6748,
+              1368,
+              4006
+            ],
+            "text": "我将把清简接入这个语音输入法",
+            "raw_text": "我将把清简接入这个语音输入法",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999972,
+              "longest_speech_ms": 2272,
+              "has_speech": true
+            },
+            "id": "DF63322F-78D2-4F3C-8761-77DFF2C63AFC",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term02",
+          "reference": "请把这份文档发给同事体验",
+          "native": {
+            "elapsed_s": 0.683758583269082,
+            "asr_confidence": 0.907,
+            "engine": "swift-mlx",
+            "tokens": [
+              6455,
+              3072,
+              6782,
+              1146,
+              3349,
+              3669,
+              1644,
+              5407,
+              1686,
+              1075,
+              1191,
+              7550
+            ],
+            "text": "请把这份文档发给同事体验",
+            "raw_text": "请把这份文档发给同事体验",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99999636,
+              "has_speech": true,
+              "longest_speech_ms": 2336
+            },
+            "id": "203659B0-6B02-4C04-8BE1-C24DC49F120C",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term03",
+          "reference": "这个项目由从事这一行负责",
+          "native": {
+            "elapsed_s": 0.668076999951154,
+            "asr_confidence": 0.907,
+            "engine": "swift-mlx",
+            "text": "这个项目由从事这一行负责",
+            "tokens": [
+              6782,
+              1032,
+              7412,
+              4863,
+              4697,
+              1120,
+              1075,
+              6782,
+              1004,
+              6245,
+              6543,
+              6546
+            ],
+            "raw_text": "这个项目由从事这一行负责",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99999684,
+              "has_speech": true,
+              "longest_speech_ms": 2048
+            },
+            "id": "E7408754-B029-4141-A155-4A61348BDE36",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term04",
+          "reference": "这个接口需要保证密封性重试不能重复扣款",
+          "native": {
+            "elapsed_s": 1.1947171250358224,
+            "asr_confidence": 0.856,
+            "engine": "swift-mlx",
+            "tokens": [
+              6782,
+              1032,
+              3210,
+              1653,
+              7343,
+              6331,
+              1258,
+              6405,
+              2451,
+              2475,
+              2852,
+              6998,
+              6423,
+              1012,
+              5651,
+              6998,
+              2196,
+              3050,
+              3839
+            ],
+            "text": "这个接口需要保证密封性重试不能重复扣款",
+            "raw_text": "这个接口需要保证密封性重试不能重复扣款",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 1760,
+              "has_speech": true,
+              "max_probability": 0.99999756
+            },
+            "id": "66AFA924-8E91-49CE-9BAA-7FD75C98BCE1",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term05",
+          "reference": "新版本先做灰度发布观察错误率",
+          "native": {
+            "elapsed_s": 0.8583567916648462,
+            "asr_confidence": 0.956,
+            "engine": "swift-mlx",
+            "text": "新版本先做灰度发布观察错误率",
+            "tokens": [
+              3369,
+              4448,
+              3514,
+              1358,
+              1310,
+              4317,
+              2702,
+              1644,
+              2640,
+              6337,
+              2462,
+              7134,
+              6447,
+              4544
+            ],
+            "raw_text": "新版本先做灰度发布观察错误率",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 1536,
+              "has_speech": true,
+              "max_probability": 0.9999978
+            },
+            "id": "9A78BEFE-D740-465D-B6E2-18E71148F233",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term06",
+          "reference": "先部署金丝雀再验证这次修改",
+          "native": {
+            "elapsed_s": 0.7517175832763314,
+            "asr_confidence": 0.873,
+            "engine": "swift-mlx",
+            "text": "先部署金丝雀再验证这次修改",
+            "tokens": [
+              1358,
+              6917,
+              5501,
+              7001,
+              1025,
+              7316,
+              1393,
+              7550,
+              6405,
+              6782,
+              3830,
+              1269,
+              3325
+            ],
+            "raw_text": "先部署金丝雀再验证这次修改",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 1344,
+              "max_probability": 0.9999968
+            },
+            "id": "3ED63140-5974-4F26-BEBD-923EB15771BE",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term07",
+          "reference": "检索结果存储在向量数据库里",
+          "native": {
+            "elapsed_s": 0.7419433749746531,
+            "asr_confidence": 0.966,
+            "engine": "swift-mlx",
+            "text": "检索结果存储在向量数据库里",
+            "tokens": [
+              3701,
+              5334,
+              5403,
+              3566,
+              2386,
+              1328,
+              2034,
+              1691,
+              7000,
+              3345,
+              3187,
+              2691,
+              6997
+            ],
+            "raw_text": "检索结果存储在向量数据库里",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2272,
+              "has_speech": true,
+              "max_probability": 0.9999984
+            },
+            "id": "F2C61556-33A1-4A2D-A530-E2C7C42B6BEE",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term08",
+          "reference": "编译器首先进行词法分析",
+          "native": {
+            "elapsed_s": 0.6313174583483487,
+            "asr_confidence": 0.857,
+            "engine": "swift-mlx",
+            "text": "编译器首先进行词法分析",
+            "tokens": [
+              5453,
+              6419,
+              1978,
+              7507,
+              1358,
+              6783,
+              6245,
+              6416,
+              4006,
+              1452,
+              3562
+            ],
+            "raw_text": "编译器首先进行词法分析",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999886,
+              "longest_speech_ms": 2240
+            },
+            "id": "61DF7393-ED0E-4C4D-8D6A-0114C0518AF9",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term09",
+          "reference": "拼音纠错需要考虑声母和韵母",
+          "native": {
+            "elapsed_s": 0.7653642082586884,
+            "asr_confidence": 0.976,
+            "engine": "swift-mlx",
+            "text": "拼音纠错需要考虑声母和韵母",
+            "tokens": [
+              3137,
+              7403,
+              5355,
+              7134,
+              7343,
+              6331,
+              5548,
+              6094,
+              2184,
+              3884,
+              1760,
+              7404,
+              3884
+            ],
+            "raw_text": "拼音纠错需要考虑声母和韵母",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99999464,
+              "has_speech": true,
+              "longest_speech_ms": 2496
+            },
+            "id": "8954424A-745A-4CF1-87D3-7E9E431BD5A9",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative01",
+          "reference": "请把婚礼请柬放在桌子上",
+          "native": {
+            "elapsed_s": 0.6315440833568573,
+            "asr_confidence": 0.964,
+            "engine": "swift-mlx",
+            "tokens": [
+              6455,
+              3072,
+              2332,
+              5042,
+              6455,
+              3607,
+              3327,
+              2034,
+              3657,
+              2379,
+              1010
+            ],
+            "text": "请把婚礼请柬放在桌子上",
+            "raw_text": "请把婚礼请柬放在桌子上",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2272,
+              "max_probability": 0.9999979
+            },
+            "id": "F8AF48AD-67F0-4605-A12F-53CCFFF47A9A",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative02",
+          "reference": "我们继续讨论起源和发展",
+          "native": {
+            "elapsed_s": 0.6047384582925588,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "tokens": [
+              3016,
+              1138,
+              5419,
+              5424,
+              6383,
+              6399,
+              6614,
+              4206,
+              1760,
+              1644,
+              2520
+            ],
+            "text": "我们继续讨论起源和发展",
+            "raw_text": "我们继续讨论起源和发展",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2016,
+              "max_probability": 0.9999966
+            },
+            "id": "769C41E0-D60D-4885-90F8-99CDD26073C8",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative03",
+          "reference": "这些精美的饰品需要仔细包装",
+          "native": {
+            "elapsed_s": 0.7252500000176951,
+            "asr_confidence": 0.978,
+            "engine": "swift-mlx",
+            "text": "这些精美的饰品需要仔细包装",
+            "tokens": [
+              6782,
+              1087,
+              5314,
+              5507,
+              4824,
+              7478,
+              1794,
+              7343,
+              6331,
+              1123,
+              5390,
+              1547,
+              6286
+            ],
+            "raw_text": "这些精美的饰品需要仔细包装",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999981,
+              "longest_speech_ms": 2400,
+              "has_speech": true
+            },
+            "id": "37CEE0B0-E33B-49D3-BF1B-E0021A0AFB71",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative04",
+          "reference": "这个房间的灯还是亮着的",
+          "native": {
+            "elapsed_s": 0.6052724999608472,
+            "asr_confidence": 0.873,
+            "engine": "swift-mlx",
+            "tokens": [
+              6782,
+              1032,
+              3034,
+              7217,
+              4824,
+              4316,
+              6781,
+              3426,
+              1100,
+              4893,
+              4824
+            ],
+            "text": "这个房间的灯还是亮着的",
+            "raw_text": "这个房间的灯还是亮着的",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999972,
+              "longest_speech_ms": 1888
+            },
+            "id": "50BC130A-7F66-486D-B206-5056C816D18E",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative05",
+          "reference": "请不要把密钥写进日志",
+          "native": {
+            "elapsed_s": 0.5535610833903775,
+            "asr_confidence": 0.942,
+            "engine": "swift-mlx",
+            "tokens": [
+              6455,
+              1012,
+              6331,
+              3072,
+              2451,
+              7042,
+              1399,
+              6783,
+              3388,
+              2814
+            ],
+            "text": "请不要把密钥写进日志",
+            "raw_text": "请不要把密钥写进日志",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 1824,
+              "has_speech": true,
+              "max_probability": 0.9999955
+            },
+            "id": "8620A4A0-88A4-47E5-AC28-AD14C4695B3C",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative06",
+          "reference": "我明天下午有空可以一起讨论",
+          "native": {
+            "elapsed_s": 0.7851370417047292,
+            "asr_confidence": 0.996,
+            "engine": "swift-mlx",
+            "text": "我明天下午有空可以一起讨论",
+            "tokens": [
+              3016,
+              3413,
+              2206,
+              1011,
+              1573,
+              3499,
+              5144,
+              1664,
+              1135,
+              1004,
+              6614,
+              6383,
+              6399
+            ],
+            "raw_text": "我明天下午有空可以一起讨论",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999917,
+              "longest_speech_ms": 1120
+            },
+            "id": "41A3C6CE-1A3D-411C-B641-267FE2D9B5A0",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-mixed01",
+          "reference": "我们把这个服务部署到俄罗斯那边",
+          "native": {
+            "elapsed_s": 0.8081995833199471,
+            "asr_confidence": 0.841,
+            "engine": "swift-mlx",
+            "text": "我们把这个服务部署到俄罗斯那边",
+            "tokens": [
+              3016,
+              1138,
+              3072,
+              6782,
+              1032,
+              3502,
+              1511,
+              6917,
+              5501,
+              1472,
+              1247,
+              5493,
+              3368,
+              6878,
+              6765
+            ],
+            "raw_text": "我们把这个服务部署到俄罗斯那边",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 2400,
+              "has_speech": true,
+              "max_probability": 0.99998975
+            },
+            "id": "69756119-BB51-4CAF-BEF2-4741BE63323E",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-mixed02",
+          "reference": "这个服务是用 kubernetes和 postgresql",
+          "native": {
+            "elapsed_s": 1.0720897916471586,
+            "asr_confidence": 0.802,
+            "engine": "swift-mlx",
+            "text": "这个服务是用 kubernetes和 postgresql",
+            "tokens": [
+              6782,
+              1032,
+              3502,
+              1511,
+              3426,
+              4690,
+              497,
+              892,
+              139,
+              588,
+              276,
+              272,
+              1760,
+              685,
+              658,
+              326,
+              751,
+              726,
+              508
+            ],
+            "raw_text": "这个服务是用 kubernetes和 postgresql",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99992615,
+              "has_speech": true,
+              "longest_speech_ms": 2016
+            },
+            "id": "21C35F2F-70E2-4786-BE75-DD46654547C4",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-number01",
+          "reference": "会议安排在九月十五日下午三点半",
+          "native": {
+            "elapsed_s": 0.8646537917666137,
+            "asr_confidence": 0.979,
+            "engine": "swift-mlx",
+            "tokens": [
+              1161,
+              6388,
+              2412,
+              3203,
+              2034,
+              1061,
+              3498,
+              1569,
+              1083,
+              3388,
+              1011,
+              1573,
+              1009,
+              4349,
+              1575
+            ],
+            "text": "会议安排在九月十五日下午三点半",
+            "raw_text": "会议安排在九月十五日下午三点半",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.999996,
+              "longest_speech_ms": 2112
+            },
+            "id": "DEBDE184-1518-42FB-92FB-B3EE7ED37246",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-selfcorrect01",
+          "reference": "周三不对周四下午三点再讨论",
+          "native": {
+            "elapsed_s": 0.7990360416006297,
+            "asr_confidence": 0.977,
+            "engine": "swift-mlx",
+            "tokens": [
+              1743,
+              1009,
+              1012,
+              2470,
+              1743,
+              2003,
+              1011,
+              1573,
+              1009,
+              4349,
+              1393,
+              6383,
+              6399
+            ],
+            "text": "周三不对周四下午三点再讨论",
+            "raw_text": "周三不对周四下午三点再讨论",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.99999636,
+              "longest_speech_ms": 1792,
+              "has_speech": true
+            },
+            "id": "7B649A33-C673-4D90-B778-29DB6B325DBF",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-plain01",
+          "reference": "我希望语音输入能够保留原来的意思",
+          "native": {
+            "elapsed_s": 0.8777527500642464,
+            "asr_confidence": 0.99,
+            "engine": "swift-mlx",
+            "text": "我希望语音输入能够保留原来的意思",
+            "tokens": [
+              3016,
+              2644,
+              3507,
+              6445,
+              7403,
+              6748,
+              1368,
+              5651,
+              2204,
+              1258,
+              4714,
+              1624,
+              3542,
+              4824,
+              2958,
+              2847
+            ],
+            "raw_text": "我希望语音输入能够保留原来的意思",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2720,
+              "max_probability": 0.9999974
+            },
+            "id": "B9EF02D6-031B-4513-A4A4-C34ACF6DB4EE",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "silence",
+          "reference": "",
+          "native": {
+            "elapsed_s": 0.018261416582390666,
+            "engine": "swift-mlx",
+            "raw_text": "",
+            "text": "",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 0,
+              "has_speech": false,
+              "max_probability": 0.008910763
+            },
+            "id": "E0DDCC0F-8DBC-441E-9AF9-22D73BDC21C3",
+            "model": "firered"
+          },
+          "equal": true
+        },
+        {
+          "id": "qwen-official-zh",
+          "reference": "甚至出现交易几乎停滞的情况",
+          "native": {
+            "elapsed_s": 0.8264641249552369,
+            "asr_confidence": 1,
+            "engine": "swift-mlx",
+            "text": "甚至出现交易几乎停滞的情况",
+            "tokens": [
+              4686,
+              5722,
+              1444,
+              4563,
+              1091,
+              3415,
+              1432,
+              1051,
+              1311,
+              4233,
+              4824,
+              2920,
+              1414
+            ],
+            "raw_text": "甚至出现交易几乎停滞的情况",
+            "model_load_count": 1,
+            "vad": {
+              "longest_speech_ms": 3232,
+              "max_probability": 0.9999707,
+              "has_speech": true
+            },
+            "id": "0F57942C-143A-46BC-B831-E8A311E0BBE2",
+            "model": "firered"
+          },
+          "equal": true
+        }
+      ]
+    },
+    {
+      "name": "hotwords-4",
+      "total": 42,
+      "equal": 42,
+      "warm_pipeline_p50_s": 0.791942541662138,
+      "warm_pipeline_p95_s": 1.2090862083714455,
+      "cases": [
+        {
+          "id": "tingting-term01",
+          "reference": "我想把青简接入这个语音输入法",
+          "native": {
+            "asr_confidence": 0.867,
+            "raw_text": "我想把青简接入这个语音输入法",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 3008,
+              "max_probability": 0.9999992
+            },
+            "elapsed_s": 1.2615340000484139,
+            "model": "firered",
+            "tokens": [
+              3016,
+              2945,
+              3072,
+              7366,
+              5236,
+              3210,
+              1368,
+              6782,
+              1032,
+              6445,
+              7403,
+              6748,
+              1368,
+              4006
+            ],
+            "engine": "swift-mlx",
+            "id": "06BC3413-4EA1-4A1A-B4BB-49A050EEA0A3",
+            "text": "我想把青简接入这个语音输入法"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term02",
+          "reference": "请把这份文档发给同事齐燕",
+          "native": {
+            "asr_confidence": 0.887,
+            "raw_text": "请把这份文档发给同事齐燕",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2784,
+              "max_probability": 0.9999989
+            },
+            "elapsed_s": 0.6759037083247676,
+            "model": "firered",
+            "tokens": [
+              6455,
+              3072,
+              6782,
+              1146,
+              3349,
+              3669,
+              1644,
+              5407,
+              1686,
+              1075,
+              7813,
+              4425
+            ],
+            "engine": "swift-mlx",
+            "id": "31D2A0D1-2933-4436-ACF7-EA2FD5131221",
+            "text": "请把这份文档发给同事齐燕"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term03",
+          "reference": "这个项目由同事景恒负责",
+          "native": {
+            "asr_confidence": 0.975,
+            "raw_text": "这个项目由同事景恒负责",
+            "model_load_count": 1,
+            "vad": {
+              "has_speech": true,
+              "longest_speech_ms": 2496,
+              "max_probability": 0.99999905
+            },
+            "elapsed_s": 0.6225820000981912,
+            "model": "firered",
+            "tokens": [
+              6782,
+              1032,
+              7412,
+              4863,
+              4697,
+              1686,
+              1075,
+              3454,
+              2868,
+              6543,
+              6546
+            ],
+            "engine": "swift-mlx",
+            "id": "C01A3046-F2CD-4D97-9CF5-A63E75D161EF",
+            "text": "这个项目由同事景恒负责"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term04",
+          "reference": "这个接口需要保证幂等性重试不能重复扣款",
+          "native": {
+            "asr_confidence": 0.904,
+            "raw_text": "这个接口需要保证幂等性重试不能重复扣款",
+            "model_load_count": 1,
+            "vad": {
+              "max_probability": 0.9999995,
+              "longest_speech_ms": 2432,
+              "has_speech": true
+            },
+            "elapsed_s": 1.2029306666227058,
+            "model": "firered",
+            "tokens": [
+              6782,
+              1032,
+              3210,
+              1653,
+              7343,
+              6331,
+              1258,
+              6405,
+              2665,
+              5215,
+              2852,
+              6998,
+              6423,
+              1012,
+              5651,
+              6998,
+              2196,
+              3050,
+              3839
+            ],
+            "engine": "swift-mlx",
+            "id": "8C64016D-F5BE-40D4-8AA9-D3C5D1C4942C",
+            "text": "这个接口需要保证幂等性重试不能重复扣款"
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term05",
+          "reference": "新版本先做灰度发布观察错误率",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999989,
+              "longest_speech_ms": 2048
+            },
+            "model_load_count": 1,
+            "id": "108DC38C-15D4-47D2-820A-D319F23A65FC",
+            "engine": "swift-mlx",
+            "text": "新版本先做灰度发布观察错误率",
+            "model": "firered",
+            "raw_text": "新版本先做灰度发布观察错误率",
+            "elapsed_s": 0.8515263333683833,
+            "asr_confidence": 0.994,
+            "tokens": [
+              3369,
+              4448,
+              3514,
+              1358,
+              1310,
+              4317,
+              2702,
+              1644,
+              2640,
+              6337,
+              2462,
+              7134,
+              6447,
+              4544
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term06",
+          "reference": "先部署金丝雀再验证这次修改",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999993,
+              "longest_speech_ms": 1600
+            },
+            "model_load_count": 1,
+            "id": "422B94AD-20BB-4728-8A58-2BF6CC6B9E7E",
+            "engine": "swift-mlx",
+            "text": "先部署金丝雀再验证这次修改",
+            "model": "firered",
+            "raw_text": "先部署金丝雀再验证这次修改",
+            "elapsed_s": 0.7843620833009481,
+            "asr_confidence": 0.976,
+            "tokens": [
+              1358,
+              6917,
+              5501,
+              7001,
+              1025,
+              7316,
+              1393,
+              7550,
+              6405,
+              6782,
+              3830,
+              1269,
+              3325
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term07",
+          "reference": "检索结果存储在向量数据库里",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999946,
+              "longest_speech_ms": 3136
+            },
+            "model_load_count": 1,
+            "id": "FAC163B3-9765-45FC-AA49-724BE6A1397B",
+            "engine": "swift-mlx",
+            "text": "检索结果存储在向量数据库里",
+            "model": "firered",
+            "raw_text": "检索结果存储在向量数据库里",
+            "elapsed_s": 0.747880041715689,
+            "asr_confidence": 0.994,
+            "tokens": [
+              3701,
+              5334,
+              5403,
+              3566,
+              2386,
+              1328,
+              2034,
+              1691,
+              7000,
+              3345,
+              3187,
+              2691,
+              6997
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term08",
+          "reference": "编译器首先进行词法分析",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999905,
+              "longest_speech_ms": 2400
+            },
+            "model_load_count": 1,
+            "id": "D3CEA407-3D8C-4F11-8E1A-5623141CBEA6",
+            "engine": "swift-mlx",
+            "text": "编译器首先进行词法分析",
+            "model": "firered",
+            "raw_text": "编译器首先进行词法分析",
+            "elapsed_s": 1.1645426666364074,
+            "asr_confidence": 0.975,
+            "tokens": [
+              5453,
+              6419,
+              1978,
+              7507,
+              1358,
+              6783,
+              6245,
+              6416,
+              4006,
+              1452,
+              3562
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-term09",
+          "reference": "拼音纠错需要考虑声母和韵母",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999966,
+              "longest_speech_ms": 2816
+            },
+            "model_load_count": 1,
+            "id": "E9E11121-2120-45EA-A56B-86A34FEA1364",
+            "engine": "swift-mlx",
+            "text": "拼音纠错需要考虑声母和韵母",
+            "model": "firered",
+            "raw_text": "拼音纠错需要考虑声母和韵母",
+            "elapsed_s": 0.7537147916154936,
+            "asr_confidence": 0.985,
+            "tokens": [
+              3137,
+              7403,
+              5355,
+              7134,
+              7343,
+              6331,
+              5548,
+              6094,
+              2184,
+              3884,
+              1760,
+              7404,
+              3884
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative01",
+          "reference": "请把婚礼请柬放在桌子上",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999985,
+              "longest_speech_ms": 2592
+            },
+            "model_load_count": 1,
+            "id": "2EF8B41F-8B5E-4ACA-B279-791C1180D716",
+            "engine": "swift-mlx",
+            "text": "请把婚礼请柬放在桌子上",
+            "model": "firered",
+            "raw_text": "请把婚礼请柬放在桌子上",
+            "elapsed_s": 0.6515458333306015,
+            "asr_confidence": 0.993,
+            "tokens": [
+              6455,
+              3072,
+              2332,
+              5042,
+              6455,
+              3607,
+              3327,
+              2034,
+              3657,
+              2379,
+              1010
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative02",
+          "reference": "我们继续讨论起源和发展",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.999998,
+              "longest_speech_ms": 2368
+            },
+            "model_load_count": 1,
+            "id": "37491D51-F1E2-4BC6-8DF0-5264E4C39937",
+            "engine": "swift-mlx",
+            "text": "我们继续讨论起源和发展",
+            "model": "firered",
+            "raw_text": "我们继续讨论起源和发展",
+            "elapsed_s": 0.6458566666115075,
+            "asr_confidence": 0.996,
+            "tokens": [
+              3016,
+              1138,
+              5419,
+              5424,
+              6383,
+              6399,
+              6614,
+              4206,
+              1760,
+              1644,
+              2520
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative03",
+          "reference": "这些精美的饰品需要仔细包装",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999993,
+              "longest_speech_ms": 2848
+            },
+            "model_load_count": 1,
+            "id": "D67B217C-CFF2-467F-BDEF-98AB10899CDF",
+            "engine": "swift-mlx",
+            "text": "这些精美的饰品需要仔细包装",
+            "model": "firered",
+            "raw_text": "这些精美的饰品需要仔细包装",
+            "elapsed_s": 0.7453747499966994,
+            "asr_confidence": 0.996,
+            "tokens": [
+              6782,
+              1087,
+              5314,
+              5507,
+              4824,
+              7478,
+              1794,
+              7343,
+              6331,
+              1123,
+              5390,
+              1547,
+              6286
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative04",
+          "reference": "这个房间的灯还是亮着的",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999946,
+              "longest_speech_ms": 2048
+            },
+            "model_load_count": 1,
+            "id": "791F45E1-243F-4E80-B6CC-5605075DACC2",
+            "engine": "swift-mlx",
+            "text": "这个房间的灯还是亮着的",
+            "model": "firered",
+            "raw_text": "这个房间的灯还是亮着的",
+            "elapsed_s": 0.5951812083367258,
+            "asr_confidence": 0.996,
+            "tokens": [
+              6782,
+              1032,
+              3034,
+              7217,
+              4824,
+              4316,
+              6781,
+              3426,
+              1100,
+              4893,
+              4824
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative05",
+          "reference": "请不要把密钥写进日志",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.999999,
+              "longest_speech_ms": 2144
+            },
+            "model_load_count": 1,
+            "id": "1C802913-5CDA-4A3B-B6F0-D622A9360F9C",
+            "engine": "swift-mlx",
+            "text": "请不要把密钥写进日志",
+            "model": "firered",
+            "raw_text": "请不要把密钥写进日志",
+            "elapsed_s": 0.589118791744113,
+            "asr_confidence": 0.974,
+            "tokens": [
+              6455,
+              1012,
+              6331,
+              3072,
+              2451,
+              7042,
+              1399,
+              6783,
+              3388,
+              2814
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-negative06",
+          "reference": "我明天下午有空可以一起讨论",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999977,
+              "longest_speech_ms": 1728
+            },
+            "model_load_count": 1,
+            "id": "DFFEE017-549F-4E30-A012-41F84468207C",
+            "engine": "swift-mlx",
+            "text": "我明天下午有空可以一起讨论",
+            "model": "firered",
+            "raw_text": "我明天下午有空可以一起讨论",
+            "elapsed_s": 0.7852909583598375,
+            "asr_confidence": 0.996,
+            "tokens": [
+              3016,
+              3413,
+              2206,
+              1011,
+              1573,
+              3499,
+              5144,
+              1664,
+              1135,
+              1004,
+              6614,
+              6383,
+              6399
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-mixed01",
+          "reference": "我们把这个服务部署到 cloudflare",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999934,
+              "longest_speech_ms": 2528
+            },
+            "model_load_count": 1,
+            "id": "9031A496-AE1D-4943-B35F-A8D57BE4B694",
+            "engine": "swift-mlx",
+            "text": "我们把这个服务部署到 cloudflare",
+            "model": "firered",
+            "raw_text": "我们把这个服务部署到 cloudflare",
+            "elapsed_s": 0.8213347916025668,
+            "asr_confidence": 0.951,
+            "tokens": [
+              3016,
+              1138,
+              3072,
+              6782,
+              1032,
+              3502,
+              1511,
+              6917,
+              5501,
+              1472,
+              185,
+              666,
+              288,
+              508,
+              82
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-mixed02",
+          "reference": "这个服务使用 kubernetes和 postgresql",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999989,
+              "longest_speech_ms": 2656
+            },
+            "model_load_count": 1,
+            "id": "CDABC785-81CF-4529-9637-1F08AE487D9B",
+            "engine": "swift-mlx",
+            "text": "这个服务使用 kubernetes和 postgresql",
+            "model": "firered",
+            "raw_text": "这个服务使用 kubernetes和 postgresql",
+            "elapsed_s": 1.4169004999566823,
+            "asr_confidence": 0.856,
+            "tokens": [
+              6782,
+              1032,
+              3502,
+              1511,
+              1217,
+              4690,
+              497,
+              892,
+              139,
+              588,
+              276,
+              272,
+              1760,
+              685,
+              658,
+              326,
+              751,
+              726,
+              508
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-number01",
+          "reference": "会议安排在九月十五日下午三点半",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999986,
+              "longest_speech_ms": 3264
+            },
+            "model_load_count": 1,
+            "id": "4F13D543-5492-4AA2-9B9F-BF2A8E3E7B30",
+            "engine": "swift-mlx",
+            "text": "会议安排在九月十五日下午三点半",
+            "model": "firered",
+            "raw_text": "会议安排在九月十五日下午三点半",
+            "elapsed_s": 0.8874055417254567,
+            "asr_confidence": 0.989,
+            "tokens": [
+              1161,
+              6388,
+              2412,
+              3203,
+              2034,
+              1061,
+              3498,
+              1569,
+              1083,
+              3388,
+              1011,
+              1573,
+              1009,
+              4349,
+              1575
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-selfcorrect01",
+          "reference": "周三不对周四下午三点再讨论",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999785,
+              "longest_speech_ms": 2208
+            },
+            "model_load_count": 1,
+            "id": "580E671B-2C66-4433-894C-1A28A7152DCE",
+            "engine": "swift-mlx",
+            "text": "周三不对周四下午三点再讨论",
+            "model": "firered",
+            "raw_text": "周三不对周四下午三点再讨论",
+            "elapsed_s": 0.8413668333087116,
+            "asr_confidence": 0.982,
+            "tokens": [
+              1743,
+              1009,
+              1012,
+              2470,
+              1743,
+              2003,
+              1011,
+              1573,
+              1009,
+              4349,
+              1393,
+              6383,
+              6399
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "tingting-plain01",
+          "reference": "我希望语音输入能够保留原来的意思",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999946,
+              "longest_speech_ms": 3200
+            },
+            "model_load_count": 1,
+            "id": "F54BBD86-2A9E-4312-AF2C-4123EFD843F7",
+            "engine": "swift-mlx",
+            "text": "我希望语音输入能够保留原来的意思",
+            "model": "firered",
+            "raw_text": "我希望语音输入能够保留原来的意思",
+            "elapsed_s": 0.9227383333491161,
+            "asr_confidence": 0.994,
+            "tokens": [
+              3016,
+              2644,
+              3507,
+              6445,
+              7403,
+              6748,
+              1368,
+              5651,
+              2204,
+              1258,
+              4714,
+              1624,
+              3542,
+              4824,
+              2958,
+              2847
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term01",
+          "reference": "我将把青简接入这个语音输入法",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999972,
+              "longest_speech_ms": 2272
+            },
+            "model_load_count": 1,
+            "id": "B4B5A08A-DF46-41CD-B8CC-C255E45A3782",
+            "engine": "swift-mlx",
+            "text": "我将把青简接入这个语音输入法",
+            "model": "firered",
+            "raw_text": "我将把青简接入这个语音输入法",
+            "elapsed_s": 0.8101402083411813,
+            "asr_confidence": 0.79,
+            "tokens": [
+              3016,
+              2479,
+              3072,
+              7366,
+              5236,
+              3210,
+              1368,
+              6782,
+              1032,
+              6445,
+              7403,
+              6748,
+              1368,
+              4006
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term02",
+          "reference": "请把这份文档发给同事体验",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999636,
+              "longest_speech_ms": 2336
+            },
+            "model_load_count": 1,
+            "id": "635B9752-8AC8-4C7C-BDC2-35DE3564B636",
+            "engine": "swift-mlx",
+            "text": "请把这份文档发给同事体验",
+            "model": "firered",
+            "raw_text": "请把这份文档发给同事体验",
+            "elapsed_s": 0.7672228333540261,
+            "asr_confidence": 0.907,
+            "tokens": [
+              6455,
+              3072,
+              6782,
+              1146,
+              3349,
+              3669,
+              1644,
+              5407,
+              1686,
+              1075,
+              1191,
+              7550
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term03",
+          "reference": "这个项目由从事这一行负责",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999684,
+              "longest_speech_ms": 2048
+            },
+            "model_load_count": 1,
+            "id": "C3EF8FD6-0284-444A-8688-093ABCB6BF9B",
+            "engine": "swift-mlx",
+            "text": "这个项目由从事这一行负责",
+            "model": "firered",
+            "raw_text": "这个项目由从事这一行负责",
+            "elapsed_s": 0.6837439583614469,
+            "asr_confidence": 0.907,
+            "tokens": [
+              6782,
+              1032,
+              7412,
+              4863,
+              4697,
+              1120,
+              1075,
+              6782,
+              1004,
+              6245,
+              6543,
+              6546
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term04",
+          "reference": "这个接口需要保证密封性重试不能重复扣款",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999756,
+              "longest_speech_ms": 1760
+            },
+            "model_load_count": 1,
+            "id": "312A750D-B810-4B27-80ED-0C75DD0EB9BB",
+            "engine": "swift-mlx",
+            "text": "这个接口需要保证密封性重试不能重复扣款",
+            "model": "firered",
+            "raw_text": "这个接口需要保证密封性重试不能重复扣款",
+            "elapsed_s": 1.267081291647628,
+            "asr_confidence": 0.856,
+            "tokens": [
+              6782,
+              1032,
+              3210,
+              1653,
+              7343,
+              6331,
+              1258,
+              6405,
+              2451,
+              2475,
+              2852,
+              6998,
+              6423,
+              1012,
+              5651,
+              6998,
+              2196,
+              3050,
+              3839
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term05",
+          "reference": "新版本先做灰度发布观察错误率",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999978,
+              "longest_speech_ms": 1536
+            },
+            "model_load_count": 1,
+            "id": "266ABEFB-679C-4550-9AEB-F44EB6CB030F",
+            "engine": "swift-mlx",
+            "text": "新版本先做灰度发布观察错误率",
+            "model": "firered",
+            "raw_text": "新版本先做灰度发布观察错误率",
+            "elapsed_s": 0.8907688333420083,
+            "asr_confidence": 0.956,
+            "tokens": [
+              3369,
+              4448,
+              3514,
+              1358,
+              1310,
+              4317,
+              2702,
+              1644,
+              2640,
+              6337,
+              2462,
+              7134,
+              6447,
+              4544
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term06",
+          "reference": "先部署金丝雀再验证这次修改",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999968,
+              "longest_speech_ms": 1344
+            },
+            "model_load_count": 1,
+            "id": "475F25B0-42CC-467E-AF10-1BE2A84A93DB",
+            "engine": "swift-mlx",
+            "text": "先部署金丝雀再验证这次修改",
+            "model": "firered",
+            "raw_text": "先部署金丝雀再验证这次修改",
+            "elapsed_s": 0.7864244166994467,
+            "asr_confidence": 0.873,
+            "tokens": [
+              1358,
+              6917,
+              5501,
+              7001,
+              1025,
+              7316,
+              1393,
+              7550,
+              6405,
+              6782,
+              3830,
+              1269,
+              3325
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term07",
+          "reference": "检索结果存储在向量数据库里",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999984,
+              "longest_speech_ms": 2272
+            },
+            "model_load_count": 1,
+            "id": "574B9AFE-50E4-48CD-A332-C39CA14615D0",
+            "engine": "swift-mlx",
+            "text": "检索结果存储在向量数据库里",
+            "model": "firered",
+            "raw_text": "检索结果存储在向量数据库里",
+            "elapsed_s": 0.8096081666881219,
+            "asr_confidence": 0.966,
+            "tokens": [
+              3701,
+              5334,
+              5403,
+              3566,
+              2386,
+              1328,
+              2034,
+              1691,
+              7000,
+              3345,
+              3187,
+              2691,
+              6997
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term08",
+          "reference": "编译器首先进行词法分析",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999886,
+              "longest_speech_ms": 2240
+            },
+            "model_load_count": 1,
+            "id": "B573AD8C-9E4A-4810-9A52-7574AD9684B9",
+            "engine": "swift-mlx",
+            "text": "编译器首先进行词法分析",
+            "model": "firered",
+            "raw_text": "编译器首先进行词法分析",
+            "elapsed_s": 0.7026694166706875,
+            "asr_confidence": 0.857,
+            "tokens": [
+              5453,
+              6419,
+              1978,
+              7507,
+              1358,
+              6783,
+              6245,
+              6416,
+              4006,
+              1452,
+              3562
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-term09",
+          "reference": "拼音纠错需要考虑声母和韵母",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999464,
+              "longest_speech_ms": 2496
+            },
+            "model_load_count": 1,
+            "id": "47A2F45C-77B0-408C-B90B-35B955098206",
+            "engine": "swift-mlx",
+            "text": "拼音纠错需要考虑声母和韵母",
+            "model": "firered",
+            "raw_text": "拼音纠错需要考虑声母和韵母",
+            "elapsed_s": 0.7974606666248292,
+            "asr_confidence": 0.976,
+            "tokens": [
+              3137,
+              7403,
+              5355,
+              7134,
+              7343,
+              6331,
+              5548,
+              6094,
+              2184,
+              3884,
+              1760,
+              7404,
+              3884
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative01",
+          "reference": "请把婚礼请柬放在桌子上",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999979,
+              "longest_speech_ms": 2272
+            },
+            "model_load_count": 1,
+            "id": "FE902D38-A816-4D53-ACD6-73E2685E44DC",
+            "engine": "swift-mlx",
+            "text": "请把婚礼请柬放在桌子上",
+            "model": "firered",
+            "raw_text": "请把婚礼请柬放在桌子上",
+            "elapsed_s": 0.6854305833112448,
+            "asr_confidence": 0.964,
+            "tokens": [
+              6455,
+              3072,
+              2332,
+              5042,
+              6455,
+              3607,
+              3327,
+              2034,
+              3657,
+              2379,
+              1010
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative02",
+          "reference": "我们继续讨论起源和发展",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999966,
+              "longest_speech_ms": 2016
+            },
+            "model_load_count": 1,
+            "id": "E4232B35-B404-4C63-8304-996109CEA277",
+            "engine": "swift-mlx",
+            "text": "我们继续讨论起源和发展",
+            "model": "firered",
+            "raw_text": "我们继续讨论起源和发展",
+            "elapsed_s": 0.6543384166434407,
+            "asr_confidence": 0.996,
+            "tokens": [
+              3016,
+              1138,
+              5419,
+              5424,
+              6383,
+              6399,
+              6614,
+              4206,
+              1760,
+              1644,
+              2520
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative03",
+          "reference": "这些精美的饰品需要仔细包装",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999981,
+              "longest_speech_ms": 2400
+            },
+            "model_load_count": 1,
+            "id": "C4B55D73-C1A7-4C8A-A67B-6882446E5331",
+            "engine": "swift-mlx",
+            "text": "这些精美的饰品需要仔细包装",
+            "model": "firered",
+            "raw_text": "这些精美的饰品需要仔细包装",
+            "elapsed_s": 0.7752747916383669,
+            "asr_confidence": 0.978,
+            "tokens": [
+              6782,
+              1087,
+              5314,
+              5507,
+              4824,
+              7478,
+              1794,
+              7343,
+              6331,
+              1123,
+              5390,
+              1547,
+              6286
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative04",
+          "reference": "这个房间的灯还是亮着的",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999972,
+              "longest_speech_ms": 1888
+            },
+            "model_load_count": 1,
+            "id": "D023D083-A715-4D5F-93A4-DD2A299062A8",
+            "engine": "swift-mlx",
+            "text": "这个房间的灯还是亮着的",
+            "model": "firered",
+            "raw_text": "这个房间的灯还是亮着的",
+            "elapsed_s": 0.6967848333297297,
+            "asr_confidence": 0.873,
+            "tokens": [
+              6782,
+              1032,
+              3034,
+              7217,
+              4824,
+              4316,
+              6781,
+              3426,
+              1100,
+              4893,
+              4824
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative05",
+          "reference": "请不要把密钥写进日志",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999955,
+              "longest_speech_ms": 1824
+            },
+            "model_load_count": 1,
+            "id": "6E81DD99-2076-4D04-8053-9AC2C390F059",
+            "engine": "swift-mlx",
+            "text": "请不要把密钥写进日志",
+            "model": "firered",
+            "raw_text": "请不要把密钥写进日志",
+            "elapsed_s": 0.7126184584340081,
+            "asr_confidence": 0.942,
+            "tokens": [
+              6455,
+              1012,
+              6331,
+              3072,
+              2451,
+              7042,
+              1399,
+              6783,
+              3388,
+              2814
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-negative06",
+          "reference": "我明天下午有空可以一起讨论",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999917,
+              "longest_speech_ms": 1120
+            },
+            "model_load_count": 1,
+            "id": "61FC34ED-22DC-4A01-9E66-060AFB419273",
+            "engine": "swift-mlx",
+            "text": "我明天下午有空可以一起讨论",
+            "model": "firered",
+            "raw_text": "我明天下午有空可以一起讨论",
+            "elapsed_s": 0.9736009583575651,
+            "asr_confidence": 0.996,
+            "tokens": [
+              3016,
+              3413,
+              2206,
+              1011,
+              1573,
+              3499,
+              5144,
+              1664,
+              1135,
+              1004,
+              6614,
+              6383,
+              6399
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-mixed01",
+          "reference": "我们把这个服务部署到俄罗斯那边",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99998975,
+              "longest_speech_ms": 2400
+            },
+            "model_load_count": 1,
+            "id": "87D2BB68-167D-46EE-A592-20B33E10D603",
+            "engine": "swift-mlx",
+            "text": "我们把这个服务部署到俄罗斯那边",
+            "model": "firered",
+            "raw_text": "我们把这个服务部署到俄罗斯那边",
+            "elapsed_s": 0.8563335416838527,
+            "asr_confidence": 0.841,
+            "tokens": [
+              3016,
+              1138,
+              3072,
+              6782,
+              1032,
+              3502,
+              1511,
+              6917,
+              5501,
+              1472,
+              1247,
+              5493,
+              3368,
+              6878,
+              6765
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-mixed02",
+          "reference": "这个服务是用 kubernetes和 postgresql",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99992615,
+              "longest_speech_ms": 2016
+            },
+            "model_load_count": 1,
+            "id": "E8D02236-042E-4425-8F8E-4585AC8F5B7F",
+            "engine": "swift-mlx",
+            "text": "这个服务是用 kubernetes和 postgresql",
+            "model": "firered",
+            "raw_text": "这个服务是用 kubernetes和 postgresql",
+            "elapsed_s": 1.2090862083714455,
+            "asr_confidence": 0.802,
+            "tokens": [
+              6782,
+              1032,
+              3502,
+              1511,
+              3426,
+              4690,
+              497,
+              892,
+              139,
+              588,
+              276,
+              272,
+              1760,
+              685,
+              658,
+              326,
+              751,
+              726,
+              508
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-number01",
+          "reference": "会议安排在九月十五日下午三点半",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.999996,
+              "longest_speech_ms": 2112
+            },
+            "model_load_count": 1,
+            "id": "68CC1EB4-7611-4C2C-A442-05F830E4EE2A",
+            "engine": "swift-mlx",
+            "text": "会议安排在九月十五日下午三点半",
+            "model": "firered",
+            "raw_text": "会议安排在九月十五日下午三点半",
+            "elapsed_s": 0.9383118749829009,
+            "asr_confidence": 0.979,
+            "tokens": [
+              1161,
+              6388,
+              2412,
+              3203,
+              2034,
+              1061,
+              3498,
+              1569,
+              1083,
+              3388,
+              1011,
+              1573,
+              1009,
+              4349,
+              1575
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-selfcorrect01",
+          "reference": "周三不对周四下午三点再讨论",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.99999636,
+              "longest_speech_ms": 1792
+            },
+            "model_load_count": 1,
+            "id": "38C1EB37-2E2C-4E25-B133-1187F924D0E7",
+            "engine": "swift-mlx",
+            "text": "周三不对周四下午三点再讨论",
+            "model": "firered",
+            "raw_text": "周三不对周四下午三点再讨论",
+            "elapsed_s": 0.8497902500675991,
+            "asr_confidence": 0.977,
+            "tokens": [
+              1743,
+              1009,
+              1012,
+              2470,
+              1743,
+              2003,
+              1011,
+              1573,
+              1009,
+              4349,
+              1393,
+              6383,
+              6399
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "eddy-plain01",
+          "reference": "我希望语音输入能够保留原来的意思",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999974,
+              "longest_speech_ms": 2720
+            },
+            "model_load_count": 1,
+            "id": "4AC75C1E-33E4-47E2-B4C6-3DE624DD6D6C",
+            "engine": "swift-mlx",
+            "text": "我希望语音输入能够保留原来的意思",
+            "model": "firered",
+            "raw_text": "我希望语音输入能够保留原来的意思",
+            "elapsed_s": 0.9543835415970534,
+            "asr_confidence": 0.99,
+            "tokens": [
+              3016,
+              2644,
+              3507,
+              6445,
+              7403,
+              6748,
+              1368,
+              5651,
+              2204,
+              1258,
+              4714,
+              1624,
+              3542,
+              4824,
+              2958,
+              2847
+            ]
+          },
+          "equal": true
+        },
+        {
+          "id": "silence",
+          "reference": "",
+          "native": {
+            "vad": {
+              "has_speech": false,
+              "max_probability": 0.008910763,
+              "longest_speech_ms": 0
+            },
+            "model_load_count": 1,
+            "id": "42A1A7D8-2525-4EC9-B82C-3F95419FDF88",
+            "engine": "swift-mlx",
+            "text": "",
+            "raw_text": "",
+            "model": "firered",
+            "elapsed_s": 0.023604291724041104
+          },
+          "equal": true
+        },
+        {
+          "id": "qwen-official-zh",
+          "reference": "甚至出现交易几乎停滞的情况",
+          "native": {
+            "vad": {
+              "has_speech": true,
+              "max_probability": 0.9999707,
+              "longest_speech_ms": 3232
+            },
+            "model_load_count": 1,
+            "id": "C92778A8-3A59-4F73-837E-609619D65049",
+            "engine": "swift-mlx",
+            "text": "甚至出现交易几乎停滞的情况",
+            "model": "firered",
+            "raw_text": "甚至出现交易几乎停滞的情况",
+            "elapsed_s": 0.9216865834314376,
+            "asr_confidence": 1,
+            "tokens": [
+              4686,
+              5722,
+              1444,
+              4563,
+              1091,
+              3415,
+              1432,
+              1051,
+              1311,
+              4233,
+              4824,
+              2920,
+              1414
+            ]
+          },
+          "equal": true
+        }
+      ]
+    }
+  ]
+}

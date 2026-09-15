@@ -1,0 +1,10 @@
+{
+  "audio_hashes_verified": 42,
+  "asr_records_verified": 168,
+  "evaluation_rows_verified": 840,
+  "candidate_audits_verified": 168,
+  "vad_checks_passed": 43,
+  "cli_examples_passed": 3,
+  "source_and_input_hashes_match": true,
+  "local_document_links_valid": true
+}

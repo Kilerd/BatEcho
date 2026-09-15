@@ -1,0 +1,17 @@
+{
+  "audio": "data/audio/silence.wav",
+  "model": "firered",
+  "duration_s": 3.0,
+  "vad": {
+    "has_speech": false,
+    "max_probability": 0.00891074538230896,
+    "longest_speech_ms": 0,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160
+  },
+  "raw_text": "",
+  "text": "",
+  "correction": "context",
+  "hotwords_enabled": false,
+  "elapsed_s": 0.24799441709183156
+}
