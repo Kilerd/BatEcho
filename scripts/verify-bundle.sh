@@ -17,5 +17,6 @@ for file in lexicon.json pinyin-characters.json pinyin-phrases.json ThirdPartyNo
 done
 entitlements=$(codesign -d --xml --entitlements - "$app" 2>/dev/null)
 test "$(printf '%s' "$entitlements" | plutil -extract 'com\.apple\.security\.device\.audio-input' raw -o - -)" = true
+python3 "$(dirname "$0")/check-repository-privacy.py" --bundle "$app"
 echo "BatEcho bundle, arm64 executable, icon, MLX kernels and microphone entitlement verified."
 "$app/Contents/MacOS/BatEcho" --verify-runtime

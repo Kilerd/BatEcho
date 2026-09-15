@@ -31,7 +31,7 @@ open build/BatEcho.app --args --speech-settings
 
 ## 签名与发布
 
-`make build` 生成本地开发应用；`make release` 使用 Developer ID 签名、公证并验证 ZIP 安装包。GitHub Actions 的 **macOS Release** 支持手动演练和版本 tag 发布，PR 流水线提供开发构建下载。证书、Keychain profile、runner 配置及完整步骤见 [macOS 打包与签名](docs/macos-release.md)。
+`make build` 生成开发应用；`make release` 使用 Developer ID 签名、公证并验证 ZIP 安装包。GitHub Actions 的 **macOS Release** 支持手动构建和版本 tag 发布，PR 流水线提供开发构建下载。配置说明见 [macOS 打包与签名](docs/macos-release.md)。
 
 图标原图保存在 `Resources/BatEcho.png`，`make icon` 用 macOS 系统工具重新生成各尺寸的 `.icns`。
 

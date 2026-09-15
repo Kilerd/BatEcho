@@ -21,7 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--app", type=Path, default=ROOT / "build/BatEcho.app")
     parser.add_argument("--audio-dir", type=Path, default=ROOT / "ASR/data/audio")
-    parser.add_argument("--output", type=Path, default=ROOT / "ASR/results/batecho-integration.json")
+    parser.add_argument("--output", type=Path, default=ROOT / "build/batecho-integration.json")
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("Choose another --output to preserve the existing evidence")
@@ -90,7 +90,13 @@ def main():
             "swift_version": subprocess.check_output(["swift", "--version"], text=True).strip(),
             "binary_sha256": binary_hash,
             "bundle_info": bundle_info,
-            "signature": signature.stderr.strip(),
+            "signature_checks": {
+                "verified": True,
+                "hardened_runtime": "(runtime)" in signature.stderr,
+                "secure_timestamp": any(line.startswith("Timestamp=") for line in signature.stderr.splitlines()),
+                "developer_id": any(line.startswith("Authority=Developer ID Application:")
+                                    for line in signature.stderr.splitlines()),
+            },
             "entitlements": signature.stdout.strip(),
             "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
                               for path in sorted((ROOT / "Sources/BatEcho").rglob("*")) if path.is_file()},
