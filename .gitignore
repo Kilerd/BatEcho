@@ -1,0 +1,22 @@
+# Build output and local Swift/Xcode state
+.build/
+build/
+.swiftpm/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+
+# macOS metadata
+.DS_Store
+
+# Local environment files and credentials
+.env
+.env.*
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+*.keychain
+*.keychain-db
