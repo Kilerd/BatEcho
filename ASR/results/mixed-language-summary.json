@@ -1,0 +1,57 @@
+{
+  "scope": "4 synthetic clips from 2 templates; no real-speaker inference; no post-correction",
+  "models": {
+    "qwen": {
+      "chinese/hotwords=False": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 3,
+        "case_insensitive_hits": 3
+      },
+      "chinese/hotwords=True": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 4,
+        "case_insensitive_hits": 4
+      },
+      "auto/hotwords=False": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 3,
+        "case_insensitive_hits": 3
+      },
+      "auto/hotwords=True": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 4,
+        "case_insensitive_hits": 4
+      },
+      "language_comparison": {
+        "pairs": 8,
+        "identical_texts": 8
+      }
+    },
+    "fun": {
+      "chinese/hotwords=False": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 1,
+        "case_insensitive_hits": 3
+      },
+      "chinese/hotwords=True": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 2,
+        "case_insensitive_hits": 2
+      },
+      "auto/hotwords=False": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 1,
+        "case_insensitive_hits": 3
+      },
+      "auto/hotwords=True": {
+        "term_occurrences": 6,
+        "canonical_case_hits": 2,
+        "case_insensitive_hits": 2
+      },
+      "language_comparison": {
+        "pairs": 8,
+        "identical_texts": 4
+      }
+    }
+  }
+}

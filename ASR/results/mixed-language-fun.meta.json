@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-15T07:55:48.939379+00:00",
+  "snapshot": {
+    "repo": "mlx-community/Fun-ASR-Nano-2512",
+    "revision": "a7bc96fceaafce39ed6748e0c0fa9a9508b67f86"
+  },
+  "packages": {
+    "mlx": "0.32.2",
+    "qwen3-asr-mlx": "0.2.0",
+    "mlx-audio": "0.5.4"
+  },
+  "script_sha256": "d63d5c466e6f58c9e00b04610c9d74cc2fcc8d439b7b12e02315971f9369bf17",
+  "audio_manifest_sha256": "c628579f43718ab8aa8de57ed37c12480912cdd1290dfa3514d5bc7c485ffcd9",
+  "lexicon_sha256": "3484a5ad702f0ce78e7550e7569b2342ea054baff28a559a706cdb93b0e1f927",
+  "hotwords": [
+    "青简",
+    "祁砚",
+    "璟珩",
+    "幂等性",
+    "灰度发布",
+    "金丝雀",
+    "向量数据库",
+    "词法分析",
+    "韵母",
+    "Cloudflare",
+    "Kubernetes",
+    "PostgreSQL"
+  ],
+  "warmup_calls": 4,
+  "decode": {
+    "temperature": 0.0,
+    "max_tokens": 128,
+    "qwen_repetition_penalty": 1.2,
+    "fun_itn": false
+  },
+  "scope": "four synthetic clips from two sentence templates; no post-correction; no real-speaker conclusions",
+  "timing": "warm feature extraction and decoding only; excludes recording, file read, VAD, model load and text insertion"
+}

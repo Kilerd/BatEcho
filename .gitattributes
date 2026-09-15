@@ -1,0 +1,3 @@
+ASR/results/evaluation*.json linguist-generated=true
+ASR/uv.lock linguist-generated=true
+ASR/experiments/qingjian-scorer/Cargo.lock linguist-generated=true

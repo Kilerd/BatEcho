@@ -19,10 +19,12 @@ enum TranscriberError: LocalizedError {
 /// Streams microphone audio into SFSpeechRecognizer and publishes partial
 /// transcripts plus a smoothed RMS level for the waveform display.
 /// All callbacks are delivered on the main queue.
-final class SpeechTranscriber {
+@MainActor
+final class SpeechTranscriber: SpeechTranscribing {
     var onPartial: ((String) -> Void)?
     var onLevel: ((Float) -> Void)?
     var onFinal: ((String) -> Void)?
+    var onError: ((Error) -> Void)?
 
     private var audioEngine: AVAudioEngine?
     private var recognizer: SFSpeechRecognizer?
@@ -65,7 +67,7 @@ final class SpeechTranscriber {
         }
         input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
             guard let self else { return }
-            self.request?.append(buffer)
+            request.append(buffer)
             self.publishLevel(buffer)
         }
         engine.prepare()
@@ -132,7 +134,7 @@ final class SpeechTranscriber {
         recognizer = nil
     }
 
-    private func publishLevel(_ buffer: AVAudioPCMBuffer) {
+    nonisolated private func publishLevel(_ buffer: AVAudioPCMBuffer) {
         guard let channel = buffer.floatChannelData?[0] else { return }
         let frames = Int(buffer.frameLength)
         guard frames > 0 else { return }

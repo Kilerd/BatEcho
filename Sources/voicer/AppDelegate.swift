@@ -1,15 +1,37 @@
 import ApplicationServices
+import AVFoundation
 import Cocoa
 import Speech
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private let fnMonitor = FnKeyMonitor()
-    private let transcriber = SpeechTranscriber()
+    private var transcriber: SpeechTranscribing?
+    private let localASR = LocalASRClient()
+    private var warmup: Task<Void, Never>?
+    private var recordingEngine = SpeechEngine.local
+    private var session = UUID()
+    private var preparingModel = false
     private let panel = FloatingPanel()
     private let injector = TextInjector()
     private let refiner = LLMRefiner()
     private lazy var settingsController = LLMSettingsWindowController()
+    private lazy var speechSettingsController: SpeechSettingsWindowController = {
+        let controller = SpeechSettingsWindowController()
+        controller.beforeSetup = { [weak self] in
+            guard let self, self.state == .idle else { return false }
+            self.preparingModel = true
+            self.warmup?.cancel()
+            await self.localASR.shutdown()
+            return true
+        }
+        controller.onSetupFinished = { [weak self] in
+            self?.preparingModel = false
+            self?.warmLocalModel()
+        }
+        return controller
+    }()
 
     private enum State {
         case idle
@@ -26,10 +48,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         buildStatusItem()
-        transcriber.requestAuthorization()
+        AVCaptureDevice.requestAccess(for: .audio) { _ in }
+        if Settings.shared.speechEngine == .apple {
+            SFSpeechRecognizer.requestAuthorization { _ in }
+        }
         promptForAccessibility()
         wireCallbacks()
         startFnMonitor()
+        warmLocalModel()
+        if CommandLine.arguments.contains("--speech-settings") {
+            speechSettingsController.show()
+        }
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        transcriber?.cancel()
+        warmup?.cancel()
+        Task {
+            await localASR.shutdown()
+            await MainActor.run { sender.reply(toApplicationShouldTerminate: true) }
+        }
+        return .terminateLater
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -41,9 +80,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func wireCallbacks() {
         fnMonitor.onFnDown = { [weak self] in self?.beginRecording() }
         fnMonitor.onFnUp = { [weak self] in self?.endRecording() }
-        transcriber.onPartial = { [weak self] text in self?.panel.setText(text) }
-        transcriber.onLevel = { [weak self] level in self?.panel.setLevel(level) }
-        transcriber.onFinal = { [weak self] text in self?.handleFinal(text) }
+    }
+
+    private func warmLocalModel() {
+        guard Settings.shared.speechEngine == .local, LocalASRRuntime().isPrepared else { return }
+        warmup?.cancel()
+        warmup = Task { [weak self] in
+            do { try await self?.localASR.warmUp() }
+            catch is CancellationError { }
+            catch { NSLog("Local speech warmup failed: %@", error.localizedDescription) }
+        }
     }
 
     private func promptForAccessibility() {
@@ -84,7 +130,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard tapRetryTimer == nil else { return }
         // The event tap cannot be created until permissions are granted; keep retrying.
         tapRetryTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            self?.startFnMonitor()
+            Task { @MainActor in self?.startFnMonitor() }
         }
     }
 
@@ -121,16 +167,62 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func beginRecording() {
         guard state == .idle, !injector.isBusy else { return }
-        let speechAuth = SFSpeechRecognizer.authorizationStatus()
-        guard speechAuth == .authorized || speechAuth == .notDetermined else {
-            panel.flash("Speech recognition permission denied")
+        guard !preparingModel else {
+            panel.flash("The local speech model is being prepared")
             return
         }
+        guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
+            AVCaptureDevice.requestAccess(for: .audio) { _ in }
+            panel.flash("Allow microphone access, then hold Fn again")
+            return
+        }
+        let settings = Settings.shared
+        recordingEngine = settings.speechEngine
+        let selected: SpeechTranscribing
+        if recordingEngine == .local {
+            guard LocalASRRuntime().isPrepared else {
+                speechSettingsController.show()
+                return
+            }
+            selected = LocalSpeechTranscriber(client: localASR, hotwords: settings.hotwordsEnabled,
+                                              score: settings.hotwordScore, correction: settings.pinyinCorrectionEnabled)
+        } else {
+            guard SFSpeechRecognizer.authorizationStatus() == .authorized else {
+                SFSpeechRecognizer.requestAuthorization { _ in }
+                panel.flash("Allow speech recognition, then hold Fn again")
+                return
+            }
+            selected = SpeechTranscriber()
+        }
+        let token = UUID()
+        session = token
+        selected.onPartial = { [weak self] text in
+            guard let self, self.session == token else { return }
+            self.panel.setText(text)
+        }
+        selected.onLevel = { [weak self] level in
+            guard let self, self.session == token else { return }
+            self.panel.setLevel(level)
+        }
+        selected.onFinal = { [weak self] text in
+            guard let self, self.session == token else { return }
+            self.handleFinal(text)
+        }
+        selected.onError = { [weak self] error in
+            guard let self, self.session == token else { return }
+            self.transcriber?.cancel()
+            self.transcriber = nil
+            self.state = .idle
+            self.panel.flash(error.localizedDescription)
+        }
+        transcriber = selected
         do {
-            try transcriber.start(localeID: Settings.shared.languageID)
+            try selected.start(localeID: settings.languageID)
             state = .recording
             panel.show()
         } catch {
+            selected.cancel()
+            transcriber = nil
             NSLog("Failed to start transcription: \(error.localizedDescription)")
             panel.flash(error.localizedDescription)
         }
@@ -141,7 +233,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         state = .finishing
         // Audio capture is over; let the bars decay while we wait for the final result.
         panel.setLevel(0)
-        transcriber.stop()
+        if recordingEngine == .local { panel.showTranscribing() }
+        transcriber?.stop()
     }
 
     private func handleFinal(_ text: String) {
@@ -150,10 +243,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         case .recording:
             // The recognizer died while Fn is still held; abort this session.
-            transcriber.cancel()
+            transcriber?.cancel()
+            transcriber = nil
             state = .idle
             panel.hide()
         case .finishing:
+            transcriber = nil
             let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else {
                 state = .idle
@@ -213,7 +308,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         menu.addItem(.separator())
 
-        let languageItem = NSMenuItem(title: "Language", action: nil, keyEquivalent: "")
+        let engineItem = NSMenuItem(title: "Speech Engine", action: nil, keyEquivalent: "")
+        let engineMenu = NSMenu()
+        engineMenu.autoenablesItems = false
+        for engine in SpeechEngine.allCases {
+            let item = NSMenuItem(title: engine.title, action: #selector(selectEngine(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = engine.rawValue
+            item.state = Settings.shared.speechEngine == engine ? .on : .off
+            engineMenu.addItem(item)
+        }
+        engineItem.submenu = engineMenu
+        menu.addItem(engineItem)
+        let speechSettings = NSMenuItem(title: "Speech Settings…", action: #selector(openSpeechSettings(_:)), keyEquivalent: "")
+        speechSettings.target = self
+        menu.addItem(speechSettings)
+
+        let languageItem = NSMenuItem(title: "Apple Speech Language", action: nil, keyEquivalent: "")
+        languageItem.isEnabled = Settings.shared.speechEngine == .apple
         let languageMenu = NSMenu()
         languageMenu.autoenablesItems = false
         for language in Languages.all {
@@ -253,6 +365,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let localeID = sender.representedObject as? String else { return }
         Settings.shared.languageID = localeID
         refreshMenu()
+    }
+
+    @objc private func selectEngine(_ sender: NSMenuItem) {
+        guard state == .idle, !preparingModel,
+              let value = sender.representedObject as? String,
+              let engine = SpeechEngine(rawValue: value) else { return }
+        Settings.shared.speechEngine = engine
+        if engine == .local {
+            warmLocalModel()
+        } else {
+            warmup?.cancel()
+            Task { await localASR.shutdown() }
+            SFSpeechRecognizer.requestAuthorization { _ in }
+        }
+        refreshMenu()
+    }
+
+    @objc private func openSpeechSettings(_ sender: NSMenuItem) {
+        speechSettingsController.show()
     }
 
     @objc private func toggleLLM(_ sender: NSMenuItem) {

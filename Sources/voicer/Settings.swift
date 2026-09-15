@@ -1,5 +1,17 @@
 import Foundation
 
+enum SpeechEngine: String, CaseIterable {
+    case local = "firered"
+    case apple = "apple"
+
+    var title: String {
+        switch self {
+        case .local: return "Local FireRed · Chinese / English"
+        case .apple: return "Apple Speech Recognition"
+        }
+    }
+}
+
 struct Language {
     let name: String
     let localeID: String
@@ -24,11 +36,39 @@ final class Settings {
         static let llmBaseURL = "llm.baseURL"
         static let llmAPIKey = "llm.apiKey"
         static let llmModel = "llm.model"
+        static let speechEngine = "speech.engine"
+        static let hotwords = "speech.hotwords"
+        static let hotwordScore = "speech.hotwordScore"
+        static let pinyinCorrection = "speech.pinyinCorrection"
     }
 
     private let defaults = UserDefaults.standard
 
     private init() {}
+
+    var speechEngine: SpeechEngine {
+        get { defaults.string(forKey: Keys.speechEngine).flatMap(SpeechEngine.init(rawValue:)) ?? .local }
+        set { defaults.set(newValue.rawValue, forKey: Keys.speechEngine) }
+    }
+
+    var hotwordsEnabled: Bool {
+        get { defaults.bool(forKey: Keys.hotwords) }
+        set { defaults.set(newValue, forKey: Keys.hotwords) }
+    }
+
+    var hotwordScore: Double {
+        get {
+            guard let value = defaults.object(forKey: Keys.hotwordScore) as? Double,
+                  value.isFinite, (0...8).contains(value) else { return 4 }
+            return value
+        }
+        set { defaults.set(newValue, forKey: Keys.hotwordScore) }
+    }
+
+    var pinyinCorrectionEnabled: Bool {
+        get { defaults.object(forKey: Keys.pinyinCorrection) as? Bool ?? true }
+        set { defaults.set(newValue, forKey: Keys.pinyinCorrection) }
+    }
 
     var languageID: String {
         get { defaults.string(forKey: Keys.language) ?? "zh-CN" }

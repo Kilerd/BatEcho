@@ -1,0 +1,22 @@
+[
+  {"id":"term01","category":"term","text":"我想把青简接入这个语音输入法。","terms":["青简"]},
+  {"id":"term02","category":"term","text":"请把这份文档发给同事祁砚。","terms":["祁砚"]},
+  {"id":"term03","category":"term","text":"这个项目由同事璟珩负责。","terms":["璟珩"]},
+  {"id":"term04","category":"term","text":"这个接口需要保证幂等性，重试不能重复扣款。","terms":["幂等性"]},
+  {"id":"term05","category":"term","text":"新版本先做灰度发布，观察错误率。","terms":["灰度发布"]},
+  {"id":"term06","category":"term","text":"先部署金丝雀，再验证这次修改。","terms":["金丝雀"]},
+  {"id":"term07","category":"term","text":"检索结果存储在向量数据库里。","terms":["向量数据库"]},
+  {"id":"term08","category":"term","text":"编译器首先进行词法分析。","terms":["词法分析"]},
+  {"id":"term09","category":"term","text":"拼音纠错需要考虑声母和韵母。","terms":["韵母"]},
+  {"id":"negative01","category":"negative","text":"请把婚礼请柬放在桌子上。","terms":[]},
+  {"id":"negative02","category":"negative","text":"我们继续讨论起源和发展。","terms":[]},
+  {"id":"negative03","category":"negative","text":"这些精美的饰品需要仔细包装。","terms":[]},
+  {"id":"negative04","category":"negative","text":"这个房间的灯还是亮着的。","terms":[]},
+  {"id":"negative05","category":"negative","text":"请不要把密钥写进日志。","terms":[]},
+  {"id":"negative06","category":"negative","text":"我明天下午有空，可以一起讨论。","terms":[]},
+  {"id":"mixed01","category":"mixed","text":"我们把这个服务部署到 Cloudflare。","terms":["Cloudflare"]},
+  {"id":"mixed02","category":"mixed","text":"这个服务使用 Kubernetes 和 PostgreSQL。","terms":["Kubernetes","PostgreSQL"]},
+  {"id":"number01","category":"number","text":"会议安排在九月十五日下午三点半。","terms":[]},
+  {"id":"selfcorrect01","category":"selfcorrect","text":"周三，不对，周四下午三点再讨论。","terms":[]},
+  {"id":"plain01","category":"plain","text":"我希望语音输入能够保留原来的意思。","terms":[]}
+]

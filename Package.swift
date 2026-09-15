@@ -10,6 +10,11 @@ let package = Package(
         .executableTarget(
             name: "voicer",
             path: "Sources/voicer"
+        ),
+        .testTarget(
+            name: "voicerTests",
+            dependencies: ["voicer"],
+            resources: [.copy("Fixtures")]
         )
     ]
 )

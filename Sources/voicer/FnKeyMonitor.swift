@@ -8,8 +8,8 @@ import Cocoa
 /// the key is used for push-to-talk. Key events pressed together with Fn are
 /// not affected: they arrive as separate events that still carry the Fn flag.
 final class FnKeyMonitor {
-    var onFnDown: (() -> Void)?
-    var onFnUp: (() -> Void)?
+    var onFnDown: (@MainActor () -> Void)?
+    var onFnUp: (@MainActor () -> Void)?
 
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?

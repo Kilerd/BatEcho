@@ -137,6 +137,14 @@ final class FloatingPanel: NSPanel {
         }
     }
 
+    func showTranscribing() {
+        waveform.stopAnimating()
+        waveform.isHidden = true
+        spinner.startAnimation(nil)
+        setPlaceholder("Transcribing…")
+        adjustWidth(for: "Transcribing…")
+    }
+
     /// Shows a transient message capsule (no waveform), auto-hiding shortly.
     func flash(_ message: String) {
         generation += 1

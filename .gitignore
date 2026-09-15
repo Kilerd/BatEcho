@@ -20,3 +20,11 @@ credentials/
 *.pfx
 *.keychain
 *.keychain-db
+
+# Local ASR environments, downloaded weights and audio
+.venv/
+.cache/
+__pycache__/
+*.pyc
+ASR/data/audio/
+ASR/experiments/*/target/

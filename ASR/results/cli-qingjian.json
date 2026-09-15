@@ -1,0 +1,44 @@
+{
+  "audio": "data/audio/tingting-term01.wav",
+  "model": "fun",
+  "duration_s": 3.010875,
+  "vad": {
+    "has_speech": true,
+    "max_probability": 0.9999991655349731,
+    "longest_speech_ms": 3008,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160
+  },
+  "raw_text": "我想把轻剪接入这个语音输入法",
+  "text": "我想把青简接入这个语音输入法",
+  "correction": "qingjian",
+  "model_load_s": 1.947437416005414,
+  "asr_s": 0.2783552500186488,
+  "lm": {
+    "elapsed_s": 0.012595458,
+    "scores": [
+      -65.0558871626854,
+      -63.31464733183384
+    ]
+  },
+  "candidates": [
+    {
+      "text": "我想把轻剪接入这个语音输入法",
+      "edits": []
+    },
+    {
+      "text": "我想把青简接入这个语音输入法",
+      "edits": [
+        {
+          "start": 3,
+          "end": 5,
+          "before": "轻剪",
+          "after": "青简",
+          "cost": 0.0,
+          "context_supported": true
+        }
+      ]
+    }
+  ],
+  "elapsed_s": 2.342183791042771
+}

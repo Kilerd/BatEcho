@@ -1,0 +1,186 @@
+[
+  {
+    "text": "青简",
+    "tokens": [
+      "青",
+      "简"
+    ],
+    "ids": [
+      7366,
+      5236
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "祁砚",
+    "tokens": [
+      "祁",
+      "砚"
+    ],
+    "ids": [
+      5046,
+      4966
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "璟珩",
+    "tokens": [
+      "璟",
+      "珩"
+    ],
+    "ids": [
+      4661,
+      4588
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "幂等性",
+    "tokens": [
+      "幂",
+      "等",
+      "性"
+    ],
+    "ids": [
+      2665,
+      5215,
+      2852
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "灰度发布",
+    "tokens": [
+      "灰",
+      "度",
+      "发",
+      "布"
+    ],
+    "ids": [
+      4317,
+      2702,
+      1644,
+      2640
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "金丝雀",
+    "tokens": [
+      "金",
+      "丝",
+      "雀"
+    ],
+    "ids": [
+      7001,
+      1025,
+      7316
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "向量数据库",
+    "tokens": [
+      "向",
+      "量",
+      "数",
+      "据",
+      "库"
+    ],
+    "ids": [
+      1691,
+      7000,
+      3345,
+      3187,
+      2691
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "词法分析",
+    "tokens": [
+      "词",
+      "法",
+      "分",
+      "析"
+    ],
+    "ids": [
+      6416,
+      4006,
+      1452,
+      3562
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "韵母",
+    "tokens": [
+      "韵",
+      "母"
+    ],
+    "ids": [
+      7404,
+      3884
+    ],
+    "english_boundary": false
+  },
+  {
+    "text": "Cloudflare",
+    "tokens": [
+      "▁CL",
+      "OUD",
+      "F",
+      "L",
+      "ARE"
+    ],
+    "ids": [
+      185,
+      666,
+      288,
+      508,
+      82
+    ],
+    "english_boundary": true
+  },
+  {
+    "text": "Kubernetes",
+    "tokens": [
+      "▁K",
+      "U",
+      "BER",
+      "N",
+      "ET",
+      "ES"
+    ],
+    "ids": [
+      497,
+      892,
+      139,
+      588,
+      276,
+      272
+    ],
+    "english_boundary": true
+  },
+  {
+    "text": "PostgreSQL",
+    "tokens": [
+      "▁P",
+      "OST",
+      "G",
+      "RES",
+      "Q",
+      "L"
+    ],
+    "ids": [
+      685,
+      658,
+      326,
+      751,
+      726,
+      508
+    ],
+    "english_boundary": true
+  }
+]

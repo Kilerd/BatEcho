@@ -1,0 +1,29 @@
+{
+  "audio": "data/audio/tingting-term01.wav",
+  "model": "firered",
+  "duration_s": 3.010875,
+  "vad": {
+    "has_speech": true,
+    "max_probability": 0.9999991655349731,
+    "longest_speech_ms": 3008,
+    "threshold": 0.5,
+    "minimum_speech_ms": 160
+  },
+  "raw_text": "我想把青简接入这个语音输入法",
+  "text": "我想把青简接入这个语音输入法",
+  "correction": "none",
+  "hotwords_enabled": true,
+  "model_load_s": 3.103963291971013,
+  "asr_s": 0.9453282919712365,
+  "asr_confidence": 0.867,
+  "asr_confidence_scope": "utterance",
+  "hotword_score": 4.0,
+  "hotword_method": "contextual_beam_search",
+  "candidates": [
+    {
+      "text": "我想把青简接入这个语音输入法",
+      "edits": []
+    }
+  ],
+  "elapsed_s": 4.172087750048377
+}

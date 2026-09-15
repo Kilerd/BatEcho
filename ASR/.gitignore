@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.cache/
+data/audio/
+.DS_Store
+experiments/*/target/
