@@ -252,7 +252,6 @@
     "NSMicrophoneUsageDescription": "BatEcho needs the microphone to transcribe your speech.",
     "NSSpeechRecognitionUsageDescription": "BatEcho uses speech recognition to convert your voice into text."
   },
-  "signature": "Executable=/Users/kilerd/Projects/voicer/build/signing-preview/BatEcho.app/Contents/MacOS/BatEcho\nIdentifier=com.kilerd.voicer\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20500 size=82717 flags=0x10000(runtime) hashes=2574+7 location=embedded\nSignature size=9036\nAuthority=Developer ID Application: Chen Xin (V9ZRBTHDGR)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Sep 15, 2026 at 20:56:24\nInfo.plist entries=15\nTeamIdentifier=V9ZRBTHDGR\nRuntime Version=26.5.0\nSealed Resources version=2 rules=13 files=10\nInternal requirements count=1 size=180",
   "entitlements": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"https://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict><key>com.apple.security.device.audio-input</key><true/></dict></plist>",
   "source_sha256": {
     "Sources/BatEcho/ASRResources/FireRed-LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -292,5 +291,11 @@
     "Sources/BatEcho/TextInjector.swift": "901b8c7116f1bc9d35a87d2615718fae170c991b01f18525dca8f781e286f51a",
     "Sources/BatEcho/WaveformView.swift": "aac4379162a317c5b9a3347f264a6dff5da4726629f88b9f2481383c371aa11f",
     "Sources/BatEcho/main.swift": "49140ac535cca97360108e15a5151c843c0a6aa0f163339f76f39f8f2a3f50a0"
+  },
+  "signature_checks": {
+    "verified": true,
+    "hardened_runtime": true,
+    "secure_timestamp": true,
+    "developer_id": true
   }
 }

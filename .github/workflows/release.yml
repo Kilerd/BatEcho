@@ -37,10 +37,22 @@ jobs:
       BATECHO_NOTARY_PROFILE: ${{ vars.MACOS_NOTARY_PROFILE || 'batecho-notary' }}
       BATECHO_NOTARY_KEYCHAIN: ${{ vars.MACOS_NOTARY_KEYCHAIN }}
     steps:
+      - name: Mask runner-specific paths in logs
+        run: |
+          python3 - <<'PY'
+          import os
+          for key in ("HOME", "USER", "LOGNAME", "RUNNER_NAME", "RUNNER_WORKSPACE", "RUNNER_TEMP", "GITHUB_WORKSPACE"):
+              value = os.environ.get(key, "")
+              if value:
+                  value = value.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+                  print(f"::add-mask::{value}")
+          PY
       - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Check repository privacy before packaging
+        run: python3 scripts/check-repository-privacy.py
       - name: Check version and release tag
         id: version
         env:

@@ -1,0 +1,19 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Source file SHA-256 values in frozen comparison results"
+condition = "AND"
+paths = ['''(^|/)ASR/results/[^/]+\.json$''']
+regexTarget = "line"
+regexes = ['''^\s*"Sources/(voicer|BatEcho)/[^"\r\n]+\.swift": "[0-9a-f]{64}",?\s*$''']
+
+[[rules.allowlists]]
+description = "FireRed convolution parameter names"
+condition = "AND"
+paths = ['''(^|/)Sources/(voicer|BatEcho)/NativeASR/Models/FireRedASR2Model\.swift$''']
+regexTarget = "line"
+regexes = ['''^\s*@ModuleInfo\(key: "pointwise_conv[12]"\) var pointwiseConv[12]: Conv1d\s*$''']
