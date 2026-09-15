@@ -17,7 +17,7 @@
 | 签名身份 | Keychain 有有效的 `Developer ID Application: Chen Xin (V9ZRBTHDGR)`；脚本自动选择，也支持指定证书名称或 SHA-1 |
 | 已安装 GhostLens | 带 Hardened Runtime、Developer ID 签名、安全时间戳和已装订公证票据 |
 | 公证凭据 | 用户已在本机 `login.keychain-db` 配置 `batecho-notary`；显式指定该 Keychain 的认证检查通过 |
-| GitHub runner | GhostLens 有在线的仓库级 `kilerds-Mac-mini`；BatEcho 仓库尚未注册 runner，不能直接使用另一个仓库的 runner |
+| GitHub runner | BatEcho 已通过独立 ephemeral runner 完成 CI 公证，单次任务后自动注销；后续发布需要启动 BatEcho 专属 runner。GhostLens 的 runner 保持原配置 |
 | 应用更新 | BatEcho 当前没有自动更新功能，因此不生成 GhostLens 专用的 `latest-mac.yml` |
 | 应用身份 | 保留 `com.kilerd.voicer`，沿用 UserDefaults 和 `Application Support/voicer/asr`；产品名、可执行文件、Swift 模块和图标改为 BatEcho |
 
@@ -114,7 +114,15 @@ git push origin HEAD:refs/heads/ci/notarization
 
 2026-09-15 本机验证：Release 构建与 16 项 Swift 测试通过；Developer ID 签名、安全时间戳、Hardened Runtime 和签名后的 CPU VAD 检查通过。签名应用复制到仓库外，7 条真实模型文件检查全部通过，涵盖中文、英文热词、静音与 48 kHz 双声道 CAF，详见 [`batecho-signing-integration.json`](../ASR/results/batecho-signing-integration.json)。Finder 读取到正确的蝙蝠图标；约 13 MiB 的签名预览 ZIP 解压后，签名、资源与 CPU VAD 再验证通过。
 
-早期签名预览的 Gatekeeper 结果为 `Unnotarized Developer ID`。当前公证凭据认证已通过；实际发行包以 `dist/notarization.json` 中的 `Accepted` 状态、`stapler validate` 和 Gatekeeper 验证为准。自托管发布 job 还需注册 BatEcho runner。
+2026-09-15 [GitHub Actions 公证演练](https://github.com/Kilerd/BatEcho/actions/runs/34970757516)成功，构建 commit 为 `661b7ae1b4e5f49390b8f93f7aeef200f74e98ab`，工作区干净。该次运行由 GitHub Actions 调度，在本机独立的 macOS / ARM64 self-hosted runner 执行；`package` 成功，`publish` 跳过。
+
+- 16 项 Swift 测试、Developer ID 签名、Hardened Runtime 和签名后的 CPU VAD 检查通过。
+- Apple submission `aa3db871-0b3d-46bd-82ee-60fea4a9979a` 为 `Accepted`，公证日志的 `issues` 为 `null`。
+- CI 完成 staple 后生成 ZIP，再解压检查票据和 Gatekeeper；从 Actions 下载的同一产物也通过 SHA-256、签名、资源、CPU VAD、票据和 Gatekeeper 复验。
+- 下载产物的真实模型检查通过：中英文热词句输出 `这个服务使用 kubernetes和 postgresql`，静音输出空字符串，模型只加载一次。
+- [Actions artifact](https://github.com/Kilerd/BatEcho/actions/runs/34970757516/artifacts/10397113666) 为 `BatEcho-1.0.0-macos-arm64`，保留到 2026-09-29。其中 `BatEcho-1.0.0-macos-arm64.zip` 的 SHA-256 为 `2a3c18860f03696a247d5ee0d87195984f7142c2138f5969e1f900426247ab7c`。
+
+这次演练使用的 runner 在任务结束后自动注销；它验证了现有登录会话与 Keychain 下的 CI 公证链路。后续运行需重新注册并启动 runner，或配置常驻 runner。发行包的最终状态以 `dist/notarization.json` 中的 `Accepted`、`stapler validate` 和 Gatekeeper 结果为准。
 
 ```bash
 scripts/verify-bundle.sh dist/BatEcho.app
