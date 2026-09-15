@@ -4,6 +4,13 @@ import Foundation
 /// Accessibility permissions. Repeated --transcribe-file flags reuse one model.
 enum FileTranscriptionCommand {
     static func runIfRequested(_ arguments: [String]) -> Bool {
+        if arguments == ["--verify-runtime"] {
+            do {
+                try RuntimeValidation.checkCPUVAD()
+                print("BatEcho CPU VAD runtime check passed.")
+                return true
+            } catch { fail(error.localizedDescription) }
+        }
         if arguments == ["--prepare-model"] {
             Task {
                 do {

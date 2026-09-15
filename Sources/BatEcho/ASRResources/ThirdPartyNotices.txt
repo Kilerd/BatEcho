@@ -1,11 +1,12 @@
 Native FireRedASR2, Silero VAD and SentencePiece implementations adapted from
 https://github.com/Blaizzy/mlx-audio-swift/tree/3e978558404df4ad1bbb0a5634a03df2b0f9dfa5
-Only the required models and tokenizer are included; voicer owns the model download,
+Only the required models and tokenizer are included; BatEcho owns the model download,
 feature extraction, hotword decoder and cancellation integration.
 
 Adaptations: remove HuggingFace/STT framework dependencies and unused model
 entry points; require CMVN/vocabulary; validate the pinned architecture; use a
-16 kHz Silero branch, native download and contextual beam search.
+16 kHz Silero branch, native download and contextual beam search; use primitive
+ReLU operations in CPU VAD to avoid unsigned runtime-compiled shared libraries.
 MLX Swift 0.31.6 (MIT) is linked via SwiftPM:
 https://github.com/ml-explore/mlx-swift/tree/0bb916c67f4b9e5c682cbe02a42c701c93ab5021
 

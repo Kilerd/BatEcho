@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "voicer",
+    name: "BatEcho",
     platforms: [
         .macOS(.v14)
     ],
@@ -11,19 +11,19 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "voicer",
+            name: "BatEcho",
             dependencies: [
                 .product(name: "MLX", package: "mlx-swift"),
                 .product(name: "MLXNN", package: "mlx-swift"),
                 .product(name: "MLXFast", package: "mlx-swift"),
                 .product(name: "MLXFFT", package: "mlx-swift")
             ],
-            path: "Sources/voicer",
+            path: "Sources/BatEcho",
             resources: [.copy("ASRResources")]
         ),
         .testTarget(
-            name: "voicerTests",
-            dependencies: ["voicer"],
+            name: "BatEchoTests",
+            dependencies: ["BatEcho"],
             resources: [.copy("Fixtures")]
         )
     ]

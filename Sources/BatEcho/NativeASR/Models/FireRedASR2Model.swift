@@ -766,7 +766,7 @@ public final class FireRedASR2Model: Module {
         let configURL = modelDirectory.appendingPathComponent("config.json")
         let configData = try Data(contentsOf: configURL)
         let config = try JSONDecoder().decode(FireRedASR2Config.self, from: configData)
-        try config.validateForVoicer()
+        try config.validateForBatEcho()
 
         let model = FireRedASR2Model(config)
         try model.loadAssets(from: modelDirectory)

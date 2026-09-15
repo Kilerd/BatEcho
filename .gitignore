@@ -1,6 +1,7 @@
 # Build output and local Swift/Xcode state
 .build/
 build/
+dist/
 .swiftpm/
 DerivedData/
 xcuserdata/

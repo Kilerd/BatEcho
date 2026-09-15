@@ -1,7 +1,7 @@
 """Rebuild static Swift pinyin data and Python parity fixtures (development only).
 
 Run from the repository with ASR's locked Python 3.12 environment. The application
-never invokes this script. Licenses live in Sources/voicer/ASRResources.
+never invokes this script. Licenses live in Sources/BatEcho/ASRResources.
 """
 import argparse
 import json
@@ -26,8 +26,8 @@ def main():
     parser.add_argument('--model-dir', type=Path,
                         default=Path.home() / 'Library/Application Support/voicer/asr/models/firered')
     args = parser.parse_args()
-    resources = ROOT / 'Sources/voicer/ASRResources'
-    fixtures = ROOT / 'Tests/voicerTests/Fixtures'
+    resources = ROOT / 'Sources/BatEcho/ASRResources'
+    fixtures = ROOT / 'Tests/BatEchoTests/Fixtures'
     normal = lambda value: convert(value, Style.NORMAL, strict=True)
     characters = {chr(k): normal(v.split(',')[0]) for k, v in PINYIN_DICT.items()}
     phrases = {k: [normal(p[0]) for p in v] for k, v in PHRASES_DICT.items()}

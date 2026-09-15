@@ -110,17 +110,20 @@ private final class SileroVADBranch: Module {
         let imag = x[.ellipsis, config.cutoff ..< (config.cutoff * 2)]
         x = sqrt(real * real + imag * imag)
 
-        x = MLXNN.relu(conv1(x))
-        x = MLXNN.relu(conv2(x))
-        x = MLXNN.relu(conv3(x))
-        x = MLXNN.relu(conv4(x))
+        // MLXNN.relu compiles a CPU shared library at runtime. Its ad-hoc
+        // signature cannot load into a Developer ID / Hardened Runtime app.
+        // Use the identical primitive without CPU compilation.
+        x = MLX.maximum(conv1(x), 0)
+        x = MLX.maximum(conv2(x), 0)
+        x = MLX.maximum(conv3(x), 0)
+        x = MLX.maximum(conv4(x), 0)
 
         let (hSeq, cSeq) = lstm(x, hidden: hidden, cell: cell)
         let lastH = hSeq[0..., -1, 0...]
         let lastC = cSeq[0..., -1, 0...]
         let newState = stacked([lastH, lastC], axis: 0)
 
-        var out = MLXNN.relu(hSeq)
+        var out = MLX.maximum(hSeq, 0)
         out = sigmoid(finalConv(out))
         let prob = mean(out.squeezed(axis: -1), axis: 1, keepDims: true)
         return (prob, newState)

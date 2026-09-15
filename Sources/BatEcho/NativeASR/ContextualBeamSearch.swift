@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Adapted from mlx-audio 0.5.4 and voicer's Python contextual decoder.
+// Adapted from mlx-audio 0.5.4 and BatEcho's Python contextual decoder.
 // Copyright (c) 2025 Prince Canuma. See ASRResources/ThirdPartyNotices.txt.
 import Foundation
 import MLX

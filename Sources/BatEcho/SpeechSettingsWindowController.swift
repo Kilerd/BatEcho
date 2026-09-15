@@ -19,7 +19,7 @@ final class SpeechSettingsWindowController: NSWindowController {
     convenience init() {
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 260),
                               styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.title = "Speech Settings"
+        window.title = "BatEcho · Speech Settings"
         window.isReleasedWhenClosed = false
         self.init(window: window)
         buildUI()

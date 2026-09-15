@@ -1,6 +1,20 @@
 import XCTest
 import MLX
-@testable import voicer
+@testable import BatEcho
+
+final class RuntimeLocationTests: XCTestCase {
+    func testRenamePreservesRuntimeAndSupportsBothEnvironmentNames() {
+        let home = URL(fileURLWithPath: "/example-home")
+        XCTAssertEqual(LocalASRRuntime.defaultDirectory(environment: [:], home: home).path,
+                       "/example-home/Library/Application Support/voicer/asr")
+        XCTAssertEqual(LocalASRRuntime.defaultDirectory(environment: ["VOICER_ASR_RUNTIME": "/legacy"], home: home).path,
+                       "/legacy")
+        XCTAssertEqual(LocalASRRuntime.defaultDirectory(environment: ["BATECHO_ASR_RUNTIME": "/new", "VOICER_ASR_RUNTIME": "/legacy"], home: home).path,
+                       "/new")
+        XCTAssertEqual(LocalASRRuntime.defaultDirectory(environment: ["BATECHO_ASR_RUNTIME": "", "VOICER_ASR_RUNTIME": "/legacy"], home: home).path,
+                       "/legacy")
+    }
+}
 
 private final class FakePipeline: ASRPipeline {
     var warm = false
@@ -78,7 +92,7 @@ final class LocalASRClientTests: XCTestCase {
     }
 
     func testMissingAssetsFailWithoutLaunchingProcess() async throws {
-        let client = LocalASRClient(runtime: LocalASRRuntime(directory: URL(fileURLWithPath: "/nonexistent-voicer-runtime")))
+        let client = LocalASRClient(runtime: LocalASRRuntime(directory: URL(fileURLWithPath: "/nonexistent-BatEcho-runtime")))
         do { try await client.warmUp(); XCTFail("Expected missing model") }
         catch LocalASRError.notPrepared { }
         await client.shutdown()

@@ -1,15 +1,15 @@
 import AVFoundation
 import XCTest
 import MLX
-@testable import voicer
+@testable import BatEcho
 
 final class NativeASRTests: XCTestCase {
     private var fixtures: URL { Bundle.module.resourceURL!.appendingPathComponent("Fixtures") }
 
     func testMalformedModelConfigurationIsRejectedBeforeAllocation() throws {
-        XCTAssertNoThrow(try FireRedASR2Config().validateForVoicer())
+        XCTAssertNoThrow(try FireRedASR2Config().validateForBatEcho())
         let invalid = FireRedASR2Config(encoder: .init(nLayers: -1))
-        XCTAssertThrowsError(try invalid.validateForVoicer())
+        XCTAssertThrowsError(try invalid.validateForBatEcho())
     }
 
     func testFbankMatchesFrozenPythonRecipe() throws {

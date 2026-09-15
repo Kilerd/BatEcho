@@ -141,12 +141,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard !relaunchAlertShown else { return }
         relaunchAlertShown = true
         let alert = NSAlert()
-        alert.messageText = "voicer cannot listen to the Fn key yet"
+        alert.messageText = "BatEcho cannot listen to the Fn key yet"
         alert.informativeText = """
         Accessibility looks granted, but the Fn listener still cannot start. \
         This usually happens after rebuilding the app: macOS keeps the old \
         binary's permission. In System Settings > Privacy & Security > \
-        Accessibility, toggle voicer off and on (or remove and re-add it), \
+        Accessibility, toggle BatEcho off and on (or remove and re-add it), \
         then relaunch.
         """
         alert.addButton(withTitle: "Relaunch Now")
@@ -288,14 +288,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func refreshStatusIcon() {
-        let symbol = fnMonitorActive ? "mic.fill" : "mic.slash.fill"
-        statusItem?.button?.image = NSImage(systemSymbolName: symbol, accessibilityDescription: "voicer")
-        statusItem?.button?.image?.isTemplate = true
+        guard let button = statusItem?.button else { return }
+        if fnMonitorActive,
+           let url = Bundle.main.url(forResource: "BatEcho", withExtension: "icns"),
+           let logo = NSImage(contentsOf: url) {
+            logo.size = NSSize(width: 18, height: 18)
+            logo.isTemplate = false
+            button.image = logo
+        } else {
+            button.image = NSImage(systemSymbolName: fnMonitorActive ? "mic.fill" : "mic.slash.fill",
+                                   accessibilityDescription: "BatEcho")
+            button.image?.isTemplate = true
+        }
+        button.setAccessibilityLabel("BatEcho")
+        button.toolTip = fnMonitorActive ? "BatEcho · Hold Fn to Dictate" : "BatEcho · Accessibility Permission Needed"
     }
 
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()
         menu.autoenablesItems = false
+
+        menu.addItem(NSMenuItem(title: "About BatEcho", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: ""))
+        menu.addItem(.separator())
 
         if fnMonitorActive {
             let hint = NSMenuItem(title: "Hold Fn to Dictate", action: nil, keyEquivalent: "")
@@ -357,7 +371,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(llmItem)
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit voicer", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit BatEcho", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         return menu
     }
 

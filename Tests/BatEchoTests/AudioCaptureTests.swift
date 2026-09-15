@@ -1,6 +1,6 @@
 import AVFoundation
 import XCTest
-@testable import voicer
+@testable import BatEcho
 
 final class AudioCaptureTests: XCTestCase {
     func testNativeRateStereoRecordingIsFinalizedAndDeleted() throws {

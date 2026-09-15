@@ -12,7 +12,7 @@ final class AudioCapture: @unchecked Sendable {
     private let maximumFrames: AVAudioFramePosition
 
     init(format: AVAudioFormat, directory: URL = FileManager.default.temporaryDirectory) throws {
-        url = directory.appendingPathComponent("voicer-\(UUID().uuidString).caf")
+        url = directory.appendingPathComponent("BatEcho-\(UUID().uuidString).caf")
         maximumFrames = AVAudioFramePosition(format.sampleRate * 30)
         var settings = format.settings
         settings[AVLinearPCMIsNonInterleaved] = false

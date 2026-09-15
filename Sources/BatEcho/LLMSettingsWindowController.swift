@@ -15,7 +15,7 @@ final class LLMSettingsWindowController: NSWindowController {
             backing: .buffered,
             defer: false
         )
-        window.title = "LLM Refinement"
+        window.title = "BatEcho · LLM Refinement"
         window.isReleasedWhenClosed = false
         self.init(window: window)
         buildUI()

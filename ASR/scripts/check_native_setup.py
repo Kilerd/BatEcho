@@ -1,6 +1,6 @@
 """Exercise the packaged Swift downloader with existing FireRed and fresh VAD.
 
-This development script needs only the Python standard library. voicer itself
+This development script needs only the Python standard library. BatEcho itself
 runs with a restricted PATH and performs all preparation through URLSession.
 """
 import argparse
@@ -22,15 +22,15 @@ def main():
     if args.output.exists():
         raise FileExistsError('Choose a new evidence output')
     original = Path.home() / 'Library/Application Support/voicer/asr'
-    binary = ROOT / 'build/voicer.app/Contents/MacOS/voicer'
-    with tempfile.TemporaryDirectory(prefix='voicer-native-setup-') as name:
+    binary = ROOT / 'build/BatEcho.app/Contents/MacOS/BatEcho'
+    with tempfile.TemporaryDirectory(prefix='batecho-native-setup-') as name:
         directory = Path(name)
         (directory / 'models').mkdir()
         # Reuse read-only model assets, but force the Swift downloader to fetch VAD.
         (directory / 'models/firered').symlink_to(original / 'models/firered', target_is_directory=True)
         vocabulary = b'[ {"text":"CUSTOM", "pinyin":[], "contexts":[]} ]\n'
         (directory / 'lexicon.json').write_bytes(vocabulary)
-        environment = {**os.environ, 'VOICER_ASR_RUNTIME': str(directory), 'PATH': '/usr/bin:/bin'}
+        environment = {**os.environ, 'BATECHO_ASR_RUNTIME': str(directory), 'PATH': '/usr/bin:/bin'}
         checks = []
         for iteration in range(2):
             result = subprocess.run([str(binary), '--prepare-model'], env=environment, cwd=directory,

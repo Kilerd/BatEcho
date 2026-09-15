@@ -1,6 +1,6 @@
 """Development-only comparison of the native binary against frozen Python outputs.
 
-No Python code is used inside voicer. Inputs are the existing synthetic/public
+No Python code is used inside BatEcho. Inputs are the existing synthetic/public
 research clips; this is migration parity evidence, not a human accuracy benchmark.
 """
 import argparse
@@ -17,15 +17,15 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--app', type=Path, default=ROOT / 'build/voicer.app')
+    parser.add_argument('--app', type=Path, default=ROOT / 'build/BatEcho.app')
     parser.add_argument('--output', type=Path, default=ROOT / 'ASR/results/swift-parity.json')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Choose a new output path to preserve evidence')
-    binary = args.app.resolve() / 'Contents/MacOS/voicer'
+    binary = args.app.resolve() / 'Contents/MacOS/BatEcho'
     binary_hash = hashlib.sha256(binary.read_bytes()).hexdigest()
     source_hash = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
-                   for p in sorted((ROOT / 'Sources/voicer').rglob('*')) if p.is_file()}
+                   for p in sorted((ROOT / 'Sources/BatEcho').rglob('*')) if p.is_file()}
     environment = {**os.environ, 'PATH': '/usr/bin:/bin'}
     groups = []
     for name, source, flags in [

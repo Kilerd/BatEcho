@@ -1,0 +1,296 @@
+{
+  "date": "2026-09-15T11:57:01.061238+00:00",
+  "scope": "Packaged native client, copied outside checkout, real FireRed model; no physical microphone or focused-app injection",
+  "cases": [
+    {
+      "case": "default",
+      "audio": "tingting-term03.wav",
+      "expected": "这个项目由同事璟珩负责",
+      "audio_sha256": "f85521bf048e4850f0b4b95e9ccfb9a3919136ced08b006eb6a1f80d8071c9bd",
+      "result": {
+        "elapsed_s": 9.473669666680507,
+        "vad": {
+          "has_speech": true,
+          "max_probability": 0.99999905,
+          "longest_speech_ms": 2496
+        },
+        "tokens": [
+          6782,
+          1032,
+          7412,
+          4863,
+          4697,
+          1686,
+          1075,
+          3454,
+          2868,
+          6543,
+          6546
+        ],
+        "text": "这个项目由同事璟珩负责",
+        "model": "firered",
+        "raw_text": "这个项目由同事景恒负责",
+        "model_load_count": 1,
+        "asr_confidence": 0.975,
+        "id": "8881FE1E-39AF-49AD-91C4-2DA5033A4B13",
+        "engine": "swift-mlx"
+      },
+      "passed": true
+    },
+    {
+      "case": "default",
+      "audio": "qwen-official-zh.wav",
+      "expected": "甚至出现交易几乎停滞的情况",
+      "audio_sha256": "46dbc998c9d1d48111267c40741dd3200f2e5bcf4075f8c4c97f4451160dce50",
+      "result": {
+        "model": "firered",
+        "text": "甚至出现交易几乎停滞的情况",
+        "id": "CA3A2640-D6B3-4A5F-890D-4FC86AE50604",
+        "vad": {
+          "longest_speech_ms": 3232,
+          "has_speech": true,
+          "max_probability": 0.9999707
+        },
+        "raw_text": "甚至出现交易几乎停滞的情况",
+        "engine": "swift-mlx",
+        "asr_confidence": 1,
+        "elapsed_s": 2.900868375087157,
+        "tokens": [
+          4686,
+          5722,
+          1444,
+          4563,
+          1091,
+          3415,
+          1432,
+          1051,
+          1311,
+          4233,
+          4824,
+          2920,
+          1414
+        ],
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "default",
+      "audio": "silence.wav",
+      "expected": "",
+      "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+      "result": {
+        "model": "firered",
+        "text": "",
+        "id": "F2D0EDE9-CB42-4914-B709-836FFE3E4A1C",
+        "vad": {
+          "has_speech": false,
+          "max_probability": 0.008910763,
+          "longest_speech_ms": 0
+        },
+        "raw_text": "",
+        "engine": "swift-mlx",
+        "elapsed_s": 0.0728174583055079,
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "tingting-term01.wav",
+      "expected": "我想把青简接入这个语音输入法",
+      "audio_sha256": "47a4aa2d9ede51023c835cb1e0ed5e9a3d8dff77add0f1d83a1b34aa7399636a",
+      "result": {
+        "id": "0F5059E1-712E-4161-8488-BB1223C4B34B",
+        "tokens": [
+          3016,
+          2945,
+          3072,
+          7366,
+          5236,
+          3210,
+          1368,
+          6782,
+          1032,
+          6445,
+          7403,
+          6748,
+          1368,
+          4006
+        ],
+        "elapsed_s": 6.499798083328642,
+        "text": "我想把青简接入这个语音输入法",
+        "raw_text": "我想把青简接入这个语音输入法",
+        "engine": "swift-mlx",
+        "model": "firered",
+        "vad": {
+          "longest_speech_ms": 3008,
+          "has_speech": true,
+          "max_probability": 0.9999992
+        },
+        "model_load_count": 1,
+        "asr_confidence": 0.867
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "tingting-mixed02.wav",
+      "expected": "这个服务使用 kubernetes和 postgresql",
+      "audio_sha256": "c5a05feba32e9402d1e050ddfd676251affb28886fa14fea2740d8e314269b24",
+      "result": {
+        "id": "D2ED2969-E389-4EC0-98A5-81A7FE8B6E57",
+        "tokens": [
+          6782,
+          1032,
+          3502,
+          1511,
+          1217,
+          4690,
+          497,
+          892,
+          139,
+          588,
+          276,
+          272,
+          1760,
+          685,
+          658,
+          326,
+          751,
+          726,
+          508
+        ],
+        "elapsed_s": 4.843784083379433,
+        "text": "这个服务使用 kubernetes和 postgresql",
+        "raw_text": "这个服务使用 kubernetes和 postgresql",
+        "engine": "swift-mlx",
+        "model": "firered",
+        "vad": {
+          "longest_speech_ms": 2656,
+          "has_speech": true,
+          "max_probability": 0.9999989
+        },
+        "model_load_count": 1,
+        "asr_confidence": 0.856
+      },
+      "passed": true
+    },
+    {
+      "case": "hotwords-without-correction",
+      "audio": "silence.wav",
+      "expected": "",
+      "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+      "result": {
+        "id": "84FAE404-AEDA-4B4C-906A-E98C5B719DBC",
+        "elapsed_s": 0.8104934166185558,
+        "text": "",
+        "raw_text": "",
+        "engine": "swift-mlx",
+        "model": "firered",
+        "vad": {
+          "longest_speech_ms": 0,
+          "has_speech": false,
+          "max_probability": 0.008910763
+        },
+        "model_load_count": 1
+      },
+      "passed": true
+    },
+    {
+      "case": "native-caf",
+      "audio": "native-stereo-48k.caf",
+      "expected": "这个项目由同事璟珩负责",
+      "audio_sha256": "6533af32bdef8bc972e418ff98cd0cb5b70a7cb4805893e7ce0906f46d05361a",
+      "result": {
+        "elapsed_s": 6.912860833341256,
+        "model_load_count": 1,
+        "tokens": [
+          6782,
+          1032,
+          7412,
+          4863,
+          4697,
+          1686,
+          1075,
+          3454,
+          2868,
+          6543,
+          6546
+        ],
+        "text": "这个项目由同事璟珩负责",
+        "asr_confidence": 0.974,
+        "id": "D7349F46-CCA0-4ABA-AEDC-D0970AF4542B",
+        "model": "firered",
+        "raw_text": "这个项目由同事景恒负责",
+        "engine": "swift-mlx",
+        "vad": {
+          "max_probability": 0.99999917,
+          "has_speech": true,
+          "longest_speech_ms": 2496
+        }
+      },
+      "passed": true
+    }
+  ],
+  "swift_version": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0",
+  "binary_sha256": "7b546e99812bf2bd5bcc733f86b36b4f161a7ac08856adcd9a4c077816b1d166",
+  "bundle_info": {
+    "CFBundleDevelopmentRegion": "en",
+    "CFBundleDisplayName": "BatEcho",
+    "CFBundleExecutable": "BatEcho",
+    "CFBundleIdentifier": "com.kilerd.voicer",
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleName": "BatEcho",
+    "CFBundleIconFile": "BatEcho",
+    "CFBundlePackageType": "APPL",
+    "CFBundleShortVersionString": "1.0.0",
+    "CFBundleVersion": "1",
+    "LSMinimumSystemVersion": "14.0",
+    "LSUIElement": true,
+    "NSHighResolutionCapable": true,
+    "NSMicrophoneUsageDescription": "BatEcho needs the microphone to transcribe your speech.",
+    "NSSpeechRecognitionUsageDescription": "BatEcho uses speech recognition to convert your voice into text."
+  },
+  "signature": "Executable=/Users/kilerd/Projects/voicer/build/signing-preview/BatEcho.app/Contents/MacOS/BatEcho\nIdentifier=com.kilerd.voicer\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20500 size=82717 flags=0x10000(runtime) hashes=2574+7 location=embedded\nSignature size=9036\nAuthority=Developer ID Application: Chen Xin (V9ZRBTHDGR)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Sep 15, 2026 at 20:56:24\nInfo.plist entries=15\nTeamIdentifier=V9ZRBTHDGR\nRuntime Version=26.5.0\nSealed Resources version=2 rules=13 files=10\nInternal requirements count=1 size=180",
+  "entitlements": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"https://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict><key>com.apple.security.device.audio-input</key><true/></dict></plist>",
+  "source_sha256": {
+    "Sources/BatEcho/ASRResources/FireRed-LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "Sources/BatEcho/ASRResources/Silero-LICENSE": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+    "Sources/BatEcho/ASRResources/ThirdPartyNotices.txt": "4483a5ec2bfd06cff1832301c4584200442a2e17168ceef06f4caf69a8a679b2",
+    "Sources/BatEcho/ASRResources/lexicon.json": "f5bbc2ea983f7d75b2bec41ad8e30ee4b15d4450a70a726c61b9c5ed3b8d2ee4",
+    "Sources/BatEcho/ASRResources/pinyin-characters.json": "e89416deba28fc74bced6fd6bc096e5530aa4341062d1f2f70eafcfd6ef2bec1",
+    "Sources/BatEcho/ASRResources/pinyin-phrases.json": "f36c570a1ca6d20043c616224a49e757d096f6db1159de8317faeb42105f330e",
+    "Sources/BatEcho/AppDelegate.swift": "b7fa58f9fb52b2a8e925988027def1d86c352c83849c386ce08a1586bf7a09f1",
+    "Sources/BatEcho/FileTranscriptionCommand.swift": "9622339faab44777817dd00bd304e98e109418460780e65fe847ce2673a4cdc0",
+    "Sources/BatEcho/FloatingPanel.swift": "36b7717274dadad9009d430f434bbc09ebdbd6007e76c45229749b557e8d7af5",
+    "Sources/BatEcho/FnKeyMonitor.swift": "c15e945f8ed2d755371035e28220803b6b8bf09766d7a8487ac52459c38b88f3",
+    "Sources/BatEcho/InputSourceManager.swift": "72a84b76c0eb5d57df921d152bd72da3402ae648a31f9f2081863eefafc667cc",
+    "Sources/BatEcho/LLMRefiner.swift": "c75693f737da27e1ae7325cb940297ed912ddf4f387ddfe8ad4c71a4ca93adb0",
+    "Sources/BatEcho/LLMSettingsWindowController.swift": "7a8285c9f3d739685fef7860612428ab83cbb247add853bfba3ff4fbb85a33dc",
+    "Sources/BatEcho/LocalASRClient.swift": "91c68fc7242a4fa851d899cadaf7c2e7f5bca92e20357c99112530c500cffa83",
+    "Sources/BatEcho/LocalASRRuntime.swift": "cbc8b92187138f9c7cba417cc449b71006e666837f039dd4853dee9804977974",
+    "Sources/BatEcho/LocalSpeechTranscriber.swift": "8b57202ac321b2c633003c1ddff1faf270049a044b12f276c919f090c7ed0844",
+    "Sources/BatEcho/NativeASR/ContextualBeamSearch.swift": "85a555285d0815e8cf10d894c4749558c150be00a835106ffcf42a12b97f7b52",
+    "Sources/BatEcho/NativeASR/FireRedAudio.swift": "0667bf7ba1911dfb124019c62cd8379506f7e892751d38d4b34ba68ebdfe9ed5",
+    "Sources/BatEcho/NativeASR/HotwordGraph.swift": "80e9854a1dd3c8ca1ef0ddd8c960599361f44af06e562fbebcead8ff7328a678",
+    "Sources/BatEcho/NativeASR/ModelValidation.swift": "9562e81dad67629b192ee5e41384737b3ce4f7b98db855f83a116a71043f7bd8",
+    "Sources/BatEcho/NativeASR/Models/FireRedASR2Config.swift": "60a87aee56ee4ebfa452fa825538b3d93ae9419ae2fcd2b09fe4b6ac35c72fde",
+    "Sources/BatEcho/NativeASR/Models/FireRedASR2Model.swift": "0632e5f4a46473d23e14acc1cf5303cee77757e8335eef1886c56aa61cea9b25",
+    "Sources/BatEcho/NativeASR/Models/FireRedASR2Tokenizer.swift": "1085689e1e0f3869a002c4152016d3ad56f44c5b19dbd54a3b38961cca949c0d",
+    "Sources/BatEcho/NativeASR/Models/SentencePieceTokenizer.swift": "8bbfed7a6841c72ccf68c2c96fff3d7a95d26ce56b98f8a72de023f487df7280",
+    "Sources/BatEcho/NativeASR/Models/SileroVAD.swift": "dc1dcec54a53a3a5be7594971e0b81c85c90a5f1cd485ffa1bc954af31b88431",
+    "Sources/BatEcho/NativeASR/Models/SileroVADConfig.swift": "566208699f9f59126e6c5c0783fa17cc8ec9ac89d6dd529ee29678ae989c769d",
+    "Sources/BatEcho/NativeASR/NativeASRPipeline.swift": "6d10c7bb40669975c9dd8e94d595645a2b4c283212d680ee439a2feaa79fae23",
+    "Sources/BatEcho/NativeASR/NativeAudio.swift": "70cd9d442d87e555401c83d9d53c68a2dff0cc1e4402d1e0e6659c954607b9d0",
+    "Sources/BatEcho/NativeASR/Vocabulary.swift": "e463eb062bc971e9a79d24e38a4bcd153bdb5f7910b21b6a0f9a3d9b0161de82",
+    "Sources/BatEcho/RuntimeValidation.swift": "6e50040006826b22d18abcd5ba0f84ba09abde66a43ce56a8d1199821e51bc73",
+    "Sources/BatEcho/Settings.swift": "fe7abcd54bef2f86404d7914043f54428c1763cd4634e85879c25d70fb7725bb",
+    "Sources/BatEcho/SpeechSettingsWindowController.swift": "78a496621aca0ea9be62f251d14a8dc7e9fe9eb89fbf54bab8b4ff24d60baa6c",
+    "Sources/BatEcho/SpeechTranscriber.swift": "e4e11d0ee7238e111b7eeaa13a7e6d08a00b6986b89b7a111801357e195be24a",
+    "Sources/BatEcho/SpeechTranscribing.swift": "47d386c32717d24f78c0314880b120bc3beb6dae21bdfbf1d26d9fe5dd6cb68c",
+    "Sources/BatEcho/TextInjector.swift": "901b8c7116f1bc9d35a87d2615718fae170c991b01f18525dca8f781e286f51a",
+    "Sources/BatEcho/WaveformView.swift": "aac4379162a317c5b9a3347f264a6dff5da4726629f88b9f2481383c371aa11f",
+    "Sources/BatEcho/main.swift": "49140ac535cca97360108e15a5151c843c0a6aa0f163339f76f39f8f2a3f50a0"
+  }
+}

@@ -1,8 +1,10 @@
-# voicer 原生 Swift / MLX 迁移
+# BatEcho 原生 Swift / MLX 迁移
+
+> 本文的 84 条迁移对照证据保留更名之前的原始路径和哈希。更名后的正式签名兼容修复及 7 条文件集成验证见 [macOS 打包与签名](../../docs/macos-release.md)。
 
 ## 结论
 
-可以完整移除应用的 Python 运行时。当前 voicer 使用 Swift 实现模型下载、音频处理、FireRed 推理、热词解码、Silero VAD 和拼音纠错，已接入原有 Fn 录音和上屏流程。MLX Swift 底层使用 MLX C++ / Metal；“原生 Swift”指产品代码和模型推理入口，无需嵌入 Python 解释器。
+可以完整移除应用的 Python 运行时。当前 BatEcho 使用 Swift 实现模型下载、音频处理、FireRed 推理、热词解码、Silero VAD 和拼音纠错，已接入原有 Fn 录音和上屏流程。MLX Swift 底层使用 MLX C++ / Metal；“原生 Swift”指产品代码和模型推理入口，无需嵌入 Python 解释器。
 
 独立原型及对照实验仍保留在 `ASR/`，不进入 `.app`。青简模型只是研究对照，当前应用使用保守的拼音上下文规则，未声称完成青简 Rust 模型的 Swift 移植。
 
@@ -64,7 +66,7 @@ python3 ASR/scripts/check_swift_parity.py --output /tmp/swift-parity-new.json
 python3 ASR/scripts/check_native_setup.py --output /tmp/swift-setup-new.json
 # 此脚本需原型环境中的 numpy/soundfile/scipy，以生成 CAF 测试输入。
 "$HOME/Library/Application Support/voicer/asr/.venv/bin/python" \
-  ASR/scripts/check_voicer.py --output /tmp/swift-package-new.json
+  ASR/scripts/check_batecho.py --output /tmp/swift-package-new.json
 ```
 
 这些输入主要是 TTS 合成语音，加一条公开中文录音和静音；结果证明迁移一致性，不代表真实用户口述准确率。语种混排能力沿用 FireRed，无需先按语种切段。英文仍为小写，标点与口语整理需要后续处理。

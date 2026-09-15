@@ -63,7 +63,7 @@ final class ASRWork: @unchecked Sendable {
 /// Cancellation is checked between model stages and each decoder/VAD step.
 /// A canceled result cannot escape into the next dictation; weights stay warm.
 final class LocalASRClient: @unchecked Sendable {
-    private let queue = DispatchQueue(label: "voicer.asr", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "BatEcho.asr", qos: .userInitiated)
     private let lock = NSLock()
     private var active: [UUID: ASRWork] = [:] // protected by lock
     private var pipeline: ASRPipeline?      // accessed only on queue

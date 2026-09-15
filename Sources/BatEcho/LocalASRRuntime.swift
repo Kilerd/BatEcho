@@ -6,10 +6,17 @@ struct LocalASRRuntime: Sendable {
     let directory: URL
     static var resources: URL { Bundle.module.resourceURL!.appendingPathComponent("ASRResources") }
     init(directory: URL? = nil) {
-        self.directory = directory
-            ?? ProcessInfo.processInfo.environment["VOICER_ASR_RUNTIME"].map { URL(fileURLWithPath: $0) }
-            ?? FileManager.default.homeDirectoryForCurrentUser
-                .appendingPathComponent("Library/Application Support/voicer/asr", isDirectory: true)
+        self.directory = directory ?? Self.defaultDirectory()
+    }
+    static func defaultDirectory(
+        environment: [String: String] = ProcessInfo.processInfo.environment,
+        home: URL = FileManager.default.homeDirectoryForCurrentUser
+    ) -> URL {
+        for key in ["BATECHO_ASR_RUNTIME", "VOICER_ASR_RUNTIME"] {
+            if let path = environment[key], !path.isEmpty { return URL(fileURLWithPath: path) }
+        }
+        // Preserve downloaded weights and personal vocabulary from voicer.
+        return home.appendingPathComponent("Library/Application Support/voicer/asr", isDirectory: true)
     }
     var models: URL { directory.appendingPathComponent("models", isDirectory: true) }
     var vocabulary: URL { directory.appendingPathComponent("lexicon.json") }
