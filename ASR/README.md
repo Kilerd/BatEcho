@@ -1,3 +1,5 @@
+> 此目录保留 Python 原型和历史选型实验。voicer 应用已迁到原生 Swift / MLX，运行不依赖此目录；当前用法见仓库根 README 和 docs/swift-migration.md。
+
 # 中文语音输入本地实验
 
 此目录从 my-asr 迁入 voicer，保存识别引擎、独立实验工具和迁入前的研究证据。输入法的安装、设置与使用见 [voicer README](../README.md)。`results/` 中旧实验的代码哈希对应迁入前版本，不代表后续集成代码的校验结果。

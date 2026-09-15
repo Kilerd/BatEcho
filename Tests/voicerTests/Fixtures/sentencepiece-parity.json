@@ -1,0 +1,100 @@
+[
+  {
+    "word": "Cloudflare",
+    "pieces": [
+      "▁CL",
+      "OUD",
+      "F",
+      "L",
+      "ARE"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "Kubernetes",
+    "pieces": [
+      "▁K",
+      "U",
+      "BER",
+      "N",
+      "ET",
+      "ES"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "PostgreSQL",
+    "pieces": [
+      "▁P",
+      "OST",
+      "G",
+      "RES",
+      "Q",
+      "L"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "API",
+    "pieces": [
+      "▁A",
+      "P",
+      "I"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "APIS",
+    "pieces": [
+      "▁A",
+      "P",
+      "IS"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "VOICER'S API",
+    "pieces": [
+      "▁VO",
+      "IC",
+      "ER",
+      "'",
+      "S",
+      "▁A",
+      "P",
+      "I"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "GPU 123",
+    "pieces": [
+      "▁G",
+      "P",
+      "U",
+      "▁",
+      "123"
+    ],
+    "encodable": false
+  },
+  {
+    "word": "ＦｉｒｅＲｅｄ",
+    "pieces": [
+      "▁F",
+      "IRE",
+      "RED"
+    ],
+    "encodable": true
+  },
+  {
+    "word": "API   SERVER",
+    "pieces": [
+      "▁A",
+      "P",
+      "I",
+      "▁SER",
+      "VER"
+    ],
+    "encodable": true
+  }
+]

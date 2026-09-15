@@ -1,109 +1,99 @@
-import Foundation
 import XCTest
+import MLX
 @testable import voicer
 
+private final class FakePipeline: ASRPipeline {
+    var warm = false
+    var calls = 0
+    var beforeTranscribe: (() -> Void)?
+    func warmUp(check: () throws -> Void) throws -> LocalASRResponse {
+        XCTAssertFalse(Thread.isMainThread)
+        try check()
+        warm = true
+        return LocalASRResponse(ready: true, modelLoadCount: 1)
+    }
+    func transcribe(audio: URL, options: ASROptions, check: () throws -> Void) throws -> LocalASRResponse {
+        XCTAssertFalse(Thread.isMainThread)
+        calls += 1
+        beforeTranscribe?()
+        try check()
+        if audio.lastPathComponent == "mlx-error" {
+            try Stream.withNewDefaultStream(device: .cpu) {
+                _ = MLXArray.zeros([2, 3]) + MLXArray.zeros([4, 3])
+                try check()
+            }
+        }
+        if audio.lastPathComponent == "invalid" { throw LocalASRError.invalidInput("Invalid audio") }
+        return LocalASRResponse(text: audio.lastPathComponent, ready: warm, modelLoadCount: calls)
+    }
+}
+
 final class LocalASRClientTests: XCTestCase {
-    private func client(timeout: Double = 3) throws -> (LocalASRClient, URL) {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let fixture = Bundle.module.url(forResource: "worker", withExtension: "py", subdirectory: "Fixtures")!
-        let client = LocalASRClient(configuration: .init(
-            executable: URL(fileURLWithPath: "/usr/bin/python3"), arguments: ["-u", fixture.path],
-            workingDirectory: directory, timeoutSeconds: timeout))
-        addTeardownBlock {
-            await client.shutdown()
-            try? FileManager.default.removeItem(at: directory)
-        }
-        return (client, directory)
-    }
-
-    private func transcribe(_ name: String, client: LocalASRClient) async throws -> LocalASRResponse {
-        try await client.transcribe(audio: URL(fileURLWithPath: "/\(name)"), hotwords: true)
-    }
-
-    func testWarmWorkerIsReusedAndSplitUTF8IsDecoded() async throws {
-        let (client, _) = try client()
+    func testWarmPipelineIsReusedAfterRequestError() async throws {
+        let client = LocalASRClient(factory: { FakePipeline() })
         try await client.warmUp()
-        let first = try await transcribe("chunked", client: client)
-        let second = try await transcribe("normal", client: client)
-        XCTAssertEqual(first.text, "你好 Kubernetes")
-        XCTAssertEqual(first.model, second.model)
-        XCTAssertEqual(second.modelLoadCount, 1)
+        do {
+            _ = try await client.transcribe(audio: URL(fileURLWithPath: "/invalid"), hotwords: false)
+            XCTFail("Expected request error")
+        } catch LocalASRError.invalidInput { }
+        let result = try await client.transcribe(audio: URL(fileURLWithPath: "/valid"), hotwords: true)
+        XCTAssertEqual(result.text, "valid")
+        XCTAssertEqual(result.ready, true)
+        XCTAssertEqual(result.modelLoadCount, 2)
+        await client.shutdown()
     }
 
-    func testPerRequestErrorDoesNotKillWorker() async throws {
-        let (client, _) = try client()
-        let first = try await transcribe("normal", client: client)
-        do {
-            _ = try await transcribe("error", client: client)
-            XCTFail("Expected the worker's vocabulary error")
-        } catch {
-            XCTAssertEqual(error.localizedDescription, "Invalid vocabulary")
+    func testCancellationDiscardsOldResultAndNextRequestReusesPipeline() async throws {
+        let started = expectation(description: "first inference started")
+        let release = DispatchSemaphore(value: 0)
+        let pipeline = FakePipeline()
+        pipeline.beforeTranscribe = {
+            if pipeline.calls == 1 { started.fulfill(); release.wait() }
         }
-        let second = try await transcribe("normal", client: client)
-        XCTAssertEqual(first.model, second.model)
+        let client = LocalASRClient(factory: { pipeline })
+        let first = Task { try await client.transcribe(audio: URL(fileURLWithPath: "/old"), hotwords: false) }
+        await fulfillment(of: [started], timeout: 3)
+        first.cancel()
+        release.signal()
+        do { _ = try await first.value; XCTFail("Canceled inference escaped") }
+        catch is CancellationError { }
+        let next = try await client.transcribe(audio: URL(fileURLWithPath: "/new"), hotwords: false)
+        XCTAssertEqual(next.text, "new")
+        XCTAssertEqual(next.modelLoadCount, 2)
+        await client.shutdown()
     }
 
-    func testCrashFailsRequestAndNextRequestRestartsWorker() async throws {
-        let (client, _) = try client()
-        do {
-            _ = try await transcribe("crash", client: client)
-            XCTFail("Expected a disconnected worker")
-        } catch {
-            guard case LocalASRError.disconnected = error else { return XCTFail("Unexpected error: \(error)") }
-        }
-        let result = try await transcribe("normal", client: client)
-        XCTAssertEqual(result.text, "你好 Kubernetes")
+    func testDeadlineRejectsResultAndShutdownReleasesPipeline() async throws {
+        let client = LocalASRClient(timeout: 0, factory: { FakePipeline() })
+        do { try await client.warmUp(); XCTFail("Expected timeout") }
+        catch LocalASRError.timedOut { }
+        await client.shutdown()
+        let normal = LocalASRClient(factory: { FakePipeline() })
+        try await normal.warmUp()
+        await normal.shutdown()
+        let result = try await normal.transcribe(audio: URL(fileURLWithPath: "/fresh"), hotwords: false)
+        XCTAssertEqual(result.ready, false)
+        XCTAssertEqual(result.modelLoadCount, 1)
+        await normal.shutdown()
     }
 
-    func testInvalidWireDataFailsWithoutHanging() async throws {
-        let (client, _) = try client()
-        do {
-            _ = try await transcribe("invalid", client: client)
-            XCTFail("Expected invalid response")
-        } catch {
-            guard case LocalASRError.invalidResponse = error else { return XCTFail("Unexpected error: \(error)") }
-        }
+    func testMissingAssetsFailWithoutLaunchingProcess() async throws {
+        let client = LocalASRClient(runtime: LocalASRRuntime(directory: URL(fileURLWithPath: "/nonexistent-voicer-runtime")))
+        do { try await client.warmUp(); XCTFail("Expected missing model") }
+        catch LocalASRError.notPrepared { }
+        await client.shutdown()
     }
 
-    func testTimeoutStopsAnUnresponsiveWorker() async throws {
-        let (client, _) = try client(timeout: 0.25)
+    func testMLXErrorBecomesRequestErrorAndInvalidStateIsReleased() async throws {
+        let client = LocalASRClient(factory: { FakePipeline() })
+        try await client.warmUp()
         do {
-            _ = try await transcribe("hang", client: client)
-            XCTFail("Expected timeout")
-        } catch {
-            guard case LocalASRError.timedOut = error else { return XCTFail("Unexpected error: \(error)") }
-        }
-    }
-
-    func testCancellationDiscardsOldWorkerAndLateResults() async throws {
-        let (client, directory) = try client()
-        let old = Task { try await self.transcribe("hang", client: client) }
-        let started = directory.appendingPathComponent("started")
-        let deadline = Date().addingTimeInterval(3)
-        while !FileManager.default.fileExists(atPath: started.path), Date() < deadline {
-            try await Task.sleep(nanoseconds: 10_000_000)
-        }
-        XCTAssertTrue(FileManager.default.fileExists(atPath: started.path))
-        let oldPID = try String(contentsOf: started)
-        old.cancel()
-        do {
-            _ = try await old.value
-            XCTFail("Expected cancellation")
-        } catch is CancellationError { }
-        let next = try await transcribe("normal", client: client)
-        XCTAssertNotEqual(next.model, oldPID)
-        XCTAssertEqual(next.text, "你好 Kubernetes")
-    }
-
-    func testMissingRuntimeProducesActionableError() async throws {
-        let client = LocalASRClient(configuration: .init(executable: URL(fileURLWithPath: "/missing/python"),
-            arguments: [], workingDirectory: FileManager.default.temporaryDirectory))
-        do {
-            try await client.warmUp()
-            XCTFail("Expected setup error")
-        } catch {
-            guard case LocalASRError.notPrepared = error else { return XCTFail("Unexpected error: \(error)") }
-        }
+            _ = try await client.transcribe(audio: URL(fileURLWithPath: "/mlx-error"), hotwords: false)
+            XCTFail("Expected an MLX error")
+        } catch is MLXError { }
+        let result = try await client.transcribe(audio: URL(fileURLWithPath: "/fresh"), hotwords: false)
+        XCTAssertEqual(result.ready, false)
+        XCTAssertEqual(result.modelLoadCount, 1)
+        await client.shutdown()
     }
 }

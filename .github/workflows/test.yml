@@ -10,11 +10,15 @@ permissions:
 
 jobs:
   swift:
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v7.0.1
-      - run: swift build -c release
-      - run: swift test
+      - name: Prepare Metal toolchain
+        run: xcodebuild -downloadComponent MetalToolchain
+      - name: Build native Swift app and Metal kernels
+        run: make build
+      - name: Test native pipeline and frozen Python feature parity
+        run: make test
   python-worker:
     runs-on: ubuntu-latest
     steps:

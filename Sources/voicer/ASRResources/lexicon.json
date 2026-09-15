@@ -1,0 +1,14 @@
+[
+  {"text":"青简","pinyin":["qing","jian"],"kind":"project","contexts":["输入法","项目","拼音"]},
+  {"text":"祁砚","pinyin":["qi","yan"],"kind":"person","contexts":["同事","联系","发给"]},
+  {"text":"璟珩","pinyin":["jing","heng"],"kind":"person","contexts":["同事","联系","发给"]},
+  {"text":"幂等性","pinyin":["mi","deng","xing"],"kind":"technical","contexts":["接口","请求","重试"]},
+  {"text":"灰度发布","pinyin":["hui","du","fa","bu"],"kind":"technical","contexts":["部署","版本","流量"]},
+  {"text":"金丝雀","pinyin":["jin","si","que"],"kind":"technical","contexts":["部署","验证","流量"]},
+  {"text":"向量数据库","pinyin":["xiang","liang","shu","ju","ku"],"kind":"technical","contexts":["检索","存储","索引"]},
+  {"text":"词法分析","pinyin":["ci","fa","fen","xi"],"kind":"technical","contexts":["编译器","解析","代码"]},
+  {"text":"韵母","pinyin":["yun","mu"],"kind":"technical","contexts":["拼音","声母","声调"]},
+  {"text":"Cloudflare","pinyin":[],"kind":"english","contexts":[]},
+  {"text":"Kubernetes","pinyin":[],"kind":"english","contexts":[]},
+  {"text":"PostgreSQL","pinyin":[],"kind":"english","contexts":[]}
+]

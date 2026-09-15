@@ -1,9 +1,21 @@
 import Foundation
 
-/// Exercises the same persistent bridge as Fn dictation without microphone or
+/// Exercises the same native MLX pipeline as Fn dictation without microphone or
 /// Accessibility permissions. Repeated --transcribe-file flags reuse one model.
 enum FileTranscriptionCommand {
     static func runIfRequested(_ arguments: [String]) -> Bool {
+        if arguments == ["--prepare-model"] {
+            Task {
+                do {
+                    try await LocalASRRuntime().prepare { message in
+                        FileHandle.standardError.write(Data((message + "\n").utf8))
+                    }
+                    exit(0)
+                } catch { fail(error.localizedDescription) }
+            }
+            RunLoop.main.run()
+            return true
+        }
         guard arguments.contains("--transcribe-file") else { return false }
         var files: [URL] = []
         var hotwords = false

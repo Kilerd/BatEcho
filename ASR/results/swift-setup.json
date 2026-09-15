@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-15T11:21:42.956187+00:00",
+  "checks": [
+    {
+      "iteration": 1,
+      "log": "Checking firered/config.json (1/7)…\nChecking firered/cmvn.json (2/7)…\nChecking firered/dict.txt (3/7)…\nChecking firered/train_bpe1000.model (4/7)…\nChecking firered/model.safetensors (5/7)…\nChecking silero-v6/config.json (6/7)…\nDownloading silero-v6/config.json (6/7)…\nChecking silero-v6/model.safetensors (7/7)…\nDownloading silero-v6/model.safetensors (7/7)…\nLocal model is prepared.\n",
+      "vocabulary_preserved": true,
+      "vad_downloaded": true
+    },
+    {
+      "iteration": 2,
+      "log": "Checking firered/config.json (1/7)…\nChecking firered/cmvn.json (2/7)…\nChecking firered/dict.txt (3/7)…\nChecking firered/train_bpe1000.model (4/7)…\nChecking firered/model.safetensors (5/7)…\nChecking silero-v6/config.json (6/7)…\nChecking silero-v6/model.safetensors (7/7)…\nLocal model is prepared.\n",
+      "vocabulary_preserved": true,
+      "vad_downloaded": false
+    }
+  ],
+  "manifest": {
+    "assets": [
+      {
+        "path": "firered/config.json",
+        "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb",
+        "sha256": "ef3be4345675bf62b873de2b256b60e92fcfe44f95b3d9d810cb90a29ea69e91"
+      },
+      {
+        "path": "firered/cmvn.json",
+        "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb",
+        "sha256": "3f702336649609864b8a7c91ec3d25ae36be15f2d70f37cb35afeebf178be584"
+      },
+      {
+        "path": "firered/dict.txt",
+        "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb",
+        "sha256": "1bc613de2112d257e61a349c3e72d1b1a9cf19c33d3ca954197ad2171e5ea07b"
+      },
+      {
+        "path": "firered/train_bpe1000.model",
+        "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb",
+        "sha256": "473bbc157cb4eade2059b30a3c877a1c29bd50cadbfbed869ae36eeade7fee07"
+      },
+      {
+        "path": "firered/model.safetensors",
+        "revision": "f3212eacfa49b851130b97c63653c8e06ee09bdb",
+        "sha256": "e91fa08c58f07accd1803c8f0a9ffce24f4b3952c9fbc8ea476a82873e0386d4"
+      },
+      {
+        "path": "silero-v6/config.json",
+        "revision": "2ebf4a5e10726a2e78ddd4d70eedfb6f1c33eb06",
+        "sha256": "9fe1befb9692a0d4135adadc33f8075ef6d350bd2391b88d750f2c233f97fa0b"
+      },
+      {
+        "path": "silero-v6/model.safetensors",
+        "revision": "2ebf4a5e10726a2e78ddd4d70eedfb6f1c33eb06",
+        "sha256": "65b6c5f0293cbc44d109e58bef78b474d9c65dedbee814cf0b90ef5f0d9150ff"
+      }
+    ],
+    "engine": "swift-mlx",
+    "mlx_swift": "0.31.6",
+    "schema": 2
+  },
+  "binary_sha256": "ccd36fcc20e9d2c0d1e77617a21d26cc2cbfe1c1c7232b9b48f4feffe4b2bce7"
+}

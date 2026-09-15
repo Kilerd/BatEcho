@@ -2,38 +2,40 @@
 
 macOS 语音输入工具：按住 **Fn** 说话，松开后将文字输入当前应用。
 
-默认使用本地 **FireRedASR2-AED**，支持中文和中英混排。菜单中可切换回 Apple Speech Recognition。原有悬浮波形、剪贴板恢复、输入法切换及可选 LLM 纠错保留。
+默认使用本地 **FireRedASR2-AED**，支持中文和中英混排。应用的录音、ASR、VAD、热词解码、拼音纠错和模型下载均由 **Swift** 实现，推理通过 **MLX Swift / Metal** 运行。无需安装 Python、uv 或 ONNX Runtime。菜单中也可切换 Apple Speech Recognition。
 
 ## 准备与运行
 
-本地 FireRed 需要 Apple Silicon、macOS 14 或更新版本、Xcode Command Line Tools 和 [uv](https://github.com/astral-sh/uv)。首次准备会下载 Python 3.12、依赖和约 4.6 GB 的模型权重。
+运行需要 Apple Silicon 和 macOS 14 或更新版本。首次准备下载约 4.6 GB 模型；已有 Python 原型的 FireRed 权重可以直接复用，补充约 1.2 MB 的 Silero MLX 权重即可。
+
+从源码构建需要完整 Xcode，Swift 6.3 工具链和 Metal Toolchain。锁定的 MLX Swift 为 `0.31.6`。首次安装编译工具后运行：
 
 ```bash
+# 仅开发机需要，若 Xcode 尚未安装 Metal 编译工具
+xcodebuild -downloadComponent MetalToolchain
+
 make setup-asr
 make run
 ```
 
-也可先 `make build`，打开 `build/voicer.app`，在 **Speech Settings… → Prepare Local Model…** 准备模型。首次使用需按 macOS 提示允许麦克风和辅助功能权限；本地 FireRed 不需要 Apple 的语音识别权限。
+也可 `make build` 后打开 `build/voicer.app`，在 **Speech Settings… → Prepare Local Model…** 下载模型。模型下载使用 URLSession，固定 revision 和 SHA-256 校验；下载失败可重试，完整文件会复用。首次使用需允许麦克风和辅助功能权限。
 
 ```bash
-# 安装应用
 make install
-
-# 直接打开语音设置
 open build/voicer.app --args --speech-settings
 ```
 
-模型与 Python 环境保存在 `~/Library/Application Support/voicer/asr/`；应用内只打包 Python 源码、配置和下载脚本。重新构建或移动 `.app` 不会重新下载模型，也不会覆盖用户词库。开发时可用 `VOICER_ASR_RUNTIME` 指定另一份运行时。
+模型和词库保存在 `~/Library/Application Support/voicer/asr/`。重新构建或移动 `.app` 不会重新下载模型，也不会覆盖用户词库。开发时可用 `VOICER_ASR_RUNTIME` 指定另一目录。原型留下的 `.venv`、ONNX 文件可以自行清理，应用已不使用它们。
 
 ## 词库、热词和拼音纠错
 
 **Speech Settings…** 提供：
 
-- **Use vocabulary during recognition**：启用解码阶段热词，默认关闭；推荐从 Normal / 4 分开始。
+- **Use vocabulary during recognition**：启用解码阶段热词，默认关闭；从 Normal / 4 分开始。
 - **Correct Chinese homophones**：根据拼音和上下文修正中文词，默认开启。
-- **Edit Vocabulary…**：编辑个人词库。保存后下一句生效，无需重启模型。
+- **Edit Vocabulary…**：编辑个人词库，保存后下一句生效。
 
-词库位于 `~/Library/Application Support/voicer/asr/lexicon.json`，例如：
+词库文件 `~/Library/Application Support/voicer/asr/lexicon.json` 示例：
 
 ```json
 [
@@ -42,52 +44,49 @@ open build/voicer.app --args --speech-settings
 ]
 ```
 
-热词每次最多 64 个、合计 512 个模型 token。英文使用模型自己的 SentencePiece 编码；`pinyin: []` 的词不参与后置拼音替换。中文后置纠错只接受同长度、拼音一致、有上下文支持且没有歧义的候选。每个热词在一句里最多获得一次解码奖励，未完成的前缀会退回加分。
+热词每次最多 64 个、合计 512 个模型 token，每个词最多 128 个字符。英文用模型自己的 SentencePiece BPE 编码，每个词一句内最多加分一次，未完成前缀退回加分，英文需要完整词边界。`pinyin: []` 不参与后置拼音替换。
+
+拼音纠错使用随应用打包的固定字音与词语数据，在 Swift 中做最长词匹配，保留多音字读音。只有同长度、拼音一致、有原文上下文支持且没有歧义的候选可以替换；候选过多时保留原文。它是文字识别后的纠错，并不提供声学拼音概率。
 
 ## 识别流程
 
 ```text
-按住 Fn → 麦克风录音与波形
-松开 Fn → 本地常驻进程 → Silero VAD → FireRed（可加热词）
+按住 Fn → AVAudioEngine 录音与波形
+松开 Fn → 单声道 16 kHz → Silero VAD → FireRed + 可选热词
         → 拼音与词库纠错 → 可选 LLM 纠错 → 当前应用
 ```
 
-FireRed 在松开 Fn 后识别整句，录音期间显示波形，等待时显示 Transcribing。它不是实时流式识别。每次最多录音 30 秒；超过录音或解码输出上限会明确报错，不会将截断文本上屏。
+模型在后台串行队列中预加载并复用；录音期间显示波形，松开后显示 Transcribing。每次最多录音 30 秒，超过录音或解码上限会报错。FireRed 识别整句，当前没有实时部分识别结果。
 
-Python 通过应用私有的 stdin/stdout 管道通信，不开放 HTTP 端口。模型在应用启动后预加载，连续识别复用同一进程。崩溃、超时和取消均会释放当前请求，下一次可重新启动。临时 CAF 录音在完成、失败或取消后删除；不保存录音历史。
+取消和超时在推理阶段之间及每个解码步检查，已提交的 GPU 计算完成后退出；取消的结果不会上屏。临时 CAF 在完成、失败或取消后删除，不保存录音历史。
 
-ASR、VAD 和拼音纠错在本机运行。**如果开启原有 LLM Refinement，识别文本会发送至该设置中的 API 服务。** FireRed 当前输出英文小写，标点补全尚未接入；现有 LLM 纠错也不保证补全标点。
+ASR、VAD 和拼音纠错均在本机运行。**开启 LLM Refinement 后，识别文本会发送至该设置中的 API 服务。** FireRed 当前英文输出小写，标点补全尚未接入。
 
 ## 验证与开发
 
 ```bash
-# Swift 录音文件与进程通信测试，以及完整 Python 测试
+# 原生音频、词库、热词、特征数值、取消和模型复用测试
 make test
 
-# 用打包应用走同一条 Swift → Python → FireRed 链路
+# 同一条原生识别链路，无需麦克风或辅助功能权限
 build/voicer.app/Contents/MacOS/voicer \
   --transcribe-file /path/to/audio.wav --hotwords
 
-# 单独看原始热词解码效果
+# 原始识别结果，关闭后置纠错
 build/voicer.app/Contents/MacOS/voicer \
   --transcribe-file /path/to/audio.wav --hotwords --no-correction
 ```
 
-重复传入 `--transcribe-file` 可在同一进程识别多条文件；输出 JSON 中 `model_load_count` 可检查模型复用。文件入口支持 CAF/WAV 等 libsndfile 格式，转换为单声道 16 kHz 后识别。
+重复传入 `--transcribe-file` 可识别多条文件并复用模型；JSON 的 `engine: "swift-mlx"` 和 `model_load_count` 用于验证。文件读取及重采样通过 AVFoundation，支持 WAV、CAF 等系统支持的音频格式。SwiftPM 命令行不能完整编译 Metal 内核，因此 `make build` / `make test` 使用 Xcode 构建。
 
-CI 检查 Swift 构建、录音文件处理、进程协议及 CPU 可运行的 Python 逻辑；真实 MLX 推理和模型解码测试需在 Apple Silicon 本机运行。
-
-本轮实际结果与验收边界见 [voicer 集成验证](ASR/docs/voicer-integration.md)。
+迁移结果和限制见 [Swift 迁移验证](ASR/docs/swift-migration.md)。
 
 | 目录 | 用途 |
 |---|---|
-| `Sources/voicer/` | 原生菜单栏应用、录音、常驻进程连接、设置和上屏 |
-| `ASR/asr_lab/` | FireRed、热词解码、VAD、拼音纠错与 JSON-lines worker |
-| `ASR/scripts/prepare_runtime.py` | 独立环境与固定 revision 模型准备 |
-| `Tests/voicerTests/`、`ASR/tests/` | 应用边界及识别逻辑测试 |
-| `ASR/docs/`、`ASR/results/` | 从 my-asr 迁入的研究记录和冻结实验输出 |
-| `ASR/experiments/qingjian-scorer/` | 独立青简重排实验，未接入应用默认流程 |
+| `Sources/voicer/` | Swift 应用、录音、设置、模型下载、上屏 |
+| `Sources/voicer/NativeASR/` | Swift FireRed、Silero、SentencePiece、热词和纠错 |
+| `Sources/voicer/ASRResources/` | 静态拼音数据、默认词库、第三方许可 |
+| `Tests/voicerTests/` | 原生测试和冻结 Python 对照数值 |
+| `ASR/` | 原型、模型对比和历史实验，开发用，不打包到应用 |
 
-原型选型与小样本结果见 [FireRed 热词实验](ASR/docs/firered-integration.md)。ASR 目录保留 Qwen/Fun 和青简的独立对照工具；应用中的本地引擎使用 FireRed 与保守拼音规则。麦克风录音和模型权重不进入 Git，也不进入应用包。
-
-FireRed 束搜索适配保留 [MLX Audio MIT 许可](ASR/third_party/mlx-audio-LICENSE)；青简实验的许可和使用范围见其 [README](ASR/experiments/qingjian-scorer/README.md)。
+FireRed、Silero 和 SentencePiece 取自 `mlx-audio-swift` 的所需源码子集，固定上游 revision，避免引入整套无关的音频和语言模型。修改说明及许可见 [第三方说明](Sources/voicer/ASRResources/ThirdPartyNotices.txt)。青简重排仍是 `ASR/experiments/qingjian-scorer/` 中的独立实验，未接入应用默认流程；其许可见对应 README。

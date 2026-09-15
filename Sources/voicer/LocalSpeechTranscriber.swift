@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
 
-/// Saves native-rate microphone buffers as CAF. The Python reader converts
-/// channels/sample rate once, after recording, using the tested ASR audio path.
+/// Saves native-rate microphone buffers as CAF. NativeAudio converts channels
+/// and sample rate once after recording, before the native MLX pipeline.
 // Only the immutable URL escapes; all mutable writer state is protected by lock.
 final class AudioCapture: @unchecked Sendable {
     let url: URL
@@ -27,7 +27,7 @@ final class AudioCapture: @unchecked Sendable {
         guard let file else { return }
         guard frames + AVAudioFramePosition(buffer.frameLength) <= maximumFrames else {
             self.file = nil
-            throw LocalASRError.worker("Recording limit reached. Please dictate up to 30 seconds at a time.")
+            throw LocalASRError.invalidInput("Recording limit reached. Please dictate up to 30 seconds at a time.")
         }
         try file.write(from: buffer)
         frames += AVAudioFramePosition(buffer.frameLength)

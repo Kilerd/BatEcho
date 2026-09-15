@@ -1,3 +1,5 @@
+> 本文记录最初的 Swift → Python 集成，作为历史验证保留。当前应用已迁到原生 Swift / MLX，见 [Swift 迁移验证](swift-migration.md)。
+
 # voicer 集成验证
 
 2026-09-15，在 M4 / 32 GB / macOS 26.3 上完成。目标仓库为 `Kilerd/voicer`，基于 `4eec76546e4a09e42d92800efe7295115496685e`。

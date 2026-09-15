@@ -1,4 +1,4 @@
-"""Check the packaged Swift -> worker -> MLX path using the fixed research audio."""
+"""Check the packaged native Swift -> MLX path using the fixed research audio."""
 import argparse
 import hashlib
 import json
@@ -20,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--app", type=Path, default=ROOT / "build/voicer.app")
     parser.add_argument("--audio-dir", type=Path, default=ROOT / "ASR/data/audio")
-    parser.add_argument("--output", type=Path, default=ROOT / "ASR/results/voicer-integration.json")
+    parser.add_argument("--output", type=Path, default=ROOT / "ASR/results/voicer-swift-integration.json")
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("Choose another --output to preserve the existing evidence")
@@ -31,6 +31,7 @@ def main():
         app = temporary / "voicer.app"
         shutil.copytree(args.app, app)
         executable = app / "Contents/MacOS/voicer"
+        binary_hash = hashlib.sha256(executable.read_bytes()).hexdigest()
         audio_dir = args.audio_dir.resolve()
         native = temporary / "native-stereo-48k.caf"
         waveform, rate = sf.read(audio_dir / "tingting-term03.wav", dtype="float32")
@@ -52,6 +53,8 @@ def main():
         ]
         results = []
         environment = {key: value for key, value in os.environ.items() if key != "VOICER_ASR_SOURCE"}
+        environment["PATH"] = "/usr/bin:/bin"
+        assert not any(path.suffix in {".py", ".pyc", ".onnx"} for path in app.rglob("*"))
         for name, options, files in cases:
             command = [str(executable), *options]
             for path, _ in files:
@@ -63,6 +66,7 @@ def main():
             for row, (path, expected) in zip(rows, files):
                 assert row["text"] == expected, (name, path.name, row)
                 assert row["model"] == "firered" and row["model_load_count"] == 1
+                assert row["engine"] == "swift-mlx", "Must exercise the native engine"
                 if "--no-correction" in options:
                     assert row["text"] == row["raw_text"]
                 results.append({"case": name, "audio": path.name, "expected": expected,
@@ -74,10 +78,9 @@ def main():
             "scope": "Packaged native client, copied outside checkout, real FireRed model; no physical microphone or focused-app injection",
             "cases": results,
             "swift_version": subprocess.check_output(["swift", "--version"], text=True).strip(),
+            "binary_sha256": binary_hash,
             "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-                              for directory, pattern in [(ROOT / "Sources/voicer", "*.swift"),
-                                                         (ROOT / "ASR/asr_lab", "*.py")]
-                              for path in sorted(directory.glob(pattern))},
+                              for path in sorted((ROOT / "Sources/voicer").rglob("*")) if path.is_file()},
         }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n")

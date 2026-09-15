@@ -13,6 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var recordingEngine = SpeechEngine.local
     private var session = UUID()
     private var preparingModel = false
+    private var terminating = false
     private let panel = FloatingPanel()
     private let injector = TextInjector()
     private let refiner = LLMRefiner()
@@ -62,6 +63,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        terminating = true
+        if preparingModel { speechSettingsController.cancelPreparation() }
         transcriber?.cancel()
         warmup?.cancel()
         Task {
@@ -83,7 +86,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func warmLocalModel() {
-        guard Settings.shared.speechEngine == .local, LocalASRRuntime().isPrepared else { return }
+        guard !terminating, Settings.shared.speechEngine == .local, LocalASRRuntime().isPrepared else { return }
         warmup?.cancel()
         warmup = Task { [weak self] in
             do { try await self?.localASR.warmUp() }
@@ -155,12 +158,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func relaunch() {
-        let bundlePath = Bundle.main.bundlePath
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
-        process.arguments = ["-c", "sleep 0.3; /usr/bin/open '\(bundlePath)'"]
-        try? process.run()
-        NSApp.terminate(nil)
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = true
+        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { app, error in
+            Task { @MainActor in
+                if app != nil && error == nil { NSApp.terminate(nil) }
+            }
+        }
     }
 
     // MARK: - Recording flow

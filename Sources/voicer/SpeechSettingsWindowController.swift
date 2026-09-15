@@ -13,7 +13,7 @@ final class SpeechSettingsWindowController: NSWindowController {
     private lazy var prepareButton = NSButton(title: "Prepare Local Model…", target: self, action: #selector(prepareModel))
     private lazy var vocabularyButton = NSButton(title: "Edit Vocabulary…", target: self, action: #selector(editVocabulary))
     private lazy var logButton = NSButton(title: "View Setup Log", target: self, action: #selector(viewLog))
-    private var setup: Process?
+    private var setup: Task<Void, Never>?
     private var startingSetup = false
 
     convenience init() {
@@ -34,6 +34,10 @@ final class SpeechSettingsWindowController: NSWindowController {
         NSApp.activate(ignoringOtherApps: true)
         showWindow(nil)
         window?.makeKeyAndOrderFront(nil)
+    }
+
+    func cancelPreparation() {
+        setup?.cancel()
     }
 
     private func buildUI() {
@@ -121,10 +125,6 @@ final class SpeechSettingsWindowController: NSWindowController {
 
     @objc private func prepareModel() {
         guard setup == nil, !startingSetup else { return }
-        guard let uv = runtime.uv else {
-            status.stringValue = "Install uv first, then prepare the model. See the project README."
-            return
-        }
         startingSetup = true
         refreshStatus()
         Task { @MainActor [weak self] in
@@ -135,52 +135,31 @@ final class SpeechSettingsWindowController: NSWindowController {
                 self.status.stringValue = "Finish dictating before preparing the model."
                 return
             }
-            self.runSetup(uv: uv)
+            self.runSetup()
         }
     }
 
-    private func runSetup(uv: URL) {
-        do {
-            try FileManager.default.createDirectory(at: runtime.directory, withIntermediateDirectories: true)
-            let logURL = runtime.directory.appendingPathComponent("setup.log")
-            FileManager.default.createFile(atPath: logURL.path, contents: nil)
-            let log = try FileHandle(forWritingTo: logURL)
-            let process = Process()
-            process.executableURL = uv
-            process.arguments = ["run", "--no-project", "--python", "3.12",
-                                 runtime.sourceDirectory.appendingPathComponent("scripts/prepare_runtime.py").path,
-                                 "--runtime", runtime.directory.path]
-            process.currentDirectoryURL = runtime.sourceDirectory
-            var environment = ProcessInfo.processInfo.environment
-            environment["PATH"] = uv.deletingLastPathComponent().path + ":"
-                + (environment["PATH"] ?? "/usr/bin:/bin:/usr/sbin:/sbin")
-            environment["PYTHONUNBUFFERED"] = "1"
-            process.environment = environment
-            process.standardInput = FileHandle.nullDevice
-            process.standardOutput = log
-            process.standardError = log
-            process.terminationHandler = { [weak self] process in
-                try? log.close()
-                DispatchQueue.main.async {
-                    guard let self else { return }
-                    self.setup = nil
-                    self.startingSetup = false
-                    self.refreshStatus()
-                    if process.terminationStatus != 0 {
-                        self.status.stringValue = "Setup failed. View the setup log for details."
-                    }
-                    self.onSetupFinished?()
+    private func runSetup() {
+        let runtime = self.runtime
+        startingSetup = false
+        setup = Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                try await runtime.prepare { message in
+                    Task { @MainActor in self.status.stringValue = message }
                 }
+                self.setup = nil
+                self.refreshStatus()
+            } catch {
+                self.setup = nil
+                self.refreshStatus()
+                self.status.stringValue = error.localizedDescription
+                let message = "Model setup failed: \(error.localizedDescription)\n"
+                try? Data(message.utf8).write(to: runtime.directory.appendingPathComponent("setup.log"), options: .atomic)
+                self.logButton.isHidden = false
             }
-            try process.run()
-            setup = process
-            startingSetup = false
-            refreshStatus()
-        } catch {
-            startingSetup = false
-            refreshStatus()
-            status.stringValue = error.localizedDescription
-            onSetupFinished?()
+            self.onSetupFinished?()
         }
+        refreshStatus()
     }
 }
