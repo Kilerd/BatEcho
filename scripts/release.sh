@@ -2,6 +2,7 @@
 # Build and verify a Developer ID distribution. This script never publishes it.
 # BATECHO_SIGN_IDENTITY: certificate name or SHA-1 in the local keychain.
 # BATECHO_NOTARY_PROFILE: existing notarytool keychain profile (default: batecho-notary).
+# BATECHO_NOTARY_KEYCHAIN: keychain containing the profile (default: login keychain).
 # BATECHO_EXPECTED_VERSION: optional version assertion, used by tag builds.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -19,6 +20,8 @@ fi
 identity="${BATECHO_SIGN_IDENTITY:-$(security find-identity -v -p codesigning | awk -F'"' '/Developer ID Application/{print $2; exit}')}"
 [[ -n "$identity" && "$identity" != '-' ]] || fail "A Developer ID Application identity is required."
 profile="${BATECHO_NOTARY_PROFILE:-batecho-notary}"
+keychain="${BATECHO_NOTARY_KEYCHAIN:-$HOME/Library/Keychains/login.keychain-db}"
+notary_auth=(--keychain-profile "$profile" --keychain "$keychain")
 identities=$(security find-identity -v -p codesigning)
 if ! printf '%s\n' "$identities" | awk -v wanted="$identity" '
     /Developer ID Application/ {
@@ -28,7 +31,7 @@ if ! printf '%s\n' "$identities" | awk -v wanted="$identity" '
     END { exit !found }'; then
     fail "The selected identity is not an available Developer ID Application certificate."
 fi
-if ! xcrun notarytool history --keychain-profile "$profile" --output-format json >/dev/null; then
+if ! xcrun notarytool history "${notary_auth[@]}" --output-format json >/dev/null; then
     fail "Notary profile '$profile' cannot authenticate. See docs/macos-release.md."
 fi
 echo "Preflight passed: BatEcho $version; Developer ID identity and notary profile available."
@@ -59,13 +62,13 @@ ditto -c -k --keepParent "$app" "$temporary/notarize-upload.zip"
 submission="dist/notarization.json"
 submit_result=0
 xcrun notarytool submit "$temporary/notarize-upload.zip" \
-    --keychain-profile "$profile" --wait --timeout 30m --output-format json \
+    "${notary_auth[@]}" --wait --timeout 30m --output-format json \
     > "$submission" || submit_result=$?
 status=$(plutil -extract status raw -o - "$submission" 2>/dev/null || true)
 submission_id=$(plutil -extract id raw -o - "$submission" 2>/dev/null || true)
 if [[ "$submit_result" != 0 || "$status" != Accepted ]]; then
     if [[ -n "$submission_id" ]]; then
-        xcrun notarytool log "$submission_id" --keychain-profile "$profile" \
+        xcrun notarytool log "$submission_id" "${notary_auth[@]}" \
             dist/notarization-log.json || true
         echo "Submission ID: $submission_id (kept in $submission)" >&2
     fi

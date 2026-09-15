@@ -16,7 +16,7 @@
 |---|---|
 | 签名身份 | Keychain 有有效的 `Developer ID Application: Chen Xin (V9ZRBTHDGR)`；脚本自动选择，也支持指定证书名称或 SHA-1 |
 | 已安装 GhostLens | 带 Hardened Runtime、Developer ID 签名、安全时间戳和已装订公证票据 |
-| 公证凭据 | GhostLens 脚本指定 `ghostlens-notary`，但当前登录 Keychain 实测返回 `No Keychain password item found`；需配置有效 profile 后才能公证 |
+| 公证凭据 | 用户已在本机 `login.keychain-db` 配置 `batecho-notary`；显式指定该 Keychain 的认证检查通过 |
 | GitHub runner | GhostLens 有在线的仓库级 `kilerds-Mac-mini`；BatEcho 仓库尚未注册 runner，不能直接使用另一个仓库的 runner |
 | 应用更新 | BatEcho 当前没有自动更新功能，因此不生成 GhostLens 专用的 `latest-mac.yml` |
 | 应用身份 | 保留 `com.kilerd.voicer`，沿用 UserDefaults 和 `Application Support/voicer/asr`；产品名、可执行文件、Swift 模块和图标改为 BatEcho |
@@ -40,11 +40,12 @@ Developer ID **Installer** 用于签 `.pkg`，当前 ZIP 方案不需要。当�
 
 ## 本机演练
 
-这台 Mac 已有签名证书，但当前 Keychain 缺少公证 profile。先在自己的终端运行以下命令，按提示输入 Apple ID 的 **app-specific password**；无需把密码交给脚本或写入命令历史：
+这台 Mac 已有签名证书和有效的 `batecho-notary` profile。新机器上先在自己的终端运行以下命令，按提示输入 Apple ID 的 **app-specific password**；无需把密码交给脚本或写入命令历史：
 
 ```bash
 xcrun notarytool store-credentials batecho-notary \
-  --apple-id '<你的 Apple ID>' --team-id V9ZRBTHDGR
+  --apple-id '<你的 Apple ID>' --team-id V9ZRBTHDGR \
+  --keychain "$HOME/Library/Keychains/login.keychain-db"
 ```
 
 随后执行：
@@ -55,7 +56,7 @@ make test
 make release
 ```
 
-如果有效凭据实际存放在其他 profile，可设置 `BATECHO_NOTARY_PROFILE=<名称>`；不需要复制凭据。`--preflight` 只检查版本、可用证书和 Apple 凭据认证，不提交应用。`make release` 会向 Apple 提交公证，但不创建 GitHub Release。成功输出：
+如果有效凭据实际存放在其他 profile，可设置 `BATECHO_NOTARY_PROFILE=<名称>`；其他 Keychain 可通过 `BATECHO_NOTARY_KEYCHAIN=<绝对路径>` 指定。默认显式使用 `$HOME/Library/Keychains/login.keychain-db`，与保存凭据的命令一致。`--preflight` 只检查版本、可用证书和 Apple 凭据认证，不提交应用。`make release` 会向 Apple 提交公证，但不创建 GitHub Release。成功输出：
 
 ```text
 dist/BatEcho.app
@@ -69,7 +70,7 @@ dist/notarization.json
 
 脚本先验证证书和公证认证，再构建、签名、提交。只有状态为 `Accepted` 才继续；先 staple 到 `.app`，再生成用户下载的 ZIP，并解压检查票据、资源和 Gatekeeper。ZIP 自身不能装订票据。流程依据 [Apple 自定义公证流程](https://developer.apple.com/documentation/security/customizing-the-notarization-workflow)。
 
-Apple 超过 30 分钟仍未完成时，脚本停止等待并保留 submission ID。用 `xcrun notarytool info <id> --keychain-profile <profile>` 查询进度，先确认原提交状态，避免连续重复提交。
+Apple 超过 30 分钟仍未完成时，脚本停止等待并保留 submission ID。用 `xcrun notarytool info <id> --keychain-profile <profile> --keychain <Keychain绝对路径>` 查询进度，先确认原提交状态，避免连续重复提交。
 
 ## GitHub Actions 配置
 
@@ -81,6 +82,7 @@ Apple 超过 30 分钟仍未完成时，脚本停止等待并保留 submission I
 2. 在可访问签名私钥和公证 profile 的登录用户会话中运行。
 3. 创建默认的 `batecho-notary` profile；若复用已有的有效 profile，则设置仓库 Actions variable `MACOS_NOTARY_PROFILE=<名称>`。
 4. 可选 Actions variable `MACOS_SIGN_IDENTITY`，用于存在多个 Developer ID 时指定名称或 SHA-1。
+5. 可选 Actions variable `MACOS_NOTARY_KEYCHAIN`，指定公证凭据所在 Keychain 的绝对路径；默认使用 runner 用户的登录 Keychain。
 
 当前流程不需要把证书或密码放入 GitHub Secrets。若 runner 改成脱离登录会话的服务，需要另外解决 Keychain 解锁与私钥访问授权；脚本不会修改登录 Keychain 的锁定状态或访问控制。
 
@@ -99,7 +101,7 @@ Apple 超过 30 分钟仍未完成时，脚本停止等待并保留 submission I
 
 2026-09-15 本机验证：Release 构建与 16 项 Swift 测试通过；Developer ID 签名、安全时间戳、Hardened Runtime 和签名后的 CPU VAD 检查通过。签名应用复制到仓库外，7 条真实模型文件检查全部通过，涵盖中文、英文热词、静音与 48 kHz 双声道 CAF，详见 [`batecho-signing-integration.json`](../ASR/results/batecho-signing-integration.json)。Finder 读取到正确的蝙蝠图标；约 13 MiB 的签名预览 ZIP 解压后，签名、资源与 CPU VAD 再验证通过。
 
-**公证未完成**：当前 Keychain 缺少 profile，预检会提前失败；本机签名预览的 Gatekeeper 结果为 `Unnotarized Developer ID`。公证提交、staple 与 Gatekeeper 放行仍需配置凭据后实跑，自托管发布 job 还需注册 BatEcho runner。已有预览包不是已公证的分发包。
+早期签名预览的 Gatekeeper 结果为 `Unnotarized Developer ID`。当前公证凭据认证已通过；实际发行包以 `dist/notarization.json` 中的 `Accepted` 状态、`stapler validate` 和 Gatekeeper 验证为准。自托管发布 job 还需注册 BatEcho runner。
 
 ```bash
 scripts/verify-bundle.sh dist/BatEcho.app

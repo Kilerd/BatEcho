@@ -32,6 +32,7 @@ jobs:
     env:
       BATECHO_SIGN_IDENTITY: ${{ vars.MACOS_SIGN_IDENTITY }}
       BATECHO_NOTARY_PROFILE: ${{ vars.MACOS_NOTARY_PROFILE || 'batecho-notary' }}
+      BATECHO_NOTARY_KEYCHAIN: ${{ vars.MACOS_NOTARY_KEYCHAIN }}
     steps:
       - uses: actions/checkout@v7.0.1
         with:
