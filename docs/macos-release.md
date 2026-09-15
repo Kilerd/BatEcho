@@ -89,11 +89,24 @@ Apple 超过 30 分钟仍未完成时，脚本停止等待并保留 submission I
 | 触发方式 | 执行内容 |
 |---|---|
 | PR / main push 的 Tests | GitHub 托管 runner 上构建、测试，上传标为 development 的 ZIP；不使用签名凭据 |
+| 推送 `ci/notarization` 分支 | 自托管 Mac 上测试、签名、公证并上传 Actions artifact；发布步骤跳过 |
 | 手动 macOS Release，默认 `publish=false` | 自托管 Mac 上测试、正式签名、公证，上传可下载的 Actions artifact |
 | 推送 `vX.Y.Z` tag | 校验 tag 与 Info.plist、运行同一打包流程，在当前仓库创建 Release |
 | 手动 macOS Release，选择 `publish=true` | 要求 `vX.Y.Z` 已存在且指向所选 commit，通过验证后发布 |
 
 正式发布步骤使用当前仓库的 `GITHUB_TOKEN`，不需要 GhostLens 跨仓库发布所用的 PAT。当前工作不创建版本 tag、不合入 PR。后续由维护者选择发布时点。
+
+### workflow 合入之前的 CI 演练
+
+GitHub 要求 `workflow_dispatch` 的定义先出现在默认分支；仅把 `--ref` 指向 PR 分支仍会返回 404。合入前可以将维护者确认的 commit 推送到专用测试分支：
+
+```bash
+git push origin HEAD:refs/heads/ci/notarization
+```
+
+这会运行同一个 `package` job；只有版本 tag 或显式选择 `publish=true` 的手动运行才会进入 `publish` job。测试分支不会创建 GitHub Release。触发规则依据 [GitHub 手动运行 workflow 文档](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)。
+
+仓库尚未配置常驻 runner 时，可注册带 `--ephemeral` 的独立 runner 供这次演练使用。它在一个 job 结束后自动注销；之后的 CI 发布需要重新启动 runner 或配置常驻 runner。
 
 如果希望彻底改为 GitHub 托管 macOS runner，需要另行导出含私钥的 `.p12`，通过 Secrets 提供证书、导出密码和公证凭据，并在临时 Keychain 导入、结束后清理。GitHub 有 [证书导入范例](https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/sign-xcode-applications)。当前已有可用 Mac 和 Keychain，先沿用 GhostLens 的路径工作量更小。
 
