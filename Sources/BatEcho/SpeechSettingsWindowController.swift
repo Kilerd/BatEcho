@@ -11,6 +11,7 @@ final class SpeechSettingsWindowController: NSWindowController {
     private let spinner = NSProgressIndicator()
     private lazy var prepareButton = NSButton(title: "Prepare Local Model…", target: self, action: #selector(prepareModel))
     private lazy var vocabularyButton = NSButton(title: "Edit Vocabulary…", target: self, action: #selector(editVocabulary))
+    private var vocabularyEditor: VocabularyWindowController?
     private lazy var logButton = NSButton(title: "View Setup Log", target: self, action: #selector(viewLog))
     private var setup: Task<Void, Never>?
     private var startingSetup = false
@@ -36,6 +37,11 @@ final class SpeechSettingsWindowController: NSWindowController {
 
     func cancelPreparation() {
         setup?.cancel()
+    }
+
+    func confirmVocabularyClose(_ completion: @escaping (Bool) -> Void) {
+        if let vocabularyEditor { vocabularyEditor.confirmClosing(completion) }
+        else { completion(true) }
     }
 
     private func buildUI() {
@@ -85,7 +91,7 @@ final class SpeechSettingsWindowController: NSWindowController {
     private func refreshStatus() {
         let busy = setup != nil || startingSetup
         prepareButton.isEnabled = !busy
-        vocabularyButton.isEnabled = !busy && FileManager.default.fileExists(atPath: runtime.vocabulary.path)
+        vocabularyButton.isEnabled = !busy
         logButton.isHidden = !FileManager.default.fileExists(atPath: runtime.directory.appendingPathComponent("setup.log").path)
         if busy {
             status.stringValue = "Preparing the local speech model…"
@@ -102,7 +108,8 @@ final class SpeechSettingsWindowController: NSWindowController {
     }
 
     @objc private func editVocabulary() {
-        NSWorkspace.shared.open(runtime.vocabulary)
+        if vocabularyEditor == nil { vocabularyEditor = VocabularyWindowController(runtime: runtime) }
+        vocabularyEditor?.show()
     }
 
     @objc private func viewLog() {

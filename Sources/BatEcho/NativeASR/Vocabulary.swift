@@ -23,7 +23,12 @@ struct VocabularyEntry: Decodable, Equatable {
     static func load(_ url: URL) throws -> [VocabularyEntry] {
         let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
         guard size <= 1024 * 1024 else { throw LocalASRError.invalidInput("Vocabulary must be smaller than 1 MB.") }
-        let entries = try JSONDecoder().decode([VocabularyEntry].self, from: Data(contentsOf: url))
+        return try decode(Data(contentsOf: url))
+    }
+
+    static func decode(_ data: Data) throws -> [VocabularyEntry] {
+        guard data.count <= 1024 * 1024 else { throw LocalASRError.invalidInput("Vocabulary must be smaller than 1 MB.") }
+        let entries = try JSONDecoder().decode([VocabularyEntry].self, from: data)
         guard entries.count <= 4096 else { throw LocalASRError.invalidInput("Vocabulary must contain at most 4096 entries.") }
         for entry in entries {
             guard !entry.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,

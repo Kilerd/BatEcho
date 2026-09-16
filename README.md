@@ -41,7 +41,9 @@ open build/BatEcho.app --args --speech-settings
 
 - **Use vocabulary as recognition hints**：通过 Qwen 的原生 context 提供热词，默认开启，可随时关闭。旧版 FireRed 的强度分数不再适用。
 - **Correct Chinese homophones**：根据拼音和上下文修正中文词，默认开启。
-- **Edit Vocabulary…**：编辑个人词库，保存后下一句生效。
+- **Edit Vocabulary…**：打开应用内词库编辑器，按词语或拼音搜索，新增、修改、删除词条。点击 **Save Changes**（⌘S）后下一句生效；**Reload** 可放弃未保存的修改并重新读取词库。
+
+日常添加热词只需填写 **Word or phrase**，中英文均可。需要中文同音纠错时，再填写可选的 **Pinyin** 和 **Correction contexts**（每行一个上下文）；**Fill Pinyin** 可生成拼音，姓名和多音字请核对读音。编辑器会检查重复词、格式和 64 词上限；模型的分词文件准备好后，保存时也会检查 512 token 限制。首次使用可在下载模型前编辑词库。
 
 词库文件 `~/Library/Application Support/voicer/asr/lexicon.json` 示例：
 
