@@ -63,11 +63,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        terminating = true
-        if preparingModel { speechSettingsController.cancelPreparation() }
-        transcriber?.cancel()
-        warmup?.cancel()
         Task {
+            let shouldQuit = await withCheckedContinuation { continuation in
+                speechSettingsController.confirmVocabularyClose { continuation.resume(returning: $0) }
+            }
+            guard shouldQuit else {
+                sender.reply(toApplicationShouldTerminate: false)
+                return
+            }
+            terminating = true
+            if preparingModel { speechSettingsController.cancelPreparation() }
+            transcriber?.cancel()
+            warmup?.cancel()
             await localASR.shutdown()
             await MainActor.run { sender.reply(toApplicationShouldTerminate: true) }
         }
