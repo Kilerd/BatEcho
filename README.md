@@ -4,11 +4,11 @@
 
 macOS 语音输入工具：按住 **Fn** 说话，松开后将文字输入当前应用。
 
-默认使用本地 **FireRedASR2-AED**，支持中文和中英混排。应用的录音、ASR、VAD、热词解码、拼音纠错和模型下载均由 **Swift** 实现，推理通过 **MLX Swift / Metal** 运行。无需安装 Python、uv 或 ONNX Runtime。菜单中也可切换 Apple Speech Recognition。
+默认使用本地 **Qwen3-ASR-0.6B（8-bit）**，支持中文和中英混排，并通过模型原生的上下文提示接入个人热词。应用的录音、ASR、VAD、分词、拼音纠错和模型下载均由 **Swift** 实现，推理通过 **MLX Swift / Metal** 运行。无需安装 Python、uv 或 ONNX Runtime。菜单中也可切换 Apple Speech Recognition。
 
 ## 准备与运行
 
-运行需要 Apple Silicon 和 macOS 14 或更新版本。首次准备下载约 4.6 GB 模型；已有 Python 原型的 FireRed 权重可以直接复用，补充约 1.2 MB 的 Silero MLX 权重即可。
+运行需要 Apple Silicon 和 macOS 14 或更新版本。首次准备下载约 **1 GB** Qwen 模型与分词文件，以及约 1.2 MB 的 Silero MLX 权重。升级自 FireRed 的用户需要重新点一次 **Prepare Local Model…**；个人词库保留，Silero 权重复用。
 
 从源码构建需要完整 Xcode，Swift 6.3 工具链和 Metal Toolchain。锁定的 MLX Swift 为 `0.31.6`。首次安装编译工具后运行：
 
@@ -27,7 +27,7 @@ make install
 open build/BatEcho.app --args --speech-settings
 ```
 
-模型和词库保存在 `~/Library/Application Support/voicer/asr/`。BatEcho 沿用原来的 Bundle ID `com.kilerd.voicer` 和数据目录，已有设置、模型和个人词库继续使用。重新构建或移动 `.app` 不会重新下载模型，也不会覆盖用户词库。开发时可用 `BATECHO_ASR_RUNTIME` 指定另一目录，旧的 `VOICER_ASR_RUNTIME` 仍然兼容，新变量优先。原型留下的 `.venv`、ONNX 文件可以自行清理，应用已不使用它们。
+模型和词库保存在 `~/Library/Application Support/voicer/asr/`。BatEcho 沿用原来的 Bundle ID `com.kilerd.voicer` 和数据目录；原本选择本地识别的设置自动使用 Qwen，选择 Apple 的设置保持不变。重新构建或移动 `.app` 会复用已完整下载的 Qwen 文件，也不会覆盖用户词库。开发时可用 `BATECHO_ASR_RUNTIME` 指定另一目录，旧的 `VOICER_ASR_RUNTIME` 仍然兼容，新变量优先。原来的 FireRed 权重、Python 环境和 ONNX 文件不会自动删除，应用不再使用它们。
 
 ## 签名与发布
 
@@ -39,7 +39,7 @@ open build/BatEcho.app --args --speech-settings
 
 **Speech Settings…** 提供：
 
-- **Use vocabulary during recognition**：启用解码阶段热词，默认关闭；从 Normal / 4 分开始。
+- **Use vocabulary as recognition hints**：通过 Qwen 的原生 context 提供热词，默认开启，可随时关闭。旧版 FireRed 的强度分数不再适用。
 - **Correct Chinese homophones**：根据拼音和上下文修正中文词，默认开启。
 - **Edit Vocabulary…**：编辑个人词库，保存后下一句生效。
 
@@ -52,23 +52,24 @@ open build/BatEcho.app --args --speech-settings
 ]
 ```
 
-热词每次最多 64 个、合计 512 个模型 token，每个词最多 128 个字符。英文用模型自己的 SentencePiece BPE 编码，每个词一句内最多加分一次，未完成前缀退回加分，英文需要完整词边界。`pinyin: []` 不参与后置拼音替换。
+热词每次最多 64 个，完整提示合计最多 512 个 Qwen token，每个词最多 128 个字符。词表去重后通过 Qwen2 byte-level BPE 编码，放入系统上下文；关闭开关时不传入词表。使用相关的人名、产品名和专业术语，过多无关词可能引起误识别。超限会提示缩减词表，不会悄悄截断。`pinyin: []` 可以作为热词，但不参与后置拼音替换。
 
 拼音纠错使用随应用打包的固定字音与词语数据，在 Swift 中做最长词匹配，保留多音字读音。只有同长度、拼音一致、有原文上下文支持且没有歧义的候选可以替换；候选过多时保留原文。它是文字识别后的纠错，并不提供声学拼音概率。
 
 ## 识别流程
 
 ```text
-按住 Fn → AVAudioEngine 录音与波形
-松开 Fn → 单声道 16 kHz → Silero VAD → FireRed + 可选热词
-        → 拼音与词库纠错 → 可选 LLM 纠错 → 当前应用
+按住 Fn → AVAudioEngine 连续录音与波形
+        → 按停顿/时长分段 → 单声道 16 kHz → Silero VAD
+        → Qwen3-ASR + 可选热词 context → 逐段预览与重叠拼接
+松开 Fn → 完成最后一段 → 拼音与词库纠错 → 可选 LLM 纠错 → 当前应用
 ```
 
-模型在后台串行队列中预加载并复用；录音期间显示波形，松开后显示 Transcribing。每次最多录音 30 秒，超过录音或解码上限会报错。FireRed 识别整句，当前没有实时部分识别结果。
+模型在后台串行队列中预加载并复用。录音支持超过 30 秒，内部按停顿或最多 25 秒切段；没有停顿时保留一秒重叠，用于边界拼接。录音期间可以预览已完成分段，松开后完成剩余识别并一次性输入。预览为逐段识别，不是逐字流式解码。
 
 取消和超时在推理阶段之间及每个解码步检查，已提交的 GPU 计算完成后退出；取消的结果不会上屏。临时 CAF 在完成、失败或取消后删除，不保存录音历史。
 
-ASR、VAD 和拼音纠错均在本机运行。**开启 LLM Refinement 后，识别文本会发送至该设置中的 API 服务。** FireRed 当前英文输出小写，标点补全尚未接入。
+ASR、VAD 和拼音纠错均在本机运行。**开启 LLM Refinement 后，识别文本会发送至该设置中的 API 服务。** Qwen 输出的英文大小写和标点会保留。
 
 ## 验证与开发
 
@@ -80,21 +81,21 @@ make test
 build/BatEcho.app/Contents/MacOS/BatEcho \
   --transcribe-file /path/to/audio.wav --hotwords
 
-# 原始识别结果，关闭后置纠错
+# 原始识别结果，关闭热词和后置纠错
 build/BatEcho.app/Contents/MacOS/BatEcho \
-  --transcribe-file /path/to/audio.wav --hotwords --no-correction
+  --transcribe-file /path/to/audio.wav --no-hotwords --no-correction
 ```
 
 重复传入 `--transcribe-file` 可识别多条文件并复用模型；JSON 的 `engine: "swift-mlx"` 和 `model_load_count` 用于验证。文件读取及重采样通过 AVFoundation，支持 WAV、CAF 等系统支持的音频格式。SwiftPM 命令行不能完整编译 Metal 内核，因此 `make build` / `make test` 使用 Xcode 构建。
 
-迁移结果和限制见 [Swift 迁移验证](ASR/docs/swift-migration.md)。
+早期 FireRed 原生迁移的历史结果见 [Swift 迁移验证](ASR/docs/swift-migration.md)。当前 Qwen 的特征、分词和上下文模板对照包含在原生测试中。
 
 | 目录 | 用途 |
 |---|---|
 | `Sources/BatEcho/` | Swift 应用、录音、设置、模型下载、上屏 |
-| `Sources/BatEcho/NativeASR/` | Swift FireRed、Silero、SentencePiece、热词和纠错 |
+| `Sources/BatEcho/NativeASR/` | Swift Qwen、Silero、BPE 分词、热词和纠错；旧模型回归代码 |
 | `Sources/BatEcho/ASRResources/` | 静态拼音数据、默认词库、第三方许可 |
 | `Tests/BatEchoTests/` | 原生测试和冻结 Python 对照数值 |
 | `ASR/` | 原型、模型对比和历史实验，开发用，不打包到应用 |
 
-FireRed、Silero 和 SentencePiece 取自 `mlx-audio-swift` 的所需源码子集，固定上游 revision，避免引入整套无关的音频和语言模型。修改说明及许可见 [第三方说明](Sources/BatEcho/ASRResources/ThirdPartyNotices.txt)。青简重排仍是 `ASR/experiments/qingjian-scorer/` 中的独立实验，未接入应用默认流程；其许可见对应 README。
+Qwen 的编码器/解码器、Silero 及旧模型回归代码取自 `mlx-audio-swift` 的所需源码子集，固定上游 revision。修改说明及许可见 [第三方说明](Sources/BatEcho/ASRResources/ThirdPartyNotices.txt)。青简重排仍是 `ASR/experiments/qingjian-scorer/` 中的独立实验，未接入应用默认流程；其许可见对应 README。

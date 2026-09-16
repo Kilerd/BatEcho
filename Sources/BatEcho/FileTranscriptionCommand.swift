@@ -25,7 +25,7 @@ enum FileTranscriptionCommand {
         }
         guard arguments.contains("--transcribe-file") else { return false }
         var files: [URL] = []
-        var hotwords = false
+        var hotwords = true
         var correction = true
         var index = 0
         while index < arguments.count {
@@ -37,6 +37,7 @@ enum FileTranscriptionCommand {
                 }
                 files.append(URL(fileURLWithPath: arguments[index]))
             case "--hotwords": hotwords = true
+            case "--no-hotwords": hotwords = false
             case "--no-correction": correction = false
             default: fail("Unknown argument: \(arguments[index])")
             }
@@ -46,10 +47,8 @@ enum FileTranscriptionCommand {
         Task {
             do {
                 for file in files {
-                    let result = try await client.transcribe(audio: file, hotwords: hotwords, correction: correction)
-                    var data = try JSONEncoder().encode(result)
-                    data.append(0x0A)
-                    try FileHandle.standardOutput.write(contentsOf: data)
+                    try await transcribeAndWrite(file, client: client,
+                        options: ASROptions(hotwords: hotwords, correction: correction))
                 }
                 await client.shutdown()
                 exit(0)
@@ -60,6 +59,17 @@ enum FileTranscriptionCommand {
         }
         RunLoop.main.run()
         return true
+    }
+
+    // Keep each response in its own async frame. In optimized Swift builds,
+    // retaining this large value in the batch task can corrupt frame teardown
+    // when the task subsequently awaits shutdown.
+    @inline(never)
+    private static func transcribeAndWrite(_ file: URL, client: LocalASRClient, options: ASROptions) async throws {
+        let result = try await ContinuousTranscription.transcribeFile(file, client: client, options: options)
+        var data = try JSONEncoder().encode(result)
+        data.append(0x0A)
+        try FileHandle.standardOutput.write(contentsOf: data)
     }
 
     private static func fail(_ message: String) -> Never {

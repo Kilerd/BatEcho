@@ -20,6 +20,7 @@ private final class FakePipeline: ASRPipeline {
     var warm = false
     var calls = 0
     var beforeTranscribe: (() -> Void)?
+    func correct(text: String, check: () throws -> Void) throws -> String { try check(); return text }
     func warmUp(check: () throws -> Void) throws -> LocalASRResponse {
         XCTAssertFalse(Thread.isMainThread)
         try check()
