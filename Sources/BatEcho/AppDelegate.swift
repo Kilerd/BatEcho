@@ -189,7 +189,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
             selected = LocalSpeechTranscriber(client: localASR, hotwords: settings.hotwordsEnabled,
-                                              score: settings.hotwordScore, correction: settings.pinyinCorrectionEnabled)
+                                              correction: settings.pinyinCorrectionEnabled)
         } else {
             guard SFSpeechRecognizer.authorizationStatus() == .authorized else {
                 SFSpeechRecognizer.requestAuthorization { _ in }
