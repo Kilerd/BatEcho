@@ -14,13 +14,11 @@ struct SpeechGateResult: Codable, Sendable {
 
 final class NativeASRPipeline: ASRPipeline {
     private let runtime: LocalASRRuntime
-    private var model: FireRedASR2Model?
+    private var model: Qwen3ASRModel?
     private var vad: SileroVAD?
-    private var sentencePiece: SentencePieceTokenizer?
     private var corrector: VocabularyCorrector?
     private var cachedWords: [String]?
-    private var cachedScore: Float?
-    private var graph: HotwordGraph?
+    private var contextTokens: [Int] = []
     private var modelLoadCount = 0
 
     init(runtime: LocalASRRuntime) { self.runtime = runtime }
@@ -33,13 +31,12 @@ final class NativeASRPipeline: ASRPipeline {
         }
     }
 
-    private func loadModel(check: () throws -> Void) throws -> FireRedASR2Model {
+    private func loadModel(check: () throws -> Void) throws -> Qwen3ASRModel {
         try check()
         if let model { return model }
-        Memory.cacheLimit = 512 * 1024 * 1024
-        let directory = runtime.models.appendingPathComponent("firered")
-        let loaded = try FireRedASR2Model.fromDirectory(directory)
-        sentencePiece = try SentencePieceTokenizer.from(sentencePieceModelURL: directory.appendingPathComponent("train_bpe1000.model"))
+        Memory.cacheLimit = 128 * 1024 * 1024
+        let directory = runtime.models.appendingPathComponent(LocalASRRuntime.modelDirectoryName)
+        let loaded = try Qwen3ASRModel.fromDirectory(directory, check: check)
         model = loaded
         modelLoadCount += 1
         try check()
@@ -59,6 +56,16 @@ final class NativeASRPipeline: ASRPipeline {
         _ = try loadVAD()
         _ = try loadModel(check: check)
         return LocalASRResponse(ready: true, modelLoadCount: modelLoadCount)
+    }
+
+    func correct(text: String, check: () throws -> Void) throws -> String {
+        try check()
+        guard runtime.isPrepared else { throw LocalASRError.notPrepared }
+        let entries = try VocabularyEntry.load(runtime.vocabulary)
+        if corrector == nil { corrector = try VocabularyCorrector(pinyin: PinyinConverter()) }
+        let result = corrector!.correct(text, entries: entries)
+        try check()
+        return result
     }
 
     private func speechGate(_ audio: [Float], check: () throws -> Void) throws -> SpeechGateResult {
@@ -90,9 +97,6 @@ final class NativeASRPipeline: ASRPipeline {
     }
 
     func transcribe(audio url: URL, options: ASROptions, check: () throws -> Void) throws -> LocalASRResponse {
-        guard options.score.isFinite, (0...8).contains(options.score) else {
-            throw LocalASRError.invalidInput("Hotword strength must be between 0 and 8.")
-        }
         guard runtime.isPrepared else { throw LocalASRError.notPrepared }
         try check()
         let started = ProcessInfo.processInfo.systemUptime
@@ -102,25 +106,19 @@ final class NativeASRPipeline: ASRPipeline {
         if gate.hasSpeech {
             let entries = try VocabularyEntry.load(runtime.vocabulary)
             let model = try loadModel(check: check)
-            var activeGraph: HotwordGraph?
+            var activeContext: [Int] = []
             if options.hotwords {
                 let words = entries.map(\.text)
-                if cachedWords != words || cachedScore != options.score {
-                    let phrases = try HotwordTokenizer.compile(words, vocabulary: model.vocabulary, sentencePiece: sentencePiece!)
-                    graph = try HotwordGraph(phrases: phrases, vocabulary: model.vocabulary, eosID: model.config.eosID, score: options.score)
+                if cachedWords != words {
+                    contextTokens = try QwenHotwords.context(entries: entries, encode: model.tokenizer.encode)
                     cachedWords = words
-                    cachedScore = options.score
                 }
-                activeGraph = graph
+                activeContext = contextTokens
             }
-            let output = try model.generate(audio: MLXArray(audio), maxLen: 512, graph: activeGraph, check: check)
-            guard !output.truncated else {
-                throw LocalASRError.invalidInput("Recognition reached its output limit. Please dictate a shorter phrase.")
-            }
+            let output = try model.generate(audio: audio, context: activeContext, check: check)
             result.rawText = output.text
             result.text = output.text
             result.tokens = output.tokens
-            result.confidence = output.confidence
             if options.correction {
                 if corrector == nil { corrector = try VocabularyCorrector(pinyin: PinyinConverter()) }
                 result.text = corrector!.correct(output.text, entries: entries)

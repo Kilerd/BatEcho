@@ -12,7 +12,7 @@ lipo "$app/Contents/MacOS/BatEcho" -verify_arch arm64
 resources="$app/Contents/Resources"
 test -s "$resources/BatEcho.icns"
 test -s "$resources/mlx-swift_Cmlx.bundle/Contents/Resources/default.metallib"
-for file in lexicon.json pinyin-characters.json pinyin-phrases.json ThirdPartyNotices.txt FireRed-LICENSE Silero-LICENSE; do
+for file in lexicon.json pinyin-characters.json pinyin-phrases.json ThirdPartyNotices.txt Qwen-LICENSE FireRed-LICENSE Silero-LICENSE; do
     test -s "$resources/BatEcho_BatEcho.bundle/Contents/Resources/ASRResources/$file"
 done
 entitlements=$(codesign -d --xml --entitlements - "$app" 2>/dev/null)

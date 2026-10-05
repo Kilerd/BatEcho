@@ -19,31 +19,33 @@ struct LocalASRResponse: Codable, Sendable {
     var text: String?
     var rawText: String?
     var ready: Bool?
-    var model = "firered"
+    var model = "qwen3-asr-0.6b-8bit"
     var engine = "swift-mlx"
     var modelLoadCount = 0
     var elapsedSeconds: Double?
     var confidence: Float?
     var vad: SpeechGateResult?
     var tokens: [Int]?
+    var segmentCount: Int?
     enum CodingKeys: String, CodingKey {
         case id, text, ready, model, engine, vad, tokens
         case rawText = "raw_text"
         case modelLoadCount = "model_load_count"
         case elapsedSeconds = "elapsed_s"
         case confidence = "asr_confidence"
+        case segmentCount = "segment_count"
     }
 }
 
 struct ASROptions: Sendable {
-    var hotwords = false
-    var score: Float = 4
+    var hotwords = true
     var correction = true
 }
 
 protocol ASRPipeline: AnyObject {
     func warmUp(check: () throws -> Void) throws -> LocalASRResponse
     func transcribe(audio: URL, options: ASROptions, check: () throws -> Void) throws -> LocalASRResponse
+    func correct(text: String, check: () throws -> Void) throws -> String
 }
 
 /// Thread-safe cancellation token. It never touches MLX arrays from the caller.
@@ -78,10 +80,14 @@ final class LocalASRClient: @unchecked Sendable {
 
     func warmUp() async throws { _ = try await perform { try $0.warmUp(check: $1) } }
 
-    func transcribe(audio: URL, hotwords: Bool, score: Double = 4,
+    func transcribe(audio: URL, hotwords: Bool,
                     correction: Bool = true) async throws -> LocalASRResponse {
-        let options = ASROptions(hotwords: hotwords, score: Float(score), correction: correction)
+        let options = ASROptions(hotwords: hotwords, correction: correction)
         return try await perform { try $0.transcribe(audio: audio, options: options, check: $1) }
+    }
+
+    func correct(text: String) async throws -> String {
+        try await perform { try $0.correct(text: text, check: $1) }
     }
 
     func shutdown() async {
@@ -91,7 +97,7 @@ final class LocalASRClient: @unchecked Sendable {
         }
     }
 
-    private func perform(_ body: @escaping (ASRPipeline, () throws -> Void) throws -> LocalASRResponse) async throws -> LocalASRResponse {
+    private func perform<T>(_ body: @escaping (ASRPipeline, () throws -> Void) throws -> T) async throws -> T {
         let work = ASRWork(timeout: timeout)
         let id = UUID()
         return try await withTaskCancellationHandler {

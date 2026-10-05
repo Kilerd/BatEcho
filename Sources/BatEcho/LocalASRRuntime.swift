@@ -35,17 +35,17 @@ struct LocalASRRuntime: Sendable {
             URL(string: "https://huggingface.co/\(repository)/resolve/\(revision)/\(URL(fileURLWithPath: path).lastPathComponent)")!
         }
     }
+    static let modelDirectoryName = "qwen3-asr-0.6b-8bit"
+
     static let assets: [Asset] = {
-        let fireRed = "mlx-community/FireRedASR2-AED-mlx"
-        let revision = "f3212eacfa49b851130b97c63653c8e06ee09bdb"
         let silero = "mlx-community/silero-vad-v6"
         let vadRevision = "2ebf4a5e10726a2e78ddd4d70eedfb6f1c33eb06"
         return [
-            Asset(repository: fireRed, revision: revision, path: "firered/config.json", size: 369, sha256: "ef3be4345675bf62b873de2b256b60e92fcfe44f95b3d9d810cb90a29ea69e91"),
-            Asset(repository: fireRed, revision: revision, path: "firered/cmvn.json", size: 3255, sha256: "3f702336649609864b8a7c91ec3d25ae36be15f2d70f37cb35afeebf178be584"),
-            Asset(repository: fireRed, revision: revision, path: "firered/dict.txt", size: 79172, sha256: "1bc613de2112d257e61a349c3e72d1b1a9cf19c33d3ca954197ad2171e5ea07b"),
-            Asset(repository: fireRed, revision: revision, path: "firered/train_bpe1000.model", size: 251707, sha256: "473bbc157cb4eade2059b30a3c877a1c29bd50cadbfbed869ae36eeade7fee07"),
-            Asset(repository: fireRed, revision: revision, path: "firered/model.safetensors", size: 4565783672, sha256: "e91fa08c58f07accd1803c8f0a9ffce24f4b3952c9fbc8ea476a82873e0386d4"),
+            Asset(repository: "mlx-community/Qwen3-ASR-0.6B-8bit", revision: "89e96d92ba34aca20b3e29fb10cc284097d1219f", path: "qwen3-asr-0.6b-8bit/config.json", size: 7187, sha256: "5d104a945fed08728ab010f12bf3ce5ab4d0794bba276d81bff5bd83ae9d2be0"),
+            Asset(repository: "mlx-community/Qwen3-ASR-0.6B-8bit", revision: "89e96d92ba34aca20b3e29fb10cc284097d1219f", path: "qwen3-asr-0.6b-8bit/vocab.json", size: 2776833, sha256: "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"),
+            Asset(repository: "mlx-community/Qwen3-ASR-0.6B-8bit", revision: "89e96d92ba34aca20b3e29fb10cc284097d1219f", path: "qwen3-asr-0.6b-8bit/merges.txt", size: 1671853, sha256: "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"),
+            Asset(repository: "mlx-community/Qwen3-ASR-0.6B-8bit", revision: "89e96d92ba34aca20b3e29fb10cc284097d1219f", path: "qwen3-asr-0.6b-8bit/tokenizer_config.json", size: 12487, sha256: "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"),
+            Asset(repository: "mlx-community/Qwen3-ASR-0.6B-8bit", revision: "89e96d92ba34aca20b3e29fb10cc284097d1219f", path: "qwen3-asr-0.6b-8bit/model.safetensors", size: 1006229426, sha256: "b5bfe4abc1b4c6e58b633096682ec2b6297298add1527119936107d211adf0e8"),
             Asset(repository: silero, revision: vadRevision, path: "silero-v6/config.json", size: 463, sha256: "9fe1befb9692a0d4135adadc33f8075ef6d350bd2391b88d750f2c233f97fa0b"),
             Asset(repository: silero, revision: vadRevision, path: "silero-v6/model.safetensors", size: 1237860, sha256: "65b6c5f0293cbc44d109e58bef78b474d9c65dedbee814cf0b90ef5f0d9150ff")
         ]
@@ -93,7 +93,7 @@ struct LocalASRRuntime: Sendable {
             try data.write(to: vocabulary, options: .withoutOverwriting)
             try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: vocabulary.path)
         }
-        let manifest: [String: Any] = ["schema": 2, "engine": "swift-mlx", "mlx_swift": "0.31.6",
+        let manifest: [String: Any] = ["schema": 3, "engine": "swift-mlx", "model": Self.modelDirectoryName, "mlx_swift": "0.31.6",
                                       "assets": Self.assets.map { ["path": $0.path, "revision": $0.revision, "sha256": $0.sha256] }]
         try JSONSerialization.data(withJSONObject: manifest, options: [.prettyPrinted, .sortedKeys])
             .write(to: directory.appendingPathComponent("native-runtime.json"), options: .atomic)

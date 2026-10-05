@@ -6,9 +6,8 @@ final class SpeechSettingsWindowController: NSWindowController {
     var onSetupFinished: (@MainActor () -> Void)?
     private let runtime = LocalASRRuntime()
     private let status = NSTextField(labelWithString: "")
-    private let hotwords = NSButton(checkboxWithTitle: "Use vocabulary during recognition (experimental)", target: nil, action: nil)
+    private let hotwords = NSButton(checkboxWithTitle: "Use vocabulary as recognition hints", target: nil, action: nil)
     private let correction = NSButton(checkboxWithTitle: "Correct Chinese homophones using vocabulary context", target: nil, action: nil)
-    private let strength = NSPopUpButton(frame: .zero, pullsDown: false)
     private let spinner = NSProgressIndicator()
     private lazy var prepareButton = NSButton(title: "Prepare Local Model…", target: self, action: #selector(prepareModel))
     private lazy var vocabularyButton = NSButton(title: "Edit Vocabulary…", target: self, action: #selector(editVocabulary))
@@ -28,7 +27,6 @@ final class SpeechSettingsWindowController: NSWindowController {
     func show() {
         hotwords.state = Settings.shared.hotwordsEnabled ? .on : .off
         correction.state = Settings.shared.pinyinCorrectionEnabled ? .on : .off
-        strength.selectItem(withTag: Int(Settings.shared.hotwordScore))
         refreshStatus()
         window?.center()
         NSApp.activate(ignoringOtherApps: true)
@@ -42,27 +40,18 @@ final class SpeechSettingsWindowController: NSWindowController {
 
     private func buildUI() {
         guard let content = window?.contentView else { return }
-        let title = NSTextField(labelWithString: "FireRedASR2-AED · Chinese and English")
+        let title = NSTextField(labelWithString: "Qwen3-ASR-0.6B · Chinese and English")
         title.font = .boldSystemFont(ofSize: 14)
         let detail = NSTextField(wrappingLabelWithString:
-            "Recognition runs on this Mac. The local model needs about 4.6 GB of storage. Hold Fn to speak for up to 30 seconds; release it to transcribe.")
+            "Recognition runs on this Mac. The local model needs about 1 GB of storage. Hold Fn to dictate continuously; release it to finish and insert your text.")
         detail.textColor = .secondaryLabelColor
         detail.preferredMaxLayoutWidth = 510
         hotwords.target = self
         hotwords.action = #selector(saveOptions)
         correction.target = self
         correction.action = #selector(saveOptions)
-        for (label, score) in [("Low · 2", 2), ("Normal · 4", 4), ("High · 6", 6), ("Maximum · 8", 8)] {
-            strength.addItem(withTitle: label)
-            strength.lastItem?.tag = score
-        }
-        strength.target = self
-        strength.action = #selector(saveOptions)
-        let strengthRow = NSStackView(views: [NSTextField(labelWithString: "Hotword strength"), strength])
-        strengthRow.orientation = .horizontal
-        strengthRow.spacing = 10
         let note = NSTextField(wrappingLabelWithString:
-            "Select up to 64 relevant words. Higher strength can introduce words you did not say. Vocabulary changes apply to the next phrase.")
+            "Keep up to 64 relevant names and terms in your vocabulary. Unrelated hints can reduce accuracy. Vocabulary changes apply to the next phrase.")
         note.textColor = .secondaryLabelColor
         note.font = .systemFont(ofSize: 12)
         note.preferredMaxLayoutWidth = 510
@@ -75,7 +64,7 @@ final class SpeechSettingsWindowController: NSWindowController {
         let buttons = NSStackView(views: [prepareButton, vocabularyButton, logButton])
         buttons.orientation = .horizontal
         buttons.spacing = 8
-        let stack = NSStackView(views: [title, detail, hotwords, strengthRow, correction, note, statusRow, buttons])
+        let stack = NSStackView(views: [title, detail, hotwords, correction, note, statusRow, buttons])
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 12
@@ -97,7 +86,6 @@ final class SpeechSettingsWindowController: NSWindowController {
         let busy = setup != nil || startingSetup
         prepareButton.isEnabled = !busy
         vocabularyButton.isEnabled = !busy && FileManager.default.fileExists(atPath: runtime.vocabulary.path)
-        strength.isEnabled = hotwords.state == .on
         logButton.isHidden = !FileManager.default.fileExists(atPath: runtime.directory.appendingPathComponent("setup.log").path)
         if busy {
             status.stringValue = "Preparing the local speech model…"
@@ -111,8 +99,6 @@ final class SpeechSettingsWindowController: NSWindowController {
     @objc private func saveOptions() {
         Settings.shared.hotwordsEnabled = hotwords.state == .on
         Settings.shared.pinyinCorrectionEnabled = correction.state == .on
-        Settings.shared.hotwordScore = Double(strength.selectedItem?.tag ?? 4)
-        strength.isEnabled = hotwords.state == .on
     }
 
     @objc private func editVocabulary() {

@@ -1,8 +1,7 @@
 import AVFoundation
 import Foundation
 
-/// Saves native-rate microphone buffers as CAF. NativeAudio converts channels
-/// and sample rate once after recording, before the native MLX pipeline.
+/// Owns one private segment file. NativeAudio converts each segment before MLX.
 // Only the immutable URL escapes; all mutable writer state is protected by lock.
 final class AudioCapture: @unchecked Sendable {
     let url: URL
@@ -13,7 +12,7 @@ final class AudioCapture: @unchecked Sendable {
 
     init(format: AVAudioFormat, directory: URL = FileManager.default.temporaryDirectory) throws {
         url = directory.appendingPathComponent("BatEcho-\(UUID().uuidString).caf")
-        maximumFrames = AVAudioFramePosition(format.sampleRate * 30)
+        maximumFrames = AVAudioFramePosition(format.sampleRate * NativeAudio.maximumSegmentDuration)
         var settings = format.settings
         settings[AVLinearPCMIsNonInterleaved] = false
         file = try AVAudioFile(forWriting: url, settings: settings,
@@ -27,7 +26,7 @@ final class AudioCapture: @unchecked Sendable {
         guard let file else { return }
         guard frames + AVAudioFramePosition(buffer.frameLength) <= maximumFrames else {
             self.file = nil
-            throw LocalASRError.invalidInput("Recording limit reached. Please dictate up to 30 seconds at a time.")
+            throw LocalASRError.invalidInput("An audio segment exceeded its processing limit.")
         }
         try file.write(from: buffer)
         frames += AVAudioFramePosition(buffer.frameLength)
@@ -56,18 +55,16 @@ final class LocalSpeechTranscriber: SpeechTranscribing {
 
     private let client: LocalASRClient
     private let hotwords: Bool
-    private let score: Double
     private let correction: Bool
     private var engine: AVAudioEngine?
-    private var capture: AudioCapture?
+    private var capture: SegmentedAudioCapture?
     private var operation: Task<Void, Never>?
     private var finished = true
     private var session = UUID()
 
-    init(client: LocalASRClient, hotwords: Bool, score: Double, correction: Bool) {
+    init(client: LocalASRClient, hotwords: Bool, correction: Bool) {
         self.client = client
         self.hotwords = hotwords
-        self.score = score
         self.correction = correction
     }
 
@@ -85,9 +82,28 @@ final class LocalSpeechTranscriber: SpeechTranscribing {
         guard format.sampleRate > 0, format.channelCount > 0 else {
             throw TranscriberError.microphoneUnavailable
         }
-        let recording = try AudioCapture(format: format)
+        let recording = try SegmentedAudioCapture(format: format)
         capture = recording
         finished = false
+        let client = client
+        let options = ASROptions(hotwords: hotwords, correction: correction)
+        operation = Task { @MainActor [weak self] in
+            defer { recording.discard() }
+            do {
+                let result = try await ContinuousTranscription.run(capture: recording, client: client, options: options) { [weak self] text in
+                    guard let self, !self.finished, self.session == token else { return }
+                    self.onPartial?(text)
+                }
+                try Task.checkCancellation()
+                guard let self, !self.finished, self.session == token else { return }
+                self.finished = true
+                self.operation = nil
+                self.capture = nil
+                self.onFinal?(result.text ?? "")
+            } catch is CancellationError {
+                // Canceled sessions must never inject their late result.
+            } catch { self?.fail(error, session: token) }
+        }
         input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
             do { try recording.append(buffer) }
             catch {
@@ -114,25 +130,6 @@ final class LocalSpeechTranscriber: SpeechTranscribing {
         guard !finished, let recording = capture else { return }
         stopAudio()
         recording.finish()
-        capture = nil
-        let token = session
-        let client = client, hotwords = hotwords, score = score, correction = correction
-        operation = Task { @MainActor [weak self] in
-            defer { recording.discard() }
-            do {
-                let result = try await client.transcribe(audio: recording.url, hotwords: hotwords,
-                                                         score: score, correction: correction)
-                try Task.checkCancellation()
-                guard let self, !self.finished, self.session == token else { return }
-                self.finished = true
-                self.operation = nil
-                self.onFinal?(result.text ?? "")
-            } catch is CancellationError {
-                // Canceled sessions must never inject their late result.
-            } catch {
-                self?.fail(error, session: token)
-            }
-        }
     }
 
     func cancel() {

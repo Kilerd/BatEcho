@@ -1,12 +1,12 @@
 import Foundation
 
 enum SpeechEngine: String, CaseIterable {
-    case local = "firered"
+    case local = "qwen3-asr"
     case apple = "apple"
 
     var title: String {
         switch self {
-        case .local: return "Local FireRed · Chinese / English"
+        case .local: return "Local Qwen3-ASR · Chinese / English"
         case .apple: return "Apple Speech Recognition"
         }
     }
@@ -37,14 +37,14 @@ final class Settings {
         static let llmAPIKey = "llm.apiKey"
         static let llmModel = "llm.model"
         static let speechEngine = "speech.engine"
-        static let hotwords = "speech.hotwords"
-        static let hotwordScore = "speech.hotwordScore"
+        // Qwen context has different semantics from the old beam-search score.
+        static let hotwords = "speech.qwen.hotwords"
         static let pinyinCorrection = "speech.pinyinCorrection"
     }
 
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
 
-    private init() {}
+    init(defaults: UserDefaults = .standard) { self.defaults = defaults }
 
     var speechEngine: SpeechEngine {
         get { defaults.string(forKey: Keys.speechEngine).flatMap(SpeechEngine.init(rawValue:)) ?? .local }
@@ -52,17 +52,8 @@ final class Settings {
     }
 
     var hotwordsEnabled: Bool {
-        get { defaults.bool(forKey: Keys.hotwords) }
+        get { defaults.object(forKey: Keys.hotwords) as? Bool ?? true }
         set { defaults.set(newValue, forKey: Keys.hotwords) }
-    }
-
-    var hotwordScore: Double {
-        get {
-            guard let value = defaults.object(forKey: Keys.hotwordScore) as? Double,
-                  value.isFinite, (0...8).contains(value) else { return 4 }
-            return value
-        }
-        set { defaults.set(newValue, forKey: Keys.hotwordScore) }
     }
 
     var pinyinCorrectionEnabled: Bool {

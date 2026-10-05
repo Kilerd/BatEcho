@@ -1,7 +1,19 @@
-Native FireRedASR2, Silero VAD and SentencePiece implementations adapted from
+Native Qwen3-ASR, FireRedASR2, Silero VAD and SentencePiece implementations adapted from
 https://github.com/Blaizzy/mlx-audio-swift/tree/3e978558404df4ad1bbb0a5634a03df2b0f9dfa5
 Only the required models and tokenizer are included; BatEcho owns the model download,
 feature extraction, hotword decoder and cancellation integration.
+
+Qwen3-ASR is the active recognition backend. Its audio encoder and text decoder
+use the required upstream model subset, with a per-request KV cache, bounded
+prefill, cancellation, official Slaney/periodic-Hann features and native context
+prompts. Byte-level Qwen2 BPE is implemented in Swift and checked against the
+official tokenizer. The original FireRed code remains for historical regression
+tests; the runtime no longer downloads or loads its weights.
+
+Qwen3-ASR model and tokenizer assets are distributed under Apache-2.0.
+https://github.com/QwenLM/Qwen3-ASR
+See Qwen-LICENSE. The native downloader pins the MLX conversion revision:
+https://huggingface.co/mlx-community/Qwen3-ASR-0.6B-8bit/tree/89e96d92ba34aca20b3e29fb10cc284097d1219f
 
 Adaptations: remove HuggingFace/STT framework dependencies and unused model
 entry points; require CMVN/vocabulary; validate the pinned architecture; use a

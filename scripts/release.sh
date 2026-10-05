@@ -50,7 +50,9 @@ ditto build/BatEcho.app "$app"
 # --deep is useful for verification, but is deprecated for signing.
 codesign --force --options runtime --timestamp \
     --entitlements Resources/BatEcho.entitlements --sign "$identity" "$app"
-scripts/verify-bundle.sh "$app"
+# Launching this signed bundle before stapling can make macOS protect it from
+# further writes. Run executable checks on the unpacked ZIP after stapling.
+codesign --verify --deep --strict --verbose=2 "$app"
 signature=$(codesign -dvv "$app" 2>&1)
 [[ "$signature" == *"Authority=Developer ID Application:"* ]] || fail "Wrong signing certificate."
 [[ "$signature" == *"(runtime)"* ]] || fail "Hardened Runtime is missing."
